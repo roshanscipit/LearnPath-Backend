@@ -155,14 +155,73 @@ public class AuthService {
 
     // ─── Google OAuth ─────────────────────────────────────────────
 
+    @Value("${google.oauth.client-id}")
+    private String googleClientId;
+
     @Transactional
-    public AuthResponse handleGoogleCallback(String sessionId) {
-        // In production: exchange sessionId with auth.emergentagent.com to get user profile
-        // Here we simulate the exchange – replace with real HTTP call to your auth provider
-        throw new AppException(
-            "Google OAuth exchange not configured. Set up the emergentagent session exchange.",
-            HttpStatus.NOT_IMPLEMENTED
-        );
+    public AuthResponse googleSignIn(String idTokenString) {
+        if (googleClientId == null || googleClientId.isBlank()) {
+            throw new AppException(
+                "Google sign-in is not configured on the server (missing GOOGLE_CLIENT_ID).",
+                HttpStatus.NOT_IMPLEMENTED
+            );
+        }
+
+        com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier verifier =
+            new com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier.Builder(
+                new com.google.api.client.http.javanet.NetHttpTransport(),
+                com.google.api.client.json.gson.GsonFactory.getDefaultInstance())
+                .setAudience(java.util.Collections.singletonList(googleClientId))
+                .build();
+
+        com.google.api.client.googleapis.auth.oauth2.GoogleIdToken idToken;
+        try {
+            idToken = verifier.verify(idTokenString);
+        } catch (Exception e) {
+            throw new AppException("Failed to verify Google token.", HttpStatus.UNAUTHORIZED);
+        }
+
+        if (idToken == null) {
+            throw new AppException("Invalid or expired Google token.", HttpStatus.UNAUTHORIZED);
+        }
+
+        com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload payload = idToken.getPayload();
+        String googleId = payload.getSubject();
+        String email = payload.getEmail();
+        String name = (String) payload.get("name");
+        String picture = (String) payload.get("picture");
+
+        // 1. Try matching by googleId first
+        User user = userRepository.findByGoogleId(googleId).orElse(null);
+
+        // 2. Fall back to matching an existing account by email (link accounts)
+        if (user == null && email != null) {
+            user = userRepository.findByEmail(email).orElse(null);
+            if (user != null) {
+                user.setGoogleId(googleId);
+                if (user.getProvider() == User.AuthProvider.EMAIL) {
+                    // keep provider as-is; googleId link is enough to allow Google login too
+                }
+            }
+        }
+
+        // 3. No existing user — create a new one
+        if (user == null) {
+            user = User.builder()
+                .name(name != null ? name : "Google User")
+                .email(email)
+                .googleId(googleId)
+                .provider(User.AuthProvider.GOOGLE)
+                .avatar(picture != null ? picture : generateAvatarUrl(name != null ? name : "User"))
+                .build();
+            user = userRepository.save(user);
+            createDefaultProgress(user);
+        } else {
+            user = userRepository.save(user);
+        }
+
+        String token = jwtTokenProvider.generateToken(user.getId(), user.getEmail());
+        return new AuthResponse(token, toDto(user));
     }
 
     // ─── Get Current User ─────────────────────────────────────────

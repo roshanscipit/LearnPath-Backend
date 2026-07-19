@@ -44,10 +44,10 @@ public class AuthController {
         return ResponseEntity.ok(authService.verifyOtp(req));
     }
 
-    // POST /api/auth/google/callback
-    @PostMapping("/google/callback")
-    public ResponseEntity<AuthResponse> googleCallback(@RequestBody GoogleCallbackRequest req) {
-        return ResponseEntity.ok(authService.handleGoogleCallback(req.getSessionId()));
+    // POST /api/auth/google  – body: { idToken: "<Google ID token from frontend>" }
+    @PostMapping("/google")
+    public ResponseEntity<AuthResponse> googleSignIn(@Valid @RequestBody GoogleSignInRequest req) {
+        return ResponseEntity.ok(authService.googleSignIn(req.getIdToken()));
     }
 
     // GET /api/auth/me  – requires JWT

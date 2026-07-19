@@ -44,6 +44,11 @@ public class AuthDtos {
     }
 
     @Data
+    public static class GoogleSignInRequest {
+        @NotBlank private String idToken;
+    }
+
+    @Data
     public static class AuthResponse {
         private String token;
         private UserDto user;
