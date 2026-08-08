@@ -43,6 +43,7 @@ public class SecurityConfig {
                     "/api/auth/**",
                     "/api/companies/**",
                     "/api/roles/**",
+                    "/api/roadmap/**",
                     "/api/mock-tests/list",
                     "/api/ai-interview/roles",   // public – no auth needed to browse
                     "/api/questions/stats",      // public question count

@@ -26,6 +26,7 @@ public class CacheConfig {
             buildCache("companies",    500, 30, TimeUnit.MINUTES),
             buildCache("roles",        200, 60, TimeUnit.MINUTES),
             buildCache("mockTests",    200, 60, TimeUnit.MINUTES),
+            buildCache("roadmap",      100, 60, TimeUnit.MINUTES),
 
             // Per-user data – shorter TTL
             buildCache("users",        1000, 10, TimeUnit.MINUTES),
