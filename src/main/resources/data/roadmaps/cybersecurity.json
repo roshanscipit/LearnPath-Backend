@@ -1,0 +1,262 @@
+{
+  "moduleId": "cybersecurity",
+  "moduleName": "Cybersecurity Analyst",
+  "variants": ["SOC Analyst", "Penetration Testing", "Cloud Security", "AppSec"],
+  "levels": [
+    {
+      "level": "Basic",
+      "topics": [
+        {
+          "id": "sec-basic-fundamentals",
+          "title": "Security Fundamentals & the CIA Triad",
+          "summary": "The foundational model for thinking about what security is actually protecting.",
+          "keyPoints": [
+            "CIA Triad: Confidentiality, Integrity, Availability",
+            "Authentication (who you are) vs Authorization (what you can do)",
+            "Threat, vulnerability, and risk as distinct concepts",
+            "Defense in depth: layered controls rather than a single point of protection"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is the CIA triad, and can you give an example of an attack that primarily violates each pillar?",
+              "keywords": ["confidentiality", "integrity", "availability", "cia triad", "example attack"],
+              "modelAnswer": "Confidentiality means only authorized parties can access data — a data breach exposing customer records violates confidentiality. Integrity means data hasn't been tampered with — an attacker modifying transaction amounts in a database violates integrity even if they never 'stole' anything. Availability means systems and data are accessible when needed — a Distributed Denial of Service (DDoS) attack that takes a website offline violates availability without necessarily touching the data itself at all. Most real incidents actually involve more than one pillar, but the triad is useful for classifying the primary impact of a given attack.",
+              "tip": "Give one crisp example per pillar — DDoS for availability is the classic clean example.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "sec-basic-networking",
+          "title": "Networking for Security",
+          "summary": "Network fundamentals viewed through a defensive/offensive security lens.",
+          "keyPoints": [
+            "TCP three-way handshake and how it's abused in SYN flood attacks",
+            "Firewalls, VPNs, and network segmentation to limit blast radius",
+            "DNS and how it's abused (DNS spoofing, cache poisoning, exfiltration via DNS tunneling)",
+            "Common ports and services attackers commonly target"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is network segmentation considered an important security control?",
+              "keywords": ["network segmentation", "blast radius", "lateral movement", "vlan", "zero trust"],
+              "modelAnswer": "Network segmentation divides a network into isolated zones (via VLANs, subnets, or firewall rules) so that if an attacker compromises one host or segment, they can't freely move laterally to reach every other system on the network. Without segmentation, a single compromised low-value machine (like a guest Wi-Fi device) could potentially reach critical systems like databases or domain controllers directly, whereas segmentation forces the attacker through additional controlled chokepoints, buying defenders time to detect and respond. This principle is taken further in Zero Trust architectures, which assume no implicit trust even within segments and require verification for every access request.",
+              "tip": "Mention Zero Trust as the modern evolution of this idea — shows current awareness.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sec-basic-attack-vectors",
+          "title": "Common Attack Vectors",
+          "summary": "The most common ways attackers gain initial access or compromise systems.",
+          "keyPoints": [
+            "Phishing and social engineering — still the most common initial access vector",
+            "Malware categories: viruses, worms, ransomware, trojans, spyware",
+            "Social engineering pretexting, baiting, and tailgating in physical security",
+            "Password attacks: brute force, dictionary, credential stuffing"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is credential stuffing an effective attack even without any password being 'cracked'?",
+              "keywords": ["credential stuffing", "password reuse", "data breach", "brute force", "mfa"],
+              "modelAnswer": "Credential stuffing uses username/password pairs leaked from a completely different, unrelated breach and tries them against other websites, relying entirely on the widespread human habit of password reuse across multiple sites — no password cracking or guessing is actually involved, just automated replay of already-known valid credentials. It's effective at scale because even a small success rate (often 0.1-2%) across millions of leaked credential pairs still yields a large number of successfully compromised accounts. The most effective defense isn't password complexity rules (irrelevant here since the real password is already known) but rather multi-factor authentication and monitoring for anomalous login patterns/rate limiting.",
+              "tip": "Make clear MFA (not password strength) is the real defense — a common point of confusion.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sec-basic-crypto",
+          "title": "Cryptography Basics",
+          "summary": "The core cryptographic concepts underlying secure communication and storage.",
+          "keyPoints": [
+            "Symmetric encryption (AES) vs asymmetric encryption (RSA) and their use cases",
+            "Hashing (SHA-256) for integrity verification — one-way, not encryption",
+            "TLS/SSL: how HTTPS establishes a secure channel using both symmetric and asymmetric crypto",
+            "Salting passwords before hashing to defeat rainbow table attacks"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why should passwords be salted before hashing, and what attack does salting specifically defeat?",
+              "keywords": ["salt", "rainbow table", "password hashing", "precomputed table", "unique salt"],
+              "modelAnswer": "A salt is random data added to a password before hashing, unique per user, so that even identical passwords produce completely different hash outputs across different accounts. This defeats rainbow table attacks — precomputed tables mapping common password hashes back to their plaintext — because an attacker would need a separate precomputed table for every possible salt value, which is computationally infeasible at scale. Salting doesn't make an individual password harder to crack once you know its salt and are attacking that one hash directly (that's what work-factor algorithms like bcrypt/Argon2 are for), but it prevents attacking many accounts at once with shared precomputed data.",
+              "tip": "Distinguish salting's purpose (defeat rainbow tables) from work-factor hashing's purpose (slow down brute force) — often conflated.",
+              "difficulty": "Medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": "Intermediate",
+      "topics": [
+        {
+          "id": "sec-inter-soc",
+          "title": "SOC Operations & SIEM",
+          "summary": "How security operations centers monitor, detect, and respond to threats using centralized log/event analysis.",
+          "keyPoints": [
+            "SIEM (Splunk, QRadar, Sentinel) aggregates and correlates logs across the environment",
+            "Detection engineering: writing rules/alerts for known attack patterns",
+            "Triage workflow: alert -> investigate -> escalate/close, and reducing alert fatigue",
+            "MITRE ATT&CK framework for categorizing adversary tactics and techniques"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is 'alert fatigue' in a SOC, and how would you address it?",
+              "keywords": ["alert fatigue", "false positive", "detection tuning", "prioritization", "soc analyst"],
+              "modelAnswer": "Alert fatigue happens when a SOC generates so many alerts — many of them false positives or low-fidelity — that analysts become desensitized and start missing or deprioritizing genuinely critical alerts buried in the noise. Addressing it involves tuning detection rules to reduce false positives (adjusting thresholds, adding context/exceptions for known-benign patterns), prioritizing/scoring alerts by severity and confidence so analysts triage the highest-risk items first, and using automation (SOAR playbooks) to auto-handle low-risk, well-understood alert types so human attention is reserved for genuinely ambiguous or high-severity cases.",
+              "tip": "Mention SOAR (Security Orchestration, Automation, and Response) as the modern tooling answer to this problem.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sec-inter-pentest",
+          "title": "Penetration Testing Basics",
+          "summary": "The structured process of legally and ethically simulating an attack to find vulnerabilities before real attackers do.",
+          "keyPoints": [
+            "Phases: reconnaissance, scanning/enumeration, exploitation, post-exploitation, reporting",
+            "Tools: Nmap (scanning), Burp Suite (web app testing), Metasploit (exploitation)",
+            "Scope and Rules of Engagement — testing only what's authorized, in writing",
+            "Difference between a vulnerability scan (automated) and a penetration test (manual, goal-driven)"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the difference between a vulnerability scan and a penetration test, and why would an organization need both?",
+              "keywords": ["vulnerability scan", "penetration test", "automated scanning", "manual exploitation", "false positive"],
+              "modelAnswer": "A vulnerability scan is largely automated, using tools to check systems against a database of known vulnerabilities/misconfigurations and producing a broad list of potential issues, but it often includes false positives and doesn't verify whether a finding is actually exploitable in context. A penetration test is a manual, goal-driven engagement where a tester actively attempts to exploit vulnerabilities (often chaining several minor issues together) to demonstrate real business impact, going beyond 'this might be vulnerable' to 'here's exactly how I compromised the system using this'. Organizations need both: frequent automated scans for broad, ongoing hygiene, and periodic (e.g., annual) penetration tests for deeper, more realistic risk validation, especially for compliance requirements.",
+              "tip": "Emphasize that pentests demonstrate real exploitability/impact — that's the key differentiator from a scan.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sec-inter-owasp",
+          "title": "Web Application Security (OWASP Top 10)",
+          "summary": "The most critical and common web application vulnerability categories, as maintained by OWASP.",
+          "keyPoints": [
+            "Injection (SQL, command) and Cross-Site Scripting (XSS)",
+            "Broken Access Control and Broken Authentication",
+            "Security Misconfiguration and vulnerable/outdated components",
+            "SSRF (Server-Side Request Forgery) as a growing modern concern"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the difference between stored XSS and reflected XSS, and which is generally considered more dangerous?",
+              "keywords": ["stored xss", "reflected xss", "cross-site scripting", "persistent", "payload"],
+              "modelAnswer": "Reflected XSS occurs when malicious script is included in a request (often a URL parameter) and immediately reflected back in the response without being stored, so it only affects a victim who's tricked into clicking a specially crafted link — it requires social engineering per victim. Stored XSS occurs when the malicious script is saved on the server (e.g., in a comment or profile field) and served to every user who views that content afterward, without requiring any individual victim interaction beyond normal browsing — this makes it generally more dangerous since it can affect a much larger number of users automatically and persistently until the payload is removed.",
+              "tip": "The key distinction to lead with is persistence and scale of impact — stored affects many users automatically.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sec-inter-iam",
+          "title": "Identity & Access Management (IAM)",
+          "summary": "Controlling who can access what, and enforcing least-privilege across an organization's systems.",
+          "keyPoints": [
+            "Principle of least privilege and role-based access control (RBAC)",
+            "Multi-factor authentication (MFA) and why it defeats most credential-based attacks",
+            "Single Sign-On (SSO) and protocols like SAML/OAuth 2.0/OIDC",
+            "Privileged Access Management (PAM) for admin/root-level accounts"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is the principle of least privilege, and what practical problems arise when it's not enforced?",
+              "keywords": ["least privilege", "over-permissioned", "lateral movement", "insider threat", "rbac"],
+              "modelAnswer": "The principle of least privilege means every user, service, or process should have only the minimum access necessary to perform its function, nothing more. When it's not enforced, over-permissioned accounts massively increase the impact of any single compromise — an attacker who phishes one over-privileged employee's credentials, or exploits one over-permissioned service account, gains far more reach than they should, enabling much easier lateral movement across the environment and a larger blast radius from what should have been a contained incident. It also increases insider threat risk, since employees can access data or systems irrelevant to their actual job function, whether maliciously or accidentally.",
+              "tip": "Connect it back to lateral movement/blast radius — ties it to real attack consequences, not just policy theory.",
+              "difficulty": "Medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": "Advanced",
+      "topics": [
+        {
+          "id": "sec-adv-cloud",
+          "title": "Cloud Security",
+          "summary": "Securing infrastructure and applications in cloud environments, where the shared responsibility model shifts what you're actually responsible for.",
+          "keyPoints": [
+            "Shared Responsibility Model: cloud provider secures 'of the cloud', customer secures 'in the cloud'",
+            "IAM misconfigurations (overly broad policies) as the most common cloud breach cause",
+            "Cloud Security Posture Management (CSPM) for continuous misconfiguration detection",
+            "Securing data at rest/in transit, and public storage bucket exposure risks"
+          ],
+          "interviewQA": [
+            {
+              "question": "Under the AWS Shared Responsibility Model, if a company suffers a breach because an S3 bucket was left publicly accessible, who is responsible?",
+              "keywords": ["shared responsibility model", "customer responsibility", "s3 misconfiguration", "cloud provider", "security in the cloud"],
+              "modelAnswer": "AWS is responsible for the security 'of the cloud' — the physical infrastructure, hypervisor, and the underlying S3 service's own availability and integrity — but the customer is responsible for security 'in the cloud', which explicitly includes configuring access controls, bucket policies, and permissions correctly. A publicly exposed S3 bucket due to a misconfigured bucket policy is a customer-side failure, not an AWS platform failure, since AWS provided the tools to restrict access (and even warns about public buckets) but the customer chose or failed to configure it correctly. This is why misconfiguration, not platform vulnerabilities, is consistently cited as the leading cause of cloud data breaches.",
+              "tip": "State clearly and confidently that this is a customer responsibility — that's the whole point of the shared responsibility model.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sec-adv-incident-response",
+          "title": "Incident Response & Digital Forensics",
+          "summary": "The structured process of detecting, containing, and recovering from a security incident, and preserving evidence along the way.",
+          "keyPoints": [
+            "Incident response lifecycle: preparation, identification, containment, eradication, recovery, lessons learned",
+            "Chain of custody for forensic evidence to remain legally admissible",
+            "Containment strategies: isolating affected systems without destroying evidence",
+            "Post-incident reviews (blameless) to improve future detection and response"
+          ],
+          "interviewQA": [
+            {
+              "question": "During an active incident, why might you choose to isolate a compromised system from the network rather than immediately shutting it down?",
+              "keywords": ["isolation", "containment", "volatile memory", "forensic evidence", "power off"],
+              "modelAnswer": "Powering off a compromised system immediately destroys volatile evidence in RAM — running processes, network connections, and in-memory malware artifacts that never touch disk — which can be critical for understanding the attack's full scope and identifying the root cause. Network isolation (disconnecting from the network or blocking its traffic at the firewall while leaving the machine powered on) stops the attacker's ability to communicate with or exfiltrate data through that system, while preserving the live memory state for forensic capture. The exception is if the malware has destructive/wiper behavior actively in progress, where the calculus can shift toward immediate power-off to limit damage, but that's a judgment call weighed against evidence loss.",
+              "tip": "The RAM/volatile evidence point is the key technical insight that distinguishes a strong answer here.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sec-adv-threat-hunting",
+          "title": "Advanced Threat Hunting",
+          "summary": "Proactively searching for threats that have evaded automated detection, rather than waiting for alerts.",
+          "keyPoints": [
+            "Hypothesis-driven hunting based on threat intelligence and MITRE ATT&CK techniques",
+            "Behavioral analytics and anomaly detection versus signature-based detection",
+            "Indicators of Compromise (IoCs) vs Indicators of Attack (IoAs) — artifacts vs behaviors",
+            "Living-off-the-land (LOLBins) attacks that abuse legitimate system tools to evade detection"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is threat hunting necessary even in an organization with a mature SIEM and alerting system?",
+              "keywords": ["threat hunting", "signature-based detection", "evasion", "assume breach", "proactive"],
+              "modelAnswer": "Automated detection (SIEM rules, signature-based antivirus) is fundamentally reactive — it can only catch known patterns, techniques, or indicators that someone already defined a rule for, which sophisticated attackers actively work to evade using novel techniques, living-off-the-land tools that look like normal admin activity, or slow, low-and-slow tactics designed to stay under alert thresholds. Threat hunting flips this to a proactive, 'assume breach' mindset: hunters form hypotheses based on threat intelligence about how an attacker might be operating undetected in the environment, then actively search logs and system behavior for subtle anomalies consistent with that hypothesis, often finding intrusions that generated zero traditional alerts.",
+              "tip": "The 'assume breach, hypothesis-driven' framing is the core concept that distinguishes hunting from alerting.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sec-adv-architecture",
+          "title": "Security Architecture & Compliance",
+          "summary": "Designing systems with security built in from the ground up, and meeting regulatory/compliance obligations.",
+          "keyPoints": [
+            "Zero Trust Architecture: 'never trust, always verify', no implicit trust based on network location",
+            "Compliance frameworks: SOC 2, ISO 27001, PCI-DSS, GDPR — what each generally governs",
+            "Secure SDLC: threat modeling during design, not just testing after the fact",
+            "Security by design vs bolt-on security, and the cost implications of each"
+          ],
+          "interviewQA": [
+            {
+              "question": "What does 'Zero Trust' actually mean in practice, beyond the marketing buzzword?",
+              "keywords": ["zero trust", "never trust always verify", "micro-segmentation", "continuous verification", "identity-based access"],
+              "modelAnswer": "Zero Trust means abandoning the traditional assumption that anything inside the corporate network perimeter is inherently trustworthy — every access request, regardless of whether it originates inside or outside the network, must be explicitly verified based on identity, device health, and context before being granted, and only for the minimum scope needed. In practice this means strong identity verification (MFA) for every request rather than relying on VPN/network location as a trust proxy, micro-segmentation so access is granted per-resource rather than broad network-level trust, and continuous re-verification rather than a single login granting long-lived implicit trust. It's a significant architectural shift, not a single product you buy, which is why 'Zero Trust' is often misused as a marketing term for individual security products.",
+              "tip": "Explicitly push back on the buzzword framing — call out that it's an architecture, not a product, for a stronger answer.",
+              "difficulty": "Hard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

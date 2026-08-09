@@ -1,1 +1,172 @@
-
+{
+  "modules": [
+    {
+      "moduleId": "cybersecurity",
+      "moduleName": "Cybersecurity Analyst",
+      "variants": [
+        "SOC Analyst",
+        "Penetration Testing",
+        "Cloud Security",
+        "AppSec"
+      ],
+      "file": "cybersecurity.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "data-engineer",
+      "moduleName": "Data Engineer",
+      "variants": [
+        "ETL/ELT",
+        "Big Data",
+        "Analytics",
+        "ML Ops"
+      ],
+      "file": "data-engineer.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "devops",
+      "moduleName": "DevOps Engineer",
+      "variants": [
+        "AWS",
+        "Azure",
+        "GCP",
+        "Multi-Cloud"
+      ],
+      "file": "devops.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "dotnet",
+      "moduleName": ".NET Developer",
+      "variants": [
+        "Full Stack",
+        "Backend",
+        "Frontend"
+      ],
+      "file": "dotnet.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "java",
+      "moduleName": "Java Developer",
+      "variants": [
+        "Full Stack",
+        "Backend",
+        "Frontend"
+      ],
+      "file": "java.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "mobile",
+      "moduleName": "Mobile Developer",
+      "variants": [
+        "Android (Kotlin)",
+        "iOS (Swift)",
+        "React Native",
+        "Flutter"
+      ],
+      "file": "mobile.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "python",
+      "moduleName": "Python Developer",
+      "variants": [
+        "Django/Flask",
+        "Data Science",
+        "AI/ML",
+        "Automation"
+      ],
+      "file": "python.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "salesforce",
+      "moduleName": "Salesforce Developer",
+      "variants": [
+        "Developer",
+        "Admin",
+        "Architect"
+      ],
+      "file": "salesforce.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "sap",
+      "moduleName": "SAP Consultant",
+      "variants": [
+        "SAP MM",
+        "SAP SD",
+        "SAP ABAP",
+        "S/4HANA"
+      ],
+      "file": "sap.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    },
+    {
+      "moduleId": "testing",
+      "moduleName": "QA/Testing",
+      "variants": [
+        "Manual",
+        "Automation",
+        "Performance"
+      ],
+      "file": "testing.json",
+      "topicCount": 12,
+      "levels": [
+        "Basic",
+        "Intermediate",
+        "Advanced"
+      ]
+    }
+  ],
+  "totalModules": 10,
+  "totalTopics": 120
+}
