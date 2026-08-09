@@ -1,0 +1,262 @@
+{
+  "moduleId": "java",
+  "moduleName": "Java Developer",
+  "variants": ["Full Stack", "Backend", "Frontend"],
+  "levels": [
+    {
+      "level": "Basic",
+      "topics": [
+        {
+          "id": "java-basic-oop",
+          "title": "Java Basics & OOP Fundamentals",
+          "summary": "Core Java syntax and the four pillars of object-oriented programming that everything else in Java builds on.",
+          "keyPoints": [
+            "Encapsulation: bundling data and methods, controlling access with private/public/protected",
+            "Inheritance: 'extends' for reusing behavior; Java supports single inheritance of classes",
+            "Polymorphism: method overloading (compile-time) vs overriding (runtime)",
+            "Abstraction: abstract classes vs interfaces, and when to use each"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is the difference between an abstract class and an interface in Java?",
+              "keywords": ["abstract class", "interface", "multiple inheritance", "default method", "state"],
+              "modelAnswer": "An abstract class can have state (instance fields), constructors, and a mix of abstract and concrete methods, but a class can only extend one abstract class. An interface historically only declared method signatures and constants, but since Java 8 it can have default and static methods too; a class can implement multiple interfaces. Use an abstract class when subclasses share common state/implementation; use an interface to define a contract/capability across unrelated classes.",
+              "tip": "Mention 'is-a' vs 'can-do' relationships and Java 8's default methods.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "java-basic-datatypes",
+          "title": "Data Types, Variables & Type Casting",
+          "summary": "Java's strict static typing, primitive vs reference types, and rules for converting between them.",
+          "keyPoints": [
+            "8 primitive types (byte, short, int, long, float, double, char, boolean) stored on the stack",
+            "Wrapper classes (Integer, Double, etc.) enable autoboxing/unboxing and use in collections",
+            "Widening (implicit) vs narrowing (explicit) casting",
+            "String immutability and the String pool"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is String immutable in Java, and what problems could arise if it weren't?",
+              "keywords": ["immutable", "string pool", "thread safety", "hashcode", "caching"],
+              "modelAnswer": "String is immutable so the JVM can safely cache identical literals in the String pool, saving memory. Immutability also makes String inherently thread-safe (no synchronization needed) and safe to use as a HashMap key since its hashCode never changes. If String were mutable, changing one reference could silently corrupt shared literals, break hash-based collections, and create security risks (e.g., a mutated URL or file path after validation).",
+              "tip": "Bring up String pool and hashCode caching to show deeper understanding.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "java-basic-control-flow",
+          "title": "Control Flow, Arrays & Loops",
+          "summary": "Decision-making and iteration constructs, plus how Java arrays behave as fixed-size objects.",
+          "keyPoints": [
+            "if/else, switch (including Java 14+ switch expressions), for, while, do-while",
+            "Enhanced for-loop (for-each) for iterating collections and arrays",
+            "Arrays are fixed-length objects on the heap; default values differ by type",
+            "break/continue with labels for nested loop control"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is the difference between a traditional switch statement and a Java switch expression?",
+              "keywords": ["switch expression", "yield", "fall-through", "arrow syntax", "exhaustive"],
+              "modelAnswer": "A traditional switch statement executes case blocks and falls through to the next case unless you add 'break'. A switch expression (Java 14+) uses arrow syntax (case X -> ...), returns a value directly, has no fall-through, and the compiler can enforce exhaustiveness for enums/sealed types. You use 'yield' inside a block-bodied case to return a value.",
+              "tip": "Give a short code example contrasting fall-through risk vs arrow syntax.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "java-basic-exceptions",
+          "title": "Exception Handling",
+          "summary": "How Java models and recovers from errors using checked and unchecked exceptions.",
+          "keyPoints": [
+            "Checked exceptions (must declare/catch) vs unchecked (RuntimeException) vs Errors",
+            "try-catch-finally and try-with-resources for AutoCloseable resources",
+            "Custom exceptions by extending Exception or RuntimeException",
+            "Exception chaining to preserve root cause"
+          ],
+          "interviewQA": [
+            {
+              "question": "When would you create a checked exception vs an unchecked exception?",
+              "keywords": ["checked exception", "unchecked exception", "recoverable", "runtime exception", "api contract"],
+              "modelAnswer": "Use a checked exception when the caller can reasonably be expected to recover from the condition, such as a file not being found or a network timeout — forcing them to handle it is part of the API contract. Use an unchecked (runtime) exception for programming errors like invalid arguments or null references, where forcing every caller to catch it would add noise without real recovery options. Many modern APIs (like Spring) favor unchecked exceptions to avoid verbose try-catch chains.",
+              "tip": "Reference how modern frameworks like Spring lean toward unchecked exceptions.",
+              "difficulty": "Medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": "Intermediate",
+      "topics": [
+        {
+          "id": "java-inter-collections",
+          "title": "Collections Framework",
+          "summary": "The core interfaces and implementations for storing and manipulating groups of objects, and how to choose between them.",
+          "keyPoints": [
+            "List (ArrayList vs LinkedList), Set (HashSet, TreeSet, LinkedHashSet), Map (HashMap, TreeMap, LinkedHashMap)",
+            "Time complexity trade-offs: ArrayList O(1) get vs LinkedList O(1) insert at ends",
+            "Comparable vs Comparator for custom ordering",
+            "Fail-fast iterators and ConcurrentModificationException"
+          ],
+          "interviewQA": [
+            {
+              "question": "How does HashMap work internally, and what changed with Java 8's implementation?",
+              "keywords": ["hashcode", "bucket", "collision", "red-black tree", "treeify", "load factor"],
+              "modelAnswer": "HashMap stores entries in an array of buckets indexed by hashCode() % capacity, chaining colliding entries in a linked list. Since Java 8, if a single bucket's chain grows beyond a threshold (8 entries, with table size >= 64), it converts to a red-black tree, turning worst-case lookup from O(n) into O(log n). Resizing happens when size exceeds capacity * loadFactor (default 0.75), roughly doubling capacity and rehashing entries.",
+              "tip": "Mention load factor 0.75 and the treeify threshold of 8 for a strong answer.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "java-inter-concurrency",
+          "title": "Multithreading & Concurrency",
+          "summary": "Creating and coordinating threads safely, and the higher-level utilities that make it manageable.",
+          "keyPoints": [
+            "Thread creation: extending Thread vs implementing Runnable/Callable",
+            "synchronized keyword, locks (ReentrantLock), and volatile for visibility",
+            "ExecutorService and thread pools instead of manual thread management",
+            "java.util.concurrent collections (ConcurrentHashMap, CopyOnWriteArrayList)"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is the difference between synchronized and volatile, and when would you use each?",
+              "keywords": ["synchronized", "volatile", "visibility", "atomicity", "mutual exclusion"],
+              "modelAnswer": "'volatile' guarantees visibility — a write by one thread is immediately visible to others — but does not provide atomicity or mutual exclusion, so it's suited for simple flags or single variables read/written independently. 'synchronized' provides both mutual exclusion (only one thread executes the block at a time) and visibility, making it appropriate for compound actions like check-then-act or updating multiple related fields together. Using volatile for a counter increment (i++) would still be unsafe because it's not atomic.",
+              "tip": "Use the classic counter i++ example to show why volatile alone isn't enough.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "java-inter-streams",
+          "title": "Java 8 Streams, Lambdas & Functional Interfaces",
+          "summary": "Functional-style processing of collections introduced in Java 8, and the lambda syntax that powers it.",
+          "keyPoints": [
+            "Stream pipeline: source -> intermediate ops (map, filter, sorted) -> terminal op (collect, reduce, forEach)",
+            "Lazy evaluation: intermediate operations don't execute until a terminal operation is called",
+            "Functional interfaces: Function, Predicate, Supplier, Consumer, and method references",
+            "Collectors: toList, groupingBy, partitioningBy, joining"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is the difference between map() and flatMap() in Java Streams?",
+              "keywords": ["map", "flatmap", "nested stream", "flatten", "one-to-one", "one-to-many"],
+              "modelAnswer": "map() transforms each element one-to-one, producing a stream of the same cardinality but a new type (e.g., String -> Integer). flatMap() is used when each element maps to its own stream (e.g., a List<List<String>>), and it flattens those inner streams into a single combined stream. A common example is flattening a list of orders each containing a list of items into one flat stream of items.",
+              "tip": "Give a concrete example like List<List<Integer>> flattened with flatMap.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "java-inter-jdbc",
+          "title": "JDBC, Spring Data & Database Connectivity",
+          "summary": "How Java applications talk to relational databases, from raw JDBC to Spring's abstractions.",
+          "keyPoints": [
+            "JDBC core objects: DriverManager/DataSource, Connection, PreparedStatement, ResultSet",
+            "PreparedStatement prevents SQL injection and improves performance via precompilation",
+            "Connection pooling (HikariCP) to avoid the cost of opening connections per request",
+            "Spring Data JPA repositories abstract boilerplate CRUD and query methods"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why should you always prefer PreparedStatement over Statement?",
+              "keywords": ["sql injection", "prepared statement", "precompiled", "performance", "parameterized"],
+              "modelAnswer": "PreparedStatement takes parameterized input with placeholders (?), which are sent separately from the SQL text and never interpreted as executable SQL, closing off SQL injection attacks. It's also precompiled by the database, so repeated executions with different parameters are faster than a plain Statement that gets parsed and planned every time. Statement should really only be used for one-off DDL with no user input.",
+              "tip": "Lead with the security angle (SQL injection) before performance.",
+              "difficulty": "Easy"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": "Advanced",
+      "topics": [
+        {
+          "id": "java-adv-jvm",
+          "title": "JVM Internals & Garbage Collection",
+          "summary": "How the JVM manages memory and how different garbage collectors trade off throughput, latency, and footprint.",
+          "keyPoints": [
+            "Memory areas: heap (young/old gen), stack, metaspace, and where objects live",
+            "GC algorithms: Serial, Parallel, G1 (default since Java 9), ZGC/Shenandoah for low-latency",
+            "Minor GC (young gen, frequent) vs Major/Full GC (whole heap, expensive)",
+            "JVM tuning flags (-Xms, -Xmx, -XX:+UseG1GC) and analyzing GC logs"
+          ],
+          "interviewQA": [
+            {
+              "question": "Walk through how an object typically moves through the JVM heap and gets garbage collected.",
+              "keywords": ["young generation", "eden", "survivor", "old generation", "promotion", "minor gc"],
+              "modelAnswer": "New objects are allocated in Eden space within the young generation. When Eden fills up, a minor GC runs: live objects are copied to a Survivor space, and after surviving several minor GC cycles (tracked by an age counter), they're promoted to the Old generation. Old generation collections (major/full GC) are less frequent but more expensive since they scan a much larger region. Objects with no remaining references at any point become eligible for collection and their memory is reclaimed.",
+              "tip": "Mention the generational hypothesis: most objects die young.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "java-adv-design-patterns",
+          "title": "Design Patterns in Java",
+          "summary": "Reusable solutions to common design problems, and how they map to real Java code you'll write daily.",
+          "keyPoints": [
+            "Creational: Singleton, Factory, Builder (especially with Lombok's @Builder)",
+            "Structural: Adapter, Decorator, Proxy (used heavily by Spring AOP)",
+            "Behavioral: Strategy, Observer, Template Method",
+            "Dependency Injection as an application of Inversion of Control"
+          ],
+          "interviewQA": [
+            {
+              "question": "How would you implement a thread-safe Singleton in modern Java, and what are the trade-offs of each approach?",
+              "keywords": ["singleton", "thread-safe", "double-checked locking", "enum singleton", "lazy initialization"],
+              "modelAnswer": "The simplest thread-safe approach is an eagerly initialized static field, which the JVM guarantees is initialized once, though it loses lazy loading. For lazy initialization with thread safety, double-checked locking with a volatile field avoids synchronization overhead on every access after first creation. The most robust option is an enum-based Singleton, which the JVM guarantees is instantiated exactly once and is inherently serialization-safe, though it's less flexible if you ever need inheritance.",
+              "tip": "Mention enum singleton as the 'best practice' answer if pressed for one option.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "java-adv-spring",
+          "title": "Spring Framework & Dependency Injection",
+          "summary": "How Spring's IoC container wires application components together and manages their lifecycle.",
+          "keyPoints": [
+            "IoC container: beans, ApplicationContext, and component scanning",
+            "Dependency injection styles: constructor (preferred), setter, field injection",
+            "Bean scopes (singleton, prototype) and lifecycle callbacks (@PostConstruct)",
+            "Spring AOP for cross-cutting concerns like logging, transactions, security"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is constructor injection generally preferred over field injection in Spring?",
+              "keywords": ["constructor injection", "field injection", "immutability", "testability", "final fields"],
+              "modelAnswer": "Constructor injection lets dependencies be declared as final fields, making the object immutable and impossible to construct in an incomplete state, which also makes circular dependencies fail fast at startup instead of silently at runtime. It makes unit testing straightforward since you can pass mocks directly into the constructor without needing a Spring context or reflection. Field injection (@Autowired on a field) hides dependencies, requires a DI framework or reflection to test, and allows objects to exist in a partially-initialized state.",
+              "tip": "Mention that circular dependencies fail loudly at startup with constructor injection — a big plus.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "java-adv-microservices",
+          "title": "Microservices & Distributed Systems",
+          "summary": "Designing Java backends as independently deployable services and handling the distributed-systems problems that come with it.",
+          "keyPoints": [
+            "Service decomposition, API gateways, and inter-service communication (REST, gRPC, messaging)",
+            "Resilience patterns: circuit breaker (Resilience4j), retries, timeouts, bulkheads",
+            "Distributed data challenges: eventual consistency, saga pattern for distributed transactions",
+            "Observability: centralized logging, distributed tracing, metrics"
+          ],
+          "interviewQA": [
+            {
+              "question": "How would you handle a transaction that spans multiple microservices, given that distributed 2PC transactions don't scale well?",
+              "keywords": ["saga pattern", "eventual consistency", "compensating transaction", "choreography", "orchestration"],
+              "modelAnswer": "Instead of a two-phase commit, use the Saga pattern: break the transaction into a sequence of local transactions, each in its own service, with compensating actions defined to undo prior steps if a later step fails. Sagas can be coordinated via choreography (services react to each other's events) for simple flows, or orchestration (a central coordinator calls each step) for more complex flows needing clearer visibility. This trades strong consistency for eventual consistency, which is usually acceptable if the domain and UX account for it.",
+              "tip": "Contrast choreography vs orchestration sagas explicitly — interviewers like this distinction.",
+              "difficulty": "Hard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

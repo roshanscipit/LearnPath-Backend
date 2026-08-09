@@ -1,0 +1,262 @@
+{
+  "moduleId": "data-engineer",
+  "moduleName": "Data Engineer",
+  "variants": ["ETL/ELT", "Big Data", "Analytics", "ML Ops"],
+  "levels": [
+    {
+      "level": "Basic",
+      "topics": [
+        {
+          "id": "de-basic-sql",
+          "title": "SQL Fundamentals",
+          "summary": "Querying and manipulating relational data — the single most-used skill in data engineering.",
+          "keyPoints": [
+            "SELECT/WHERE/GROUP BY/HAVING/ORDER BY, and the logical order of execution",
+            "JOIN types: inner, left/right outer, full outer, self-join",
+            "Aggregate functions and window functions (ROW_NUMBER, RANK, LAG/LEAD)",
+            "Indexes and how they speed up (or fail to speed up) queries"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the difference between WHERE and HAVING, and why can't you filter an aggregate with WHERE?",
+              "keywords": ["where clause", "having clause", "aggregate function", "group by", "execution order"],
+              "modelAnswer": "WHERE filters individual rows before grouping/aggregation happens, while HAVING filters groups after aggregation, which is why it can reference aggregate functions like COUNT() or SUM() and WHERE cannot. This follows SQL's logical execution order: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY, so at the point WHERE executes, aggregate values don't exist yet. If you try to write 'WHERE COUNT(*) > 5' the database will reject it because that aggregate hasn't been computed at that stage.",
+              "tip": "Reciting the logical execution order (FROM->WHERE->GROUP BY->HAVING->SELECT->ORDER BY) is a strong signal of real SQL understanding.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "de-basic-modeling",
+          "title": "Data Modeling",
+          "summary": "Structuring data for correctness (OLTP) or query performance (OLAP/analytics).",
+          "keyPoints": [
+            "Normalization (3NF) reduces redundancy for transactional systems",
+            "Denormalization / star schema for analytics: fact tables + dimension tables",
+            "Slowly Changing Dimensions (SCD Type 1/2) for tracking historical changes",
+            "Choosing grain: the level of detail a fact table row represents"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's a star schema, and why is it preferred over a fully normalized schema for analytics workloads?",
+              "keywords": ["star schema", "fact table", "dimension table", "denormalization", "analytics performance"],
+              "modelAnswer": "A star schema has a central fact table (measurable events, e.g., sales) surrounded by denormalized dimension tables (e.g., customer, product, date) it references via foreign keys, resembling a star shape. It's preferred for analytics because queries typically involve a small number of large joins rather than the many small joins a fully normalized (3NF) schema would require, which is much faster for the large aggregate scans typical of BI/reporting workloads. The trade-off is data redundancy in dimensions and more complex updates, which is acceptable in a read-heavy analytical system but not in a write-heavy transactional one.",
+              "tip": "Contrast explicitly with OLTP's normalized design to show you understand the trade-off, not just the definition.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "de-basic-python",
+          "title": "Python for Data Engineering",
+          "summary": "Scripting data pipelines and transformations with Python's data ecosystem.",
+          "keyPoints": [
+            "Pandas for in-memory transformation; when it stops scaling (memory limits)",
+            "Reading/writing common formats: CSV, JSON, Parquet, Avro",
+            "Virtual environments and dependency management for reproducible pipelines",
+            "Logging and error handling in long-running batch scripts"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is Parquet generally preferred over CSV for large-scale data pipelines?",
+              "keywords": ["parquet", "columnar storage", "compression", "schema", "csv"],
+              "modelAnswer": "Parquet is a columnar storage format, meaning it stores all values of a column together, which allows much better compression (similar values compress well together) and lets query engines read only the columns actually needed rather than scanning entire rows like CSV requires. Parquet also embeds schema and data types directly in the file, avoiding the type-inference and parsing overhead CSV requires, and supports predicate pushdown so filters can skip irrelevant row groups entirely. The trade-off is that Parquet files aren't human-readable and require specific libraries to inspect, unlike plain-text CSV.",
+              "tip": "Mention predicate pushdown and columnar compression — these are the concrete technical reasons, not just 'it's faster'.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "de-basic-etl",
+          "title": "ETL/ELT Concepts",
+          "summary": "The fundamental pattern of moving and transforming data between systems.",
+          "keyPoints": [
+            "ETL (transform before load) vs ELT (load raw, transform in the warehouse)",
+            "Batch vs streaming ingestion, and choosing based on latency requirements",
+            "Idempotent pipelines: safe to rerun without duplicating or corrupting data",
+            "Data quality checks: schema validation, null checks, row-count reconciliation"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why have many modern data teams shifted from ETL to ELT?",
+              "keywords": ["elt", "etl", "cloud data warehouse", "raw data", "compute scalability"],
+              "modelAnswer": "Modern cloud data warehouses (Snowflake, BigQuery, Redshift) offer cheap, elastically scalable compute, so it's now practical to load raw data first and transform it inside the warehouse using SQL (ELT) rather than transforming it in a separate processing layer before loading (ETL). This keeps raw, untransformed data available for reprocessing if transformation logic changes or has bugs, and it lets analysts/analytics engineers (via tools like dbt) own transformation logic in SQL without needing a separate ETL engineering pipeline for every change. The trade-off is you need governance around what's 'raw' vs 'modeled' data in the warehouse to avoid a mess.",
+              "tip": "Mention dbt as the tool that popularized the 'T' living inside the warehouse for ELT.",
+              "difficulty": "Medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": "Intermediate",
+      "topics": [
+        {
+          "id": "de-inter-spark",
+          "title": "Big Data with Spark & Hadoop",
+          "summary": "Distributed processing frameworks for datasets too large for a single machine.",
+          "keyPoints": [
+            "HDFS for distributed storage; Spark as the dominant distributed compute engine",
+            "RDDs vs DataFrames vs Datasets, and Spark's lazy evaluation via DAGs",
+            "Partitioning and shuffling — the main cost driver in distributed jobs",
+            "Spark's in-memory computation vs Hadoop MapReduce's disk-based model"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is a 'shuffle' operation expensive in Spark, and how would you minimize it?",
+              "keywords": ["shuffle", "partition", "network io", "groupby", "repartition", "wide transformation"],
+              "modelAnswer": "A shuffle occurs when data needs to be redistributed across partitions/nodes, such as during groupBy, join, or repartition operations — it requires writing intermediate data to disk and transferring it across the network between executors, which is far slower than in-partition ('narrow') transformations like map or filter. To minimize shuffles, you can pre-partition data by the join/group key so related data is already co-located, use broadcast joins for joining a large table with a small one (avoiding a shuffle of the large table entirely), and combine operations to reduce the number of shuffle stages in the DAG.",
+              "tip": "Mention broadcast joins explicitly — a concrete, high-value optimization technique.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "de-inter-warehousing",
+          "title": "Data Warehousing",
+          "summary": "Designing and operating centralized analytical stores like Snowflake, BigQuery, and Redshift.",
+          "keyPoints": [
+            "MPP (Massively Parallel Processing) architecture and columnar storage",
+            "Clustering/partitioning keys to prune scanned data and control cost",
+            "Materialized views for precomputing expensive aggregations",
+            "Separation of storage and compute (modern cloud warehouses) for elastic scaling"
+          ],
+          "interviewQA": [
+            {
+              "question": "How does partitioning a large table in a cloud data warehouse (e.g., BigQuery) improve both performance and cost?",
+              "keywords": ["partitioning", "pruning", "cost optimization", "bytes scanned", "date partition"],
+              "modelAnswer": "Partitioning splits a large table into segments (often by date) so that a query with a filter on the partition column only needs to scan the relevant partitions instead of the entire table — this is called partition pruning. Since many cloud warehouses (like BigQuery) charge based on bytes scanned, pruning directly reduces both query cost and latency, sometimes turning a full-table scan of terabytes into a scan of just a few gigabytes for a single day's data. Combining partitioning with clustering on a frequently filtered column compounds these savings further.",
+              "tip": "Mention that BigQuery-style warehouses bill by bytes scanned — ties performance directly to cost.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "de-inter-airflow",
+          "title": "Workflow Orchestration (Airflow)",
+          "summary": "Scheduling, sequencing, and monitoring complex data pipelines as directed acyclic graphs.",
+          "keyPoints": [
+            "DAGs, tasks, and operators define pipeline structure and dependencies",
+            "Scheduling intervals, backfilling, and catchup behavior",
+            "Retries, SLAs, and alerting on task failure",
+            "Sensors for waiting on external conditions (e.g., a file arriving in S3)"
+          ],
+          "interviewQA": [
+            {
+              "question": "In Airflow, what's the difference between a task failing and a task retrying, and how would you design a pipeline to be resilient to transient failures?",
+              "keywords": ["retries", "task failure", "idempotency", "exponential backoff", "airflow"],
+              "modelAnswer": "Airflow lets you configure a number of retries with a delay (often exponential backoff) per task, so a task that fails due to a transient issue (a brief network blip, a temporarily overloaded API) automatically retries before being marked as truly failed and triggering alerts or downstream blocking. For this to be safe, each task must be idempotent — rerunning it should produce the same end state rather than duplicating data — which usually means using upsert/merge logic instead of blind inserts, or writing to a staging location before an atomic final swap. Without idempotency, retries can silently create duplicate or corrupted data instead of fixing the problem.",
+              "tip": "Idempotency is the key word here — retries are only safe if the task is idempotent.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "de-inter-kafka",
+          "title": "Streaming Data with Kafka",
+          "summary": "Building real-time data pipelines with a distributed, durable event streaming platform.",
+          "keyPoints": [
+            "Topics, partitions, producers, consumers, and consumer groups",
+            "Offsets and at-least-once vs exactly-once delivery semantics",
+            "Retention: messages persist for a configured period, enabling replay",
+            "Kafka Connect and Kafka Streams for integration and stream processing"
+          ],
+          "interviewQA": [
+            {
+              "question": "How does Kafka achieve horizontal scalability for consumers, and what happens if you have more consumers than partitions?",
+              "keywords": ["consumer group", "partition", "parallelism", "idle consumer", "rebalance"],
+              "modelAnswer": "Within a consumer group, each partition of a topic is assigned to exactly one consumer at a time, so adding more consumers (up to the number of partitions) increases parallel processing throughput, since each consumer independently processes its assigned partitions. If you have more consumers in a group than partitions, the extra consumers sit idle with no partitions assigned, since a partition can't be split across multiple consumers within the same group — the fix is to increase the topic's partition count if you need more parallelism than the current partition count allows.",
+              "tip": "Be precise: partitions are the real unit of parallelism, not consumers themselves.",
+              "difficulty": "Medium"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "level": "Advanced",
+      "topics": [
+        {
+          "id": "de-adv-data-lake",
+          "title": "Data Lake & Lakehouse Architecture",
+          "summary": "Storing raw and structured data at scale, and the modern lakehouse pattern combining lake flexibility with warehouse reliability.",
+          "keyPoints": [
+            "Data lake: cheap object storage (S3/ADLS/GCS) holding raw data of any format",
+            "Lakehouse (Delta Lake, Iceberg, Hudi): adds ACID transactions and schema enforcement on top of a lake",
+            "Medallion architecture: bronze (raw) -> silver (cleaned) -> gold (business-ready) layers",
+            "Table formats solve the 'small files problem' and enable time travel/versioning"
+          ],
+          "interviewQA": [
+            {
+              "question": "What problem does a table format like Delta Lake or Apache Iceberg solve that a plain data lake on S3 doesn't?",
+              "keywords": ["delta lake", "iceberg", "acid transactions", "schema evolution", "time travel"],
+              "modelAnswer": "A plain data lake (raw files in S3) has no built-in concept of transactions, so concurrent writes can produce partial/corrupted reads, there's no easy way to enforce or evolve schema, and deleting or updating records means rewriting entire files. Table formats like Delta Lake and Apache Iceberg add a transaction log on top of the raw files that provides ACID guarantees, schema enforcement and safe evolution, efficient upserts/deletes (MERGE), and 'time travel' to query historical table versions — essentially bringing data-warehouse reliability to lake storage, which is the core idea behind the 'lakehouse' pattern.",
+              "tip": "Naming the transaction log mechanism (Delta log / Iceberg metadata) shows real depth beyond buzzwords.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "de-adv-mlops",
+          "title": "ML Ops Pipelines",
+          "summary": "Operationalizing machine learning models: from training to deployment to monitoring.",
+          "keyPoints": [
+            "Feature stores for consistent features between training and serving",
+            "Model versioning and experiment tracking (MLflow)",
+            "CI/CD for ML: automated retraining and validation pipelines",
+            "Monitoring for data drift and model performance decay in production"
+          ],
+          "interviewQA": [
+            {
+              "question": "What is 'training-serving skew' in ML Ops, and how does a feature store help prevent it?",
+              "keywords": ["training-serving skew", "feature store", "feature parity", "online offline"],
+              "modelAnswer": "Training-serving skew happens when the features computed during model training (often batch-processed from historical data) differ subtly from the features computed at inference time in production (often computed differently, in real time, by different code), causing the model to underperform in production despite strong training metrics. A feature store centralizes feature definitions and computation logic in one place, serving the exact same feature values (or logically identical pipelines) to both offline training jobs and online real-time inference, eliminating the duplicated, divergent logic that causes skew.",
+              "tip": "The key insight interviewers want: skew comes from duplicated feature logic, and a feature store centralizes it.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "de-adv-distributed",
+          "title": "Distributed Systems for Data",
+          "summary": "The theoretical and practical foundations underlying scalable, fault-tolerant data infrastructure.",
+          "keyPoints": [
+            "CAP theorem: consistency, availability, partition tolerance trade-offs",
+            "Data replication strategies and how they affect consistency guarantees",
+            "Exactly-once vs at-least-once processing semantics in stream processing",
+            "Backpressure and how streaming systems handle producers outpacing consumers"
+          ],
+          "interviewQA": [
+            {
+              "question": "In a distributed streaming pipeline, how can you achieve effectively 'exactly-once' processing when the underlying delivery is only at-least-once?",
+              "keywords": ["exactly-once", "at-least-once", "idempotent writes", "deduplication", "checkpointing"],
+              "modelAnswer": "True exactly-once delivery across a network is famously difficult (impossible to fully guarantee end-to-end), so most systems instead achieve 'effectively exactly-once' processing by combining at-least-once delivery with idempotent writes on the consumer side — for example, using a unique message ID as a deduplication key so reprocessing the same message twice doesn't double-count it. This is often paired with checkpointing (tracking the last successfully processed offset) so that after a failure, processing resumes from a known-safe point and only reprocesses a small, bounded window of messages, which idempotent writes then handle safely.",
+              "tip": "Say explicitly that true exactly-once is theoretically hard — 'effectively exactly-once via idempotency' is the real-world answer.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "de-adv-governance",
+          "title": "Data Governance & Quality",
+          "summary": "Ensuring data is trustworthy, discoverable, secure, and compliant at organizational scale.",
+          "keyPoints": [
+            "Data lineage: tracking where data comes from and how it's transformed",
+            "Data catalogs for discoverability and documentation (metadata management)",
+            "Automated data quality testing (e.g., Great Expectations, dbt tests)",
+            "Access control, PII handling, and regulatory compliance (GDPR, data masking)"
+          ],
+          "interviewQA": [
+            {
+              "question": "How would you design automated data quality checks for a critical daily pipeline, and what should happen when a check fails?",
+              "keywords": ["data quality", "schema validation", "anomaly detection", "circuit breaker", "alerting"],
+              "modelAnswer": "Layer checks at multiple levels: schema validation (correct types/columns), null and uniqueness constraints on key fields, referential integrity against dimension tables, and statistical/anomaly checks (e.g., row count or key metric shouldn't deviate more than X% from the trailing average) to catch subtler issues a rigid schema check would miss. When a critical check fails, the pipeline should halt before publishing bad data downstream (a 'circuit breaker' pattern) rather than silently loading it, alert the owning team with enough context to debug quickly, and ideally quarantine the bad batch for inspection rather than discarding it outright.",
+              "tip": "The 'halt before publishing, don't silently proceed' principle is the core answer interviewers want.",
+              "difficulty": "Hard"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
