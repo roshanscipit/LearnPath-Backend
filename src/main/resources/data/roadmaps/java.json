@@ -1,7 +1,11 @@
 {
   "moduleId": "java",
   "moduleName": "Java Developer",
-  "variants": ["Full Stack", "Backend", "Frontend"],
+  "variants": [
+    "Full Stack",
+    "Backend",
+    "Frontend"
+  ],
   "levels": [
     {
       "level": "Basic",
@@ -19,7 +23,13 @@
           "interviewQA": [
             {
               "question": "What is the difference between an abstract class and an interface in Java?",
-              "keywords": ["abstract class", "interface", "multiple inheritance", "default method", "state"],
+              "keywords": [
+                "abstract class",
+                "interface",
+                "multiple inheritance",
+                "default method",
+                "state"
+              ],
               "modelAnswer": "An abstract class can have state (instance fields), constructors, and a mix of abstract and concrete methods, but a class can only extend one abstract class. An interface historically only declared method signatures and constants, but since Java 8 it can have default and static methods too; a class can implement multiple interfaces. Use an abstract class when subclasses share common state/implementation; use an interface to define a contract/capability across unrelated classes.",
               "tip": "Mention 'is-a' vs 'can-do' relationships and Java 8's default methods.",
               "difficulty": "Easy"
@@ -39,7 +49,13 @@
           "interviewQA": [
             {
               "question": "Why is String immutable in Java, and what problems could arise if it weren't?",
-              "keywords": ["immutable", "string pool", "thread safety", "hashcode", "caching"],
+              "keywords": [
+                "immutable",
+                "string pool",
+                "thread safety",
+                "hashcode",
+                "caching"
+              ],
               "modelAnswer": "String is immutable so the JVM can safely cache identical literals in the String pool, saving memory. Immutability also makes String inherently thread-safe (no synchronization needed) and safe to use as a HashMap key since its hashCode never changes. If String were mutable, changing one reference could silently corrupt shared literals, break hash-based collections, and create security risks (e.g., a mutated URL or file path after validation).",
               "tip": "Bring up String pool and hashCode caching to show deeper understanding.",
               "difficulty": "Easy"
@@ -59,7 +75,13 @@
           "interviewQA": [
             {
               "question": "What is the difference between a traditional switch statement and a Java switch expression?",
-              "keywords": ["switch expression", "yield", "fall-through", "arrow syntax", "exhaustive"],
+              "keywords": [
+                "switch expression",
+                "yield",
+                "fall-through",
+                "arrow syntax",
+                "exhaustive"
+              ],
               "modelAnswer": "A traditional switch statement executes case blocks and falls through to the next case unless you add 'break'. A switch expression (Java 14+) uses arrow syntax (case X -> ...), returns a value directly, has no fall-through, and the compiler can enforce exhaustiveness for enums/sealed types. You use 'yield' inside a block-bodied case to return a value.",
               "tip": "Give a short code example contrasting fall-through risk vs arrow syntax.",
               "difficulty": "Easy"
@@ -79,7 +101,13 @@
           "interviewQA": [
             {
               "question": "When would you create a checked exception vs an unchecked exception?",
-              "keywords": ["checked exception", "unchecked exception", "recoverable", "runtime exception", "api contract"],
+              "keywords": [
+                "checked exception",
+                "unchecked exception",
+                "recoverable",
+                "runtime exception",
+                "api contract"
+              ],
               "modelAnswer": "Use a checked exception when the caller can reasonably be expected to recover from the condition, such as a file not being found or a network timeout — forcing them to handle it is part of the API contract. Use an unchecked (runtime) exception for programming errors like invalid arguments or null references, where forcing every caller to catch it would add noise without real recovery options. Many modern APIs (like Spring) favor unchecked exceptions to avoid verbose try-catch chains.",
               "tip": "Reference how modern frameworks like Spring lean toward unchecked exceptions.",
               "difficulty": "Medium"
@@ -104,7 +132,14 @@
           "interviewQA": [
             {
               "question": "How does HashMap work internally, and what changed with Java 8's implementation?",
-              "keywords": ["hashcode", "bucket", "collision", "red-black tree", "treeify", "load factor"],
+              "keywords": [
+                "hashcode",
+                "bucket",
+                "collision",
+                "red-black tree",
+                "treeify",
+                "load factor"
+              ],
               "modelAnswer": "HashMap stores entries in an array of buckets indexed by hashCode() % capacity, chaining colliding entries in a linked list. Since Java 8, if a single bucket's chain grows beyond a threshold (8 entries, with table size >= 64), it converts to a red-black tree, turning worst-case lookup from O(n) into O(log n). Resizing happens when size exceeds capacity * loadFactor (default 0.75), roughly doubling capacity and rehashing entries.",
               "tip": "Mention load factor 0.75 and the treeify threshold of 8 for a strong answer.",
               "difficulty": "Medium"
@@ -124,7 +159,13 @@
           "interviewQA": [
             {
               "question": "What is the difference between synchronized and volatile, and when would you use each?",
-              "keywords": ["synchronized", "volatile", "visibility", "atomicity", "mutual exclusion"],
+              "keywords": [
+                "synchronized",
+                "volatile",
+                "visibility",
+                "atomicity",
+                "mutual exclusion"
+              ],
               "modelAnswer": "'volatile' guarantees visibility — a write by one thread is immediately visible to others — but does not provide atomicity or mutual exclusion, so it's suited for simple flags or single variables read/written independently. 'synchronized' provides both mutual exclusion (only one thread executes the block at a time) and visibility, making it appropriate for compound actions like check-then-act or updating multiple related fields together. Using volatile for a counter increment (i++) would still be unsafe because it's not atomic.",
               "tip": "Use the classic counter i++ example to show why volatile alone isn't enough.",
               "difficulty": "Medium"
@@ -144,7 +185,14 @@
           "interviewQA": [
             {
               "question": "What is the difference between map() and flatMap() in Java Streams?",
-              "keywords": ["map", "flatmap", "nested stream", "flatten", "one-to-one", "one-to-many"],
+              "keywords": [
+                "map",
+                "flatmap",
+                "nested stream",
+                "flatten",
+                "one-to-one",
+                "one-to-many"
+              ],
               "modelAnswer": "map() transforms each element one-to-one, producing a stream of the same cardinality but a new type (e.g., String -> Integer). flatMap() is used when each element maps to its own stream (e.g., a List<List<String>>), and it flattens those inner streams into a single combined stream. A common example is flattening a list of orders each containing a list of items into one flat stream of items.",
               "tip": "Give a concrete example like List<List<Integer>> flattened with flatMap.",
               "difficulty": "Medium"
@@ -164,7 +212,13 @@
           "interviewQA": [
             {
               "question": "Why should you always prefer PreparedStatement over Statement?",
-              "keywords": ["sql injection", "prepared statement", "precompiled", "performance", "parameterized"],
+              "keywords": [
+                "sql injection",
+                "prepared statement",
+                "precompiled",
+                "performance",
+                "parameterized"
+              ],
               "modelAnswer": "PreparedStatement takes parameterized input with placeholders (?), which are sent separately from the SQL text and never interpreted as executable SQL, closing off SQL injection attacks. It's also precompiled by the database, so repeated executions with different parameters are faster than a plain Statement that gets parsed and planned every time. Statement should really only be used for one-off DDL with no user input.",
               "tip": "Lead with the security angle (SQL injection) before performance.",
               "difficulty": "Easy"
@@ -189,7 +243,14 @@
           "interviewQA": [
             {
               "question": "Walk through how an object typically moves through the JVM heap and gets garbage collected.",
-              "keywords": ["young generation", "eden", "survivor", "old generation", "promotion", "minor gc"],
+              "keywords": [
+                "young generation",
+                "eden",
+                "survivor",
+                "old generation",
+                "promotion",
+                "minor gc"
+              ],
               "modelAnswer": "New objects are allocated in Eden space within the young generation. When Eden fills up, a minor GC runs: live objects are copied to a Survivor space, and after surviving several minor GC cycles (tracked by an age counter), they're promoted to the Old generation. Old generation collections (major/full GC) are less frequent but more expensive since they scan a much larger region. Objects with no remaining references at any point become eligible for collection and their memory is reclaimed.",
               "tip": "Mention the generational hypothesis: most objects die young.",
               "difficulty": "Hard"
@@ -209,7 +270,13 @@
           "interviewQA": [
             {
               "question": "How would you implement a thread-safe Singleton in modern Java, and what are the trade-offs of each approach?",
-              "keywords": ["singleton", "thread-safe", "double-checked locking", "enum singleton", "lazy initialization"],
+              "keywords": [
+                "singleton",
+                "thread-safe",
+                "double-checked locking",
+                "enum singleton",
+                "lazy initialization"
+              ],
               "modelAnswer": "The simplest thread-safe approach is an eagerly initialized static field, which the JVM guarantees is initialized once, though it loses lazy loading. For lazy initialization with thread safety, double-checked locking with a volatile field avoids synchronization overhead on every access after first creation. The most robust option is an enum-based Singleton, which the JVM guarantees is instantiated exactly once and is inherently serialization-safe, though it's less flexible if you ever need inheritance.",
               "tip": "Mention enum singleton as the 'best practice' answer if pressed for one option.",
               "difficulty": "Hard"
@@ -229,7 +296,13 @@
           "interviewQA": [
             {
               "question": "Why is constructor injection generally preferred over field injection in Spring?",
-              "keywords": ["constructor injection", "field injection", "immutability", "testability", "final fields"],
+              "keywords": [
+                "constructor injection",
+                "field injection",
+                "immutability",
+                "testability",
+                "final fields"
+              ],
               "modelAnswer": "Constructor injection lets dependencies be declared as final fields, making the object immutable and impossible to construct in an incomplete state, which also makes circular dependencies fail fast at startup instead of silently at runtime. It makes unit testing straightforward since you can pass mocks directly into the constructor without needing a Spring context or reflection. Field injection (@Autowired on a field) hides dependencies, requires a DI framework or reflection to test, and allows objects to exist in a partially-initialized state.",
               "tip": "Mention that circular dependencies fail loudly at startup with constructor injection — a big plus.",
               "difficulty": "Medium"
@@ -249,7 +322,13 @@
           "interviewQA": [
             {
               "question": "How would you handle a transaction that spans multiple microservices, given that distributed 2PC transactions don't scale well?",
-              "keywords": ["saga pattern", "eventual consistency", "compensating transaction", "choreography", "orchestration"],
+              "keywords": [
+                "saga pattern",
+                "eventual consistency",
+                "compensating transaction",
+                "choreography",
+                "orchestration"
+              ],
               "modelAnswer": "Instead of a two-phase commit, use the Saga pattern: break the transaction into a sequence of local transactions, each in its own service, with compensating actions defined to undo prior steps if a later step fails. Sagas can be coordinated via choreography (services react to each other's events) for simple flows, or orchestration (a central coordinator calls each step) for more complex flows needing clearer visibility. This trades strong consistency for eventual consistency, which is usually acceptable if the domain and UX account for it.",
               "tip": "Contrast choreography vs orchestration sagas explicitly — interviewers like this distinction.",
               "difficulty": "Hard"
@@ -258,5 +337,33 @@
         }
       ]
     }
-  ]
+  ],
+  "codingModule": {
+    "duration": "8 weeks",
+    "questionsCount": 350,
+    "focus": "DSA implemented in Java, with emphasis on how the language's Collections API, memory model, and OOP idioms show up in coding-round questions.",
+    "topics": [
+      "Arrays & Strings (StringBuilder vs String immutability, in-place mutation)",
+      "Collections deep-dives (HashMap collision handling, TreeMap ordering, PriorityQueue-based problems)",
+      "LinkedList & Trees (custom node classes, BST insert/delete/balance)",
+      "Recursion & Backtracking (N-Queens, permutations, subsets)",
+      "Dynamic Programming (memoization with HashMap vs tabulation with arrays)",
+      "Multithreading coding problems (producer-consumer, deadlock detection, thread-safe counters)",
+      "Java 8+ Streams & Lambdas (functional-style coding exercises)"
+    ]
+  },
+  "systemDesignModule": {
+    "duration": "4 weeks",
+    "questionsCount": 50,
+    "focus": "Backend/full-stack system design scenarios typical of Java interview rounds, with emphasis on Spring-based service architecture.",
+    "topics": [
+      "Design a URL Shortener (hashing scheme, DB schema, read scaling)",
+      "Design an E-commerce Checkout & Payment Flow (idempotency keys, distributed transactions)",
+      "Design a Rate Limiter (token bucket vs sliding window, Redis-backed)",
+      "Design a Notification System (push/email/SMS fan-out, retry queues)",
+      "Design a Distributed Cache (consistent hashing, eviction policies)",
+      "Design a Distributed Job Scheduler (leader election, distributed locks)",
+      "Microservices communication patterns (sync REST vs async messaging, Saga pattern for distributed transactions)"
+    ]
+  }
 }
