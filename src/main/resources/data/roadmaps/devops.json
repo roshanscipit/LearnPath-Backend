@@ -363,5 +363,19 @@
       "Design an Auto-scaling Infrastructure (metrics-based scaling policies, cost optimization)",
       "Design a Disaster Recovery & Backup Strategy for cloud infrastructure (RTO/RPO tradeoffs)"
     ]
+  },
+  "behavioralModule": {
+    "duration": "2 weeks",
+    "questionsCount": 70,
+    "focus": "Scenarios centered on incident response, on-call life, and driving process/tooling change across engineering teams.",
+    "topics": [
+      "Walk me through how you handled a major production outage end-to-end",
+      "Describe leading or participating in a blameless postmortem",
+      "Tell me about a time you had to convince developers to adopt a new tool or process",
+      "How do you balance shipping velocity against system stability and security",
+      "Describe a stressful on-call rotation and how you managed it",
+      "Tell me about a time a deployment you approved caused an incident",
+      "How have you handled pushback when enforcing a security or compliance requirement"
+    ]
   }
 }

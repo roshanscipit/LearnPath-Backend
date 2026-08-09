@@ -1,7 +1,11 @@
 {
   "moduleId": "testing",
   "moduleName": "QA/Testing",
-  "variants": ["Manual", "Automation", "Performance"],
+  "variants": [
+    "Manual",
+    "Automation",
+    "Performance"
+  ],
   "levels": [
     {
       "level": "Basic",
@@ -19,7 +23,13 @@
           "interviewQA": [
             {
               "question": "What's the difference between severity and priority when logging a bug?",
-              "keywords": ["severity", "priority", "defect triage", "impact", "urgency"],
+              "keywords": [
+                "severity",
+                "priority",
+                "defect triage",
+                "impact",
+                "urgency"
+              ],
               "modelAnswer": "Severity measures the technical impact of the bug on the system — how badly it breaks functionality, e.g., a crash is high severity. Priority measures how urgently it needs to be fixed relative to business needs and release timelines, which is a separate decision. A cosmetic typo on the homepage might be low severity but high priority right before a big product launch, while a crash in a rarely-used admin feature might be high severity but low priority if it's not blocking most users. The two don't always correlate, which is a common point of confusion.",
               "tip": "Give the mismatched example (low severity/high priority typo) — it's the clearest way to show real understanding.",
               "difficulty": "Easy"
@@ -39,7 +49,13 @@
           "interviewQA": [
             {
               "question": "How would you apply boundary value analysis to test an age field that accepts values from 18 to 65?",
-              "keywords": ["boundary value analysis", "edge case", "valid range", "invalid range", "off-by-one"],
+              "keywords": [
+                "boundary value analysis",
+                "edge case",
+                "valid range",
+                "invalid range",
+                "off-by-one"
+              ],
               "modelAnswer": "Boundary value analysis focuses testing effort at the edges of the valid range, since off-by-one errors are the most common bugs there. For an 18-65 range, I'd test: 17 (just below minimum, should be rejected), 18 (minimum, should be accepted), 19 (just above minimum, should be accepted), 64 (just below maximum, accepted), 65 (maximum, accepted), and 66 (just above maximum, should be rejected). This gives strong coverage with only six test cases instead of testing every possible value, based on the principle that bugs cluster at boundaries rather than in the middle of a valid range.",
               "tip": "List the exact boundary values (17,18,19...64,65,66) — precision matters in this answer.",
               "difficulty": "Easy"
@@ -59,7 +75,12 @@
           "interviewQA": [
             {
               "question": "What does 'shift-left testing' mean, and why is it valuable?",
-              "keywords": ["shift-left testing", "early testing", "cost of defects", "requirements review"],
+              "keywords": [
+                "shift-left testing",
+                "early testing",
+                "cost of defects",
+                "requirements review"
+              ],
               "modelAnswer": "Shift-left testing means involving QA activities earlier in the development lifecycle — reviewing requirements and designs, writing test cases before code is even complete, and testing continuously during development rather than only after the build is 'done'. It's valuable because the cost of fixing a defect grows dramatically the later it's found: a requirements ambiguity caught in a design review costs almost nothing to fix, while the same ambiguity discovered as a bug in production can require significant rework, hotfixes, and customer impact. It also gives QA more context and lead time to design better, more targeted tests.",
               "tip": "The 'cost of defects grows over time' framing is the classic justification interviewers expect.",
               "difficulty": "Easy"
@@ -79,7 +100,13 @@
           "interviewQA": [
             {
               "question": "What makes a bug report 'actionable' versus one that gets bounced back to you for more information?",
-              "keywords": ["bug report", "steps to reproduce", "expected actual result", "environment details", "evidence"],
+              "keywords": [
+                "bug report",
+                "steps to reproduce",
+                "expected actual result",
+                "environment details",
+                "evidence"
+              ],
               "modelAnswer": "An actionable bug report has a clear, specific title (not 'app broken'), precise numbered steps to reproduce the issue from a known starting state, the expected result versus the actual result observed, and environment details like browser/OS/app version/test data used, since many bugs are environment-specific. Including evidence — a screenshot, screen recording, or relevant log/error message — removes ambiguity and lets the developer see exactly what happened instead of relying on a possibly incomplete description. Reports missing these details usually bounce back with 'can't reproduce' or 'need more info', wasting a full round trip of communication.",
               "tip": "Emphasize that vague reports cost a full communication round-trip — that's the real-world cost interviewers want you to understand.",
               "difficulty": "Easy"
@@ -104,7 +131,13 @@
           "interviewQA": [
             {
               "question": "Why are explicit waits preferred over Thread.sleep() in Selenium tests, and how do they work?",
-              "keywords": ["explicit wait", "webdriverwait", "thread.sleep", "flaky tests", "expected conditions"],
+              "keywords": [
+                "explicit wait",
+                "webdriverwait",
+                "thread.sleep",
+                "flaky tests",
+                "expected conditions"
+              ],
               "modelAnswer": "Thread.sleep() pauses execution for a fixed duration regardless of whether the page is actually ready, which makes tests either unnecessarily slow (waiting longer than needed) or still flaky (not waiting long enough on a slow load). An explicit wait (WebDriverWait with ExpectedConditions) polls the DOM repeatedly up to a maximum timeout, proceeding as soon as the actual condition is met — like an element becoming clickable or visible — which makes tests both faster on average and more reliable, since they adapt to real page load timing instead of guessing a fixed delay.",
               "tip": "Frame it as 'adapts to real timing' vs 'guesses a fixed delay' — that's the core distinction.",
               "difficulty": "Medium"
@@ -124,7 +157,13 @@
           "interviewQA": [
             {
               "question": "Why is API testing often considered more valuable and stable than UI testing for the same functionality?",
-              "keywords": ["api testing", "ui testing", "test pyramid", "stability", "execution speed"],
+              "keywords": [
+                "api testing",
+                "ui testing",
+                "test pyramid",
+                "stability",
+                "execution speed"
+              ],
               "modelAnswer": "API tests bypass the UI entirely, hitting the backend directly, so they run much faster (no browser rendering, no waiting for animations/page loads) and are far less flaky, since they aren't affected by UI changes, CSS timing issues, or unrelated front-end refactors. This aligns with the testing pyramid principle: you want a large base of fast, stable unit/API tests and only a thin layer of slower, more brittle UI tests covering critical end-to-end user flows, rather than relying heavily on UI automation for everything. API tests can also verify backend logic and edge cases that might never even surface distinctly in the UI.",
               "tip": "Reference the testing pyramid by name — it's a well-known framework interviewers expect familiarity with.",
               "difficulty": "Medium"
@@ -144,7 +183,13 @@
           "interviewQA": [
             {
               "question": "What's the difference between a soft assertion and a hard assertion, and when would you use a soft assertion?",
-              "keywords": ["soft assertion", "hard assertion", "assert all", "test continuation", "multiple checks"],
+              "keywords": [
+                "soft assertion",
+                "hard assertion",
+                "assert all",
+                "test continuation",
+                "multiple checks"
+              ],
               "modelAnswer": "A hard assertion (the default Assert.assertEquals) immediately stops test execution the moment it fails, meaning any subsequent checks in that test never run. A soft assertion collects failures as they occur but lets the test keep executing, only reporting all accumulated failures together at the end when you explicitly call assertAll(). Soft assertions are useful when you're validating multiple independent fields on a single page or response and want visibility into all failures in one run, rather than fixing one, rerunning, discovering the next failure, and repeating — a slow feedback loop hard assertions force on multi-field validation.",
               "tip": "Give the concrete use case: validating multiple fields on one page/response in a single run.",
               "difficulty": "Medium"
@@ -164,7 +209,13 @@
           "interviewQA": [
             {
               "question": "Your CI pipeline has a test that fails intermittently (a 'flaky' test). How would you handle it?",
-              "keywords": ["flaky test", "root cause", "quarantine", "retry logic", "test reliability"],
+              "keywords": [
+                "flaky test",
+                "root cause",
+                "quarantine",
+                "retry logic",
+                "test reliability"
+              ],
               "modelAnswer": "First, don't just add a blind retry to hide the symptom — investigate the root cause, since flakiness is usually caused by timing issues (missing explicit waits), test interdependency (tests sharing state or running order-dependent), or environment instability. If it can't be fixed immediately, quarantine it — remove it from the blocking pipeline into a separate, non-blocking suite that's still tracked and monitored — rather than letting it repeatedly block unrelated PRs and eroding the team's trust in the whole suite, which eventually leads to people ignoring all failures. Track quarantined tests with an owner and a deadline so they don't quietly rot forever.",
               "tip": "The 'don't just retry-hide it, investigate root cause, and quarantine with ownership' answer shows maturity beyond a quick fix.",
               "difficulty": "Medium"
@@ -189,7 +240,13 @@
           "interviewQA": [
             {
               "question": "Why do performance engineers care about p95/p99 latency rather than just average response time?",
-              "keywords": ["p95", "p99", "average latency", "tail latency", "outliers"],
+              "keywords": [
+                "p95",
+                "p99",
+                "average latency",
+                "tail latency",
+                "outliers"
+              ],
               "modelAnswer": "Average response time can be misleading because it's easily skewed by a large number of fast requests masking a smaller but significant number of very slow ones — a system could have a great average while still frustrating 5% of users with terrible experiences. p95/p99 latency tells you the response time that 95%/99% of requests fall under, directly capturing that 'tail' of slow requests which are often the ones that matter most for user experience and SLAs, especially since a single user session typically makes many requests, so even a 1% slow-request rate compounds into a noticeably bad experience for many users over a session.",
               "tip": "Mention that tail latency compounds across a multi-request user session — a subtle but important point.",
               "difficulty": "Hard"
@@ -209,7 +266,13 @@
           "interviewQA": [
             {
               "question": "You have limited time before a release. How would you use risk-based testing to prioritize what to test?",
-              "keywords": ["risk-based testing", "impact", "likelihood", "critical path", "prioritization"],
+              "keywords": [
+                "risk-based testing",
+                "impact",
+                "likelihood",
+                "critical path",
+                "prioritization"
+              ],
               "modelAnswer": "Risk-based testing prioritizes test effort based on the combination of business impact (how bad is it if this breaks — revenue, core user flow, compliance) and likelihood of failure (how complex or recently changed is this area of code). I'd focus first on critical paths with high impact and recent changes — e.g., checkout or authentication flows that were just modified — deprioritizing low-traffic, stable, low-impact areas that haven't changed. This maximizes defect-finding value per hour of testing when time is constrained, rather than trying to spread thin coverage evenly across everything and missing the areas that actually matter most.",
               "tip": "Explicitly define both axes — impact AND likelihood — not just 'test the important stuff'.",
               "difficulty": "Hard"
@@ -229,7 +292,13 @@
           "interviewQA": [
             {
               "question": "What are the trade-offs between testing on real devices versus emulators/simulators for mobile automation?",
-              "keywords": ["real device", "emulator", "simulator", "device farm", "hardware behavior"],
+              "keywords": [
+                "real device",
+                "emulator",
+                "simulator",
+                "device farm",
+                "hardware behavior"
+              ],
               "modelAnswer": "Emulators/simulators are fast, cheap, and easy to spin up in CI, making them good for quick smoke tests and early development feedback, but they can't fully replicate real hardware behavior like actual network conditions, battery/thermal throttling, camera/sensor hardware, or manufacturer-specific OS customizations (especially on Android). Real devices catch issues emulators miss but are expensive and harder to scale in CI, which is why teams often use a device farm (BrowserStack, Sauce Labs, AWS Device Farm) to get real-device coverage without owning a large physical device lab, reserving the most critical release-gating tests for real devices while using emulators for rapid day-to-day feedback.",
               "tip": "Mention device farms by name — shows awareness of how real teams solve the cost/coverage trade-off.",
               "difficulty": "Medium"
@@ -249,7 +318,13 @@
           "interviewQA": [
             {
               "question": "As a QA engineer without a dedicated security background, what are practical security checks you can build into your regular test cases?",
-              "keywords": ["input validation", "authorization check", "owasp", "boundary testing", "access control"],
+              "keywords": [
+                "input validation",
+                "authorization check",
+                "owasp",
+                "boundary testing",
+                "access control"
+              ],
               "modelAnswer": "Even without deep security expertise, QA can meaningfully cover: input validation testing (trying script tags, SQL-like strings, oversized inputs in every text field to check for injection/XSS handling), authorization boundary testing (verifying User A truly cannot access User B's data by directly manipulating IDs/URLs, not just relying on the UI hiding the option), and checking that error messages don't leak sensitive internal details like stack traces or database structure. These map to common items in the OWASP Top 10 (injection, broken access control) and catch a meaningful share of real-world vulnerabilities without needing formal penetration testing skills.",
               "tip": "The authorization boundary check (User A accessing User B's data via direct ID manipulation) is a concrete example interviewers love to hear.",
               "difficulty": "Hard"
@@ -258,5 +333,47 @@
         }
       ]
     }
-  ]
+  ],
+  "codingModule": {
+    "duration": "6 weeks",
+    "questionsCount": 220,
+    "focus": "Test-automation-focused coding: framework design, scripting, and debugging flaky tests, not classic DSA.",
+    "topics": [
+      "Writing Selenium/Playwright automation scripts (locator strategies, explicit waits, flaky-test handling)",
+      "API test automation (Postman/RestAssured scripts, contract testing)",
+      "Test data generation and management scripts",
+      "Writing unit/integration tests with mocking and stubbing (TDD exercises)",
+      "Debugging and stabilizing flaky automated tests",
+      "Scripting test reports and CI integration (parsing results, dashboards)",
+      "Page Object Model & reusable utility function design for automation frameworks"
+    ]
+  },
+  "systemDesignModule": {
+    "duration": "4 weeks",
+    "questionsCount": 40,
+    "focus": "System design scenarios centered on test infrastructure and quality processes at scale, not application features.",
+    "topics": [
+      "Design a Test Automation Framework (Page Object Model, data-driven, keyword-driven architecture)",
+      "Design a Continuous Testing pipeline (parallel execution, test sharding in CI/CD)",
+      "Design a Test Data Management system (synthetic data generation, masking prod-like data)",
+      "Design a Performance/Load Testing strategy (JMeter/Gatling, bottleneck identification, scaling test infra)",
+      "Design a Bug Tracking & Triage workflow for a large multi-team org",
+      "Design a Cross-browser/Cross-device Testing strategy (device farms, cloud test grids)",
+      "Design a Test Coverage & Quality Metrics dashboard (flakiness tracking, coverage gaps)"
+    ]
+  },
+  "behavioralModule": {
+    "duration": "2 weeks",
+    "questionsCount": 70,
+    "focus": "Scenarios around quality advocacy, release pressure, and collaborating with developers who don't report to you.",
+    "topics": [
+      "Describe pushing back on a release because of a critical bug you found late",
+      "Tell me about convincing a dev team to fix a bug they'd deprioritized",
+      "How do you decide what to automate vs test manually under a tight deadline",
+      "Describe a time you couldn't reproduce a bug a developer said didn't exist",
+      "Tell me about advocating for a quality practice the team resisted adopting",
+      "How have you handled a flaky test suite that was eroding the team's trust in CI",
+      "Describe a disagreement with a PM about what counts as 'done'"
+    ]
+  }
 }

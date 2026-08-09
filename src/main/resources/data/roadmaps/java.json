@@ -365,5 +365,19 @@
       "Design a Distributed Job Scheduler (leader election, distributed locks)",
       "Microservices communication patterns (sync REST vs async messaging, Saga pattern for distributed transactions)"
     ]
+  },
+  "behavioralModule": {
+    "duration": "2 weeks",
+    "questionsCount": 80,
+    "focus": "Scenarios reflecting day-to-day life on a backend/full-stack engineering team: sprints, code review, production incidents, and API contracts with other teams.",
+    "topics": [
+      "Tell me about a time you disagreed with a reviewer's feedback on your pull request",
+      "Describe handling a production bug that was introduced by your own code",
+      "How have you pushed back on an unrealistic sprint deadline from a PM",
+      "Describe a conflict with another team over an API contract or breaking change",
+      "Tell me about mentoring a junior developer through a difficult bug",
+      "How do you handle being on-call for a service you didn't build",
+      "Describe a time you had to refactor legacy code under time pressure"
+    ]
   }
 }

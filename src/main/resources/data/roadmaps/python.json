@@ -366,5 +366,19 @@
       "Design an ML Model Serving Pipeline (batch vs real-time inference, feature store)",
       "Design a Data Pipeline for Analytics (batch ETL vs streaming ingestion)"
     ]
+  },
+  "behavioralModule": {
+    "duration": "2 weeks",
+    "questionsCount": 80,
+    "focus": "Scenarios common to Python roles spanning data/backend/automation work: ambiguous requirements, stakeholder communication, and data quality tradeoffs.",
+    "topics": [
+      "Describe a time a stakeholder's requirements were vague or kept changing",
+      "How have you explained a technical result or limitation to a non-technical audience",
+      "Tell me about a time you had to make a call between model/analysis accuracy and delivery speed",
+      "Describe handling a data quality issue that was discovered late in a project",
+      "How do you prioritize when multiple teams request analysis/automation from you at once",
+      "Tell me about a time your own bug/script caused an incorrect business decision",
+      "Describe a time you had to justify a technical approach to a skeptical stakeholder"
+    ]
   }
 }
