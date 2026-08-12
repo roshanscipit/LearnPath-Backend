@@ -47,6 +47,14 @@ public class QuestionService {
                 req.getQuestionType().toUpperCase(), capitalize(req.getDifficulty()), count);
         } else if (req.getCompanyTag() != null && !req.getCompanyTag().isBlank()) {
             questions = questionRepository.findRandomForCompany(req.getCompanyTag(), count);
+        } else if (req.getRoleTag() != null && !req.getRoleTag().isBlank()) {
+            // Prefer role-specific questions; fall back to common (role_tag IS NULL) if the
+            // role doesn't have its own bank yet, so the page never comes back empty.
+            questions = questionRepository.findRandomByTypeAndRole(
+                req.getQuestionType().toUpperCase(), req.getRoleTag().toLowerCase(), count);
+            if (questions.isEmpty()) {
+                questions = questionRepository.findRandomByTypeCommon(req.getQuestionType().toUpperCase(), count);
+            }
         } else {
             questions = questionRepository.findRandomByType(req.getQuestionType().toUpperCase(), count);
         }
@@ -103,6 +111,7 @@ public class QuestionService {
             .difficulty(capitalize(req.getDifficulty()))
             .topic(req.getTopic())
             .companyTag(req.getCompanyTag())
+            .roleTag(req.getRoleTag())
             .language(req.getLanguage())
             .active(req.isActive())
             .build();
@@ -121,6 +130,7 @@ public class QuestionService {
         q.setDifficulty(capitalize(req.getDifficulty()));
         q.setTopic(req.getTopic());
         q.setCompanyTag(req.getCompanyTag());
+        q.setRoleTag(req.getRoleTag());
         q.setLanguage(req.getLanguage());
         q.setActive(req.isActive());
         return toDetailDto(questionRepository.save(q));
@@ -154,6 +164,7 @@ public class QuestionService {
         dto.setDifficulty(q.getDifficulty());
         dto.setTopic(q.getTopic());
         dto.setCompanyTag(q.getCompanyTag());
+        dto.setRoleTag(q.getRoleTag());
         dto.setLanguage(q.getLanguage());
         // Parse options if present
         if (q.getOptions() != null && !q.getOptions().isBlank()) {
@@ -171,6 +182,7 @@ public class QuestionService {
         dto.setDifficulty(q.getDifficulty());
         dto.setTopic(q.getTopic());
         dto.setCompanyTag(q.getCompanyTag());
+        dto.setRoleTag(q.getRoleTag());
         dto.setLanguage(q.getLanguage());
         dto.setAnswer(q.getAnswer());
         dto.setExplanation(q.getExplanation());
