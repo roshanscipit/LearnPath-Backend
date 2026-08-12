@@ -1,7 +1,11 @@
 {
   "moduleId": "salesforce",
   "moduleName": "Salesforce Developer",
-  "variants": ["Developer", "Admin", "Architect"],
+  "variants": [
+    "Developer",
+    "Admin",
+    "Architect"
+  ],
   "levels": [
     {
       "level": "Basic",
@@ -19,9 +23,15 @@
           "interviewQA": [
             {
               "question": "What does it mean that Salesforce is a 'multi-tenant' platform, and what trade-off does this create for developers?",
-              "keywords": ["multi-tenant", "shared infrastructure", "governor limits", "metadata isolation", "resource fairness"],
-              "modelAnswer": "Multi-tenancy means many different customer organizations share the same underlying physical infrastructure and codebase, with each org's data and configuration logically isolated via metadata rather than each customer having dedicated hardware. This is efficient and enables Salesforce to push platform-wide upgrades to everyone simultaneously, but it means no single customer's code can be allowed to consume unbounded resources and degrade the shared platform for others — which is exactly why Salesforce enforces strict Governor Limits (e.g., max SOQL queries or DML statements per transaction), a constraint that doesn't exist in traditional single-tenant application development.",
-              "tip": "Directly tie multi-tenancy to why Governor Limits exist — that's the real interview insight.",
+              "keywords": [
+                "multi-tenant",
+                "shared infrastructure",
+                "governor limits",
+                "metadata isolation",
+                "resource fairness"
+              ],
+              "modelAnswer": "Multi-tenancy means many different customer organizations share the same underlying physical infrastructure and codebase, with each org's data and configuration logically isolated via metadata rather than each customer having dedicated hardware. This is efficient and enables Salesforce to push platform-wide upgrades to everyone simultaneously, but it means no single customer's code can be allowed to consume unbounded resources and degrade the shared platform for others \u2014 which is exactly why Salesforce enforces strict Governor Limits (e.g., max SOQL queries or DML statements per transaction), a constraint that doesn't exist in traditional single-tenant application development.",
+              "tip": "Directly tie multi-tenancy to why Governor Limits exist \u2014 that's the real interview insight.",
               "difficulty": "Easy"
             }
           ]
@@ -39,9 +49,15 @@
           "interviewQA": [
             {
               "question": "What's the difference between a Lookup relationship and a Master-Detail relationship in Salesforce?",
-              "keywords": ["lookup relationship", "master-detail", "cascade delete", "ownership", "roll-up summary"],
-              "modelAnswer": "A Lookup relationship loosely links two objects — the child record can exist independently, deleting the parent doesn't delete the child, and the child has its own owner and sharing settings. A Master-Detail relationship tightly couples the objects — the child record's security and sharing are inherited from the parent, deleting the parent cascades and deletes all related child records, and the relationship field is required, enabling roll-up summary fields on the parent (like SUM or COUNT of child records) which aren't available on a plain Lookup. You'd choose Master-Detail when the child record's existence genuinely depends on the parent, like Opportunity Line Items depending on an Opportunity.",
-              "tip": "Mention roll-up summary fields as a concrete capability that requires Master-Detail — a good technical differentiator.",
+              "keywords": [
+                "lookup relationship",
+                "master-detail",
+                "cascade delete",
+                "ownership",
+                "roll-up summary"
+              ],
+              "modelAnswer": "A Lookup relationship loosely links two objects \u2014 the child record can exist independently, deleting the parent doesn't delete the child, and the child has its own owner and sharing settings. A Master-Detail relationship tightly couples the objects \u2014 the child record's security and sharing are inherited from the parent, deleting the parent cascades and deletes all related child records, and the relationship field is required, enabling roll-up summary fields on the parent (like SUM or COUNT of child records) which aren't available on a plain Lookup. You'd choose Master-Detail when the child record's existence genuinely depends on the parent, like Opportunity Line Items depending on an Opportunity.",
+              "tip": "Mention roll-up summary fields as a concrete capability that requires Master-Detail \u2014 a good technical differentiator.",
               "difficulty": "Medium"
             }
           ]
@@ -53,14 +69,20 @@
           "keyPoints": [
             "Apex classes, triggers, and the execution context",
             "SOQL for querying, DML statements (insert/update/delete) for data changes",
-            "Governor limits: SOQL queries, DML statements, CPU time — all bounded per transaction",
+            "Governor limits: SOQL queries, DML statements, CPU time \u2014 all bounded per transaction",
             "Bulkification: writing code to handle collections of records, not just one at a time"
           ],
           "interviewQA": [
             {
               "question": "What does it mean to write 'bulkified' Apex code, and why is it required rather than optional?",
-              "keywords": ["bulkification", "governor limits", "soql in loop", "collection", "trigger context"],
-              "modelAnswer": "Bulkified code is written to efficiently process a collection of records (like an array of up to 200 records that can trigger together in a single transaction) rather than assuming only one record will ever be processed at a time — meaning SOQL queries and DML statements should be placed outside of loops, operating on the whole collection at once, not once per record inside a for-loop. It's required, not optional, because Salesforce enforces strict governor limits (e.g., 100 SOQL queries per transaction) precisely because of the multi-tenant architecture, and a non-bulkified trigger that runs a query per record will work fine with 1 record in testing but throw a 'Too many SOQL queries' exception the moment a bulk operation like a data import processes 200 records at once.",
+              "keywords": [
+                "bulkification",
+                "governor limits",
+                "soql in loop",
+                "collection",
+                "trigger context"
+              ],
+              "modelAnswer": "Bulkified code is written to efficiently process a collection of records (like an array of up to 200 records that can trigger together in a single transaction) rather than assuming only one record will ever be processed at a time \u2014 meaning SOQL queries and DML statements should be placed outside of loops, operating on the whole collection at once, not once per record inside a for-loop. It's required, not optional, because Salesforce enforces strict governor limits (e.g., 100 SOQL queries per transaction) precisely because of the multi-tenant architecture, and a non-bulkified trigger that runs a query per record will work fine with 1 record in testing but throw a 'Too many SOQL queries' exception the moment a bulk operation like a data import processes 200 records at once.",
               "tip": "The classic gotcha to mention: code that works fine with 1 test record but fails on bulk data load.",
               "difficulty": "Medium"
             }
@@ -79,10 +101,65 @@
           "interviewQA": [
             {
               "question": "When would you choose to write an Apex trigger instead of using a Record-Triggered Flow for automation?",
-              "keywords": ["apex trigger", "record-triggered flow", "clicks before code", "complex logic", "maintainability"],
-              "modelAnswer": "Salesforce's general guidance is 'clicks before code' — use declarative Flows when the logic is straightforward, since they're easier for admins to maintain, faster to build, and increasingly performant with modern before-save Flow optimizations. You'd reach for Apex when the logic is too complex for Flow to express cleanly, when you need precise control over bulk processing performance at scale, when integrating with complex external callouts or intricate error handling, or when the logic needs to be more rigorously unit-tested and version-controlled as part of a formal deployment pipeline. In practice, many orgs use a hybrid: Flow for simpler business rules, Apex for complex or performance-critical logic.",
+              "keywords": [
+                "apex trigger",
+                "record-triggered flow",
+                "clicks before code",
+                "complex logic",
+                "maintainability"
+              ],
+              "modelAnswer": "Salesforce's general guidance is 'clicks before code' \u2014 use declarative Flows when the logic is straightforward, since they're easier for admins to maintain, faster to build, and increasingly performant with modern before-save Flow optimizations. You'd reach for Apex when the logic is too complex for Flow to express cleanly, when you need precise control over bulk processing performance at scale, when integrating with complex external callouts or intricate error handling, or when the logic needs to be more rigorously unit-tested and version-controlled as part of a formal deployment pipeline. In practice, many orgs use a hybrid: Flow for simpler business rules, Apex for complex or performance-critical logic.",
               "tip": "Frame it around Salesforce's own official guidance ('clicks before code') rather than a personal opinion.",
               "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sf-basic-reports",
+          "title": "Reports & Dashboards",
+          "summary": "Turning Salesforce data into insights business users can act on, without writing code.",
+          "keyPoints": [
+            "Report types (tabular, summary, matrix, joined) suit different analysis needs",
+            "Dashboards visualize one or more reports as charts/gauges refreshed on a schedule",
+            "Filters and groupings let the same underlying report answer many different questions",
+            "Report folders and sharing control who can see/edit which reports"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the difference between a summary report and a matrix report, and when would you use each?",
+              "keywords": [
+                "summary report",
+                "matrix report",
+                "grouping"
+              ],
+              "modelAnswer": "A summary report groups rows by one or more fields (e.g. Opportunities grouped by Stage), showing subtotals per group. A matrix report groups by two dimensions at once, both rows and columns (e.g. Opportunities by Stage AND by Owner), showing a cross-tabulated grid \u2014 use it when you need to compare two groupings against each other simultaneously.",
+              "tip": "Give a concrete example: sales by region (rows) by quarter (columns) is a classic matrix report use case.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "sf-basic-validation",
+          "title": "Validation Rules & Formula Fields",
+          "summary": "Enforcing data quality declaratively, without writing Apex code.",
+          "keyPoints": [
+            "Validation rules block a save when a condition is met, showing a custom error message",
+            "Formula fields calculate a value automatically from other fields \u2014 always up to date, read-only",
+            "Cross-object formulas can reference fields on a related parent record",
+            "Order of operations matters: validation rules run after workflow field updates but have their own sequence relative to other automation"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why would you use a validation rule instead of an Apex trigger to enforce a simple business rule?",
+              "keywords": [
+                "validation rule",
+                "declarative",
+                "Apex trigger",
+                "maintainability"
+              ],
+              "modelAnswer": "Validation rules are declarative, easier for admins to read/maintain without code, run reliably at the exact point of save, and avoid the overhead and governor-limit risk of writing/testing custom Apex for something a formula expression can already express. Reserve Apex triggers for logic too complex for declarative tools (e.g. multi-object side effects, external callouts).",
+              "tip": "Mention the general Salesforce guidance: 'clicks before code' when a declarative tool can do the job.",
+              "difficulty": "Easy"
             }
           ]
         }
@@ -104,9 +181,15 @@
           "interviewQA": [
             {
               "question": "What is the difference between @api and @track in a Lightning Web Component?",
-              "keywords": ["@api", "@track", "public property", "private reactive property", "parent-child communication"],
+              "keywords": [
+                "@api",
+                "@track",
+                "public property",
+                "private reactive property",
+                "parent-child communication"
+              ],
               "modelAnswer": "@api exposes a property as public, meaning a parent component can set its value directly in the template (like an HTML attribute), making it the mechanism for parent-to-child data flow. @track (largely a legacy concept now, since LWC's reactivity engine automatically tracks simple field reassignments) is used to make a private, internal property reactive for nested object/array mutations so the component re-renders when a nested value changes; in modern LWC, @track is mostly only still needed for tracking mutations inside objects/arrays rather than for simple property reactivity, which happens automatically.",
-              "tip": "Mention that @track's role shrank significantly in modern LWC — shows up-to-date knowledge.",
+              "tip": "Mention that @track's role shrank significantly in modern LWC \u2014 shows up-to-date knowledge.",
               "difficulty": "Medium"
             }
           ]
@@ -124,9 +207,15 @@
           "interviewQA": [
             {
               "question": "When would you use SOSL instead of SOQL?",
-              "keywords": ["sosl", "soql", "full-text search", "multiple objects", "known object"],
-              "modelAnswer": "SOQL is used when you know exactly which object and fields you're querying, similar to a SQL SELECT statement, and it supports precise filtering, relationship traversal, and aggregation. SOSL is used when you need to search for a text term across multiple different objects at once — for example, searching 'Acme' and finding matches across Accounts, Contacts, and Opportunities simultaneously in a single query — which would require multiple separate SOQL queries otherwise. SOSL is optimized for this kind of full-text search scenario but offers less precise filtering control than SOQL's WHERE clause capabilities.",
-              "tip": "Give the concrete cross-object search example — that's the classic use case interviewers want to hear.",
+              "keywords": [
+                "sosl",
+                "soql",
+                "full-text search",
+                "multiple objects",
+                "known object"
+              ],
+              "modelAnswer": "SOQL is used when you know exactly which object and fields you're querying, similar to a SQL SELECT statement, and it supports precise filtering, relationship traversal, and aggregation. SOSL is used when you need to search for a text term across multiple different objects at once \u2014 for example, searching 'Acme' and finding matches across Accounts, Contacts, and Opportunities simultaneously in a single query \u2014 which would require multiple separate SOQL queries otherwise. SOSL is optimized for this kind of full-text search scenario but offers less precise filtering control than SOQL's WHERE clause capabilities.",
+              "tip": "Give the concrete cross-object search example \u2014 that's the classic use case interviewers want to hear.",
               "difficulty": "Medium"
             }
           ]
@@ -144,7 +233,13 @@
           "interviewQA": [
             {
               "question": "Why is the 'one trigger per object' pattern recommended in Salesforce, and what problem does it solve?",
-              "keywords": ["one trigger per object", "trigger order", "handler class", "maintainability", "trigger framework"],
+              "keywords": [
+                "one trigger per object",
+                "trigger order",
+                "handler class",
+                "maintainability",
+                "trigger framework"
+              ],
               "modelAnswer": "If an object has multiple triggers, the order in which they execute isn't guaranteed or easily controllable, which can lead to unpredictable behavior, especially when triggers interact with each other's changes to the same records within a transaction. The 'one trigger per object' pattern consolidates all trigger logic for an object into a single trigger that delegates to a well-organized handler class (or a trigger framework), giving you full, explicit control over execution order and making the logic much easier to test, debug, and maintain as a single coherent flow rather than several trigger files with unclear interactions.",
               "tip": "The unpredictable execution order with multiple triggers is the concrete technical problem to name.",
               "difficulty": "Hard"
@@ -164,9 +259,64 @@
           "interviewQA": [
             {
               "question": "Why would you use Salesforce's Bulk API instead of the standard REST API when loading a large volume of records?",
-              "keywords": ["bulk api", "rest api", "governor limits", "batch processing", "large data volume"],
-              "modelAnswer": "The standard REST API handles records largely one at a time (or in small batches via composite requests), which becomes slow and inefficient for loading hundreds of thousands or millions of records, and would also hit governor limits quickly if driven through synchronous Apex. The Bulk API is designed specifically for large-volume asynchronous data operations — it processes records in large batches server-side, is optimized for throughput over latency, and is the standard tool for data migrations, nightly syncs, or any operation involving tens of thousands of records or more, where REST API's per-request overhead would make the job impractically slow.",
+              "keywords": [
+                "bulk api",
+                "rest api",
+                "governor limits",
+                "batch processing",
+                "large data volume"
+              ],
+              "modelAnswer": "The standard REST API handles records largely one at a time (or in small batches via composite requests), which becomes slow and inefficient for loading hundreds of thousands or millions of records, and would also hit governor limits quickly if driven through synchronous Apex. The Bulk API is designed specifically for large-volume asynchronous data operations \u2014 it processes records in large batches server-side, is optimized for throughput over latency, and is the standard tool for data migrations, nightly syncs, or any operation involving tens of thousands of records or more, where REST API's per-request overhead would make the job impractically slow.",
               "tip": "Frame the distinction as throughput (Bulk API) vs low-latency real-time (REST API).",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sf-inter-async",
+          "title": "Asynchronous Apex (Batch, Queueable, Future)",
+          "summary": "Handling large data volumes and long-running operations without hitting Salesforce's strict synchronous limits.",
+          "keyPoints": [
+            "Batch Apex processes records in chunks (start/execute/finish) for very large data volumes",
+            "Queueable Apex is the modern replacement for @future \u2014 supports chaining and complex parameter types",
+            "@future methods run asynchronously but can't take sObjects as parameters (only primitives/collections)",
+            "Each async context gets its own fresh governor limits, separate from the calling transaction"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why would you choose Queueable Apex over a simple @future method for a new piece of async logic?",
+              "keywords": [
+                "Queueable",
+                "@future",
+                "chaining",
+                "governor limits"
+              ],
+              "modelAnswer": "Queueable Apex supports complex parameter types (like sObjects, not just primitives), can be chained (one job enqueues the next), and is generally the modern, more flexible replacement \u2014 @future methods are more limited and are considered somewhat legacy for new development, though still used for simple fire-and-forget calls.",
+              "tip": "Mention Batch Apex as the right choice instead when you specifically need to process millions of records in controlled chunks.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sf-inter-apextest",
+          "title": "Testing in Apex (Test Classes & Coverage)",
+          "summary": "Salesforce requires tested code before deployment \u2014 writing meaningful tests, not just coverage-chasing ones.",
+          "keyPoints": [
+            "Minimum 75% code coverage org-wide is required to deploy to production, but coverage != quality",
+            "@isTest classes use Test.startTest()/Test.stopTest() to reset governor limits around the tested logic",
+            "Test.setMock() lets you mock HTTP callouts so tests don't depend on external services",
+            "Bulk-test with 200+ records to catch bugs that only appear at scale (a very common Salesforce gotcha)"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is hitting 75% code coverage not the same thing as having a good test suite?",
+              "keywords": [
+                "code coverage",
+                "assertions",
+                "bulk testing"
+              ],
+              "modelAnswer": "Coverage only measures which lines executed, not whether the results were actually verified \u2014 a test with no assertions can still 'cover' a line while never checking it behaved correctly. A good suite asserts expected outcomes for both positive and negative/edge cases, and tests bulk operations (200+ records) since Salesforce code often breaks specifically at scale.",
+              "tip": "Mention testing negative paths (invalid input, permission failures) as often-missed coverage.",
               "difficulty": "Medium"
             }
           ]
@@ -189,7 +339,13 @@
           "interviewQA": [
             {
               "question": "You need to process 2 million records with complex logic. Walk through your approach given Salesforce's governor limits.",
-              "keywords": ["batch apex", "chunking", "scope size", "queueable", "asynchronous processing"],
+              "keywords": [
+                "batch apex",
+                "chunking",
+                "scope size",
+                "queueable",
+                "asynchronous processing"
+              ],
               "modelAnswer": "A single synchronous transaction can't handle 2 million records given governor limits, so I'd use Batch Apex, which implements the Database.Batchable interface and automatically breaks the full record set into manageable chunks (configurable batch/scope size, default 200) processed across multiple separate transactions, each with its own fresh governor limits. Within the execute() method for each batch, I'd ensure the logic itself is bulkified (no SOQL/DML inside inner loops), and I'd tune the scope size down if the per-record logic is heavy (e.g., doing external callouts) to avoid hitting CPU time limits within a single batch execution, monitoring via AsyncApexJob for failures and using the finish() method for any final rollup or notification logic.",
               "tip": "Naming Database.Batchable and mentioning scope-size tuning shows real hands-on experience, not just textbook knowledge.",
               "difficulty": "Hard"
@@ -209,9 +365,15 @@
           "interviewQA": [
             {
               "question": "How does Salesforce's sharing model (OWD, Role Hierarchy, Sharing Rules) determine whether a user can see a specific record?",
-              "keywords": ["organization-wide defaults", "role hierarchy", "sharing rules", "record access", "least restrictive"],
-              "modelAnswer": "Organization-Wide Defaults (OWD) set the baseline, most restrictive access level for an object (Private, Public Read Only, Public Read/Write), and access can only be widened from there, never further restricted, by additional mechanisms. Role Hierarchy grants access upward — managers automatically see what their subordinates own (if enabled for the object) — while Sharing Rules grant additional access to specific groups/roles based on criteria or ownership, layered on top of OWD. A user's final access to a specific record is effectively the most permissive result of combining OWD, role hierarchy, sharing rules, and any manual/apex-managed sharing, always starting from OWD as the floor and adding access from there.",
-              "tip": "Emphasize that OWD is the floor and everything else only ADDS access — a key mental model interviewers check for.",
+              "keywords": [
+                "organization-wide defaults",
+                "role hierarchy",
+                "sharing rules",
+                "record access",
+                "least restrictive"
+              ],
+              "modelAnswer": "Organization-Wide Defaults (OWD) set the baseline, most restrictive access level for an object (Private, Public Read Only, Public Read/Write), and access can only be widened from there, never further restricted, by additional mechanisms. Role Hierarchy grants access upward \u2014 managers automatically see what their subordinates own (if enabled for the object) \u2014 while Sharing Rules grant additional access to specific groups/roles based on criteria or ownership, layered on top of OWD. A user's final access to a specific record is effectively the most permissive result of combining OWD, role hierarchy, sharing rules, and any manual/apex-managed sharing, always starting from OWD as the floor and adding access from there.",
+              "tip": "Emphasize that OWD is the floor and everything else only ADDS access \u2014 a key mental model interviewers check for.",
               "difficulty": "Hard"
             }
           ]
@@ -229,9 +391,15 @@
           "interviewQA": [
             {
               "question": "Why did Salesforce DX and scratch orgs represent such a significant shift for Salesforce development teams?",
-              "keywords": ["salesforce dx", "scratch org", "source-driven development", "version control", "change sets"],
-              "modelAnswer": "Before Salesforce DX, development was largely 'org-driven' — developers worked directly in a shared sandbox, and deployment relied on manually assembled Change Sets clicked together in the UI, with Git (if used at all) as an afterthought rather than the true source of truth, making conflict resolution and rollback painful. Salesforce DX flips this to source-driven development: metadata lives in a Git repository as the actual source of truth, and scratch orgs are disposable, quickly-provisioned orgs created fresh from that source for development and testing, letting each developer or feature branch work in full isolation. This finally enabled real CI/CD pipelines for Salesforce — automated validation, testing, and deployment triggered by Git commits — bringing standard software engineering practices to a platform that had previously relied heavily on manual, UI-driven processes.",
-              "tip": "Contrast 'org-driven' (old) vs 'source-driven' (SFDX) explicitly — that's the core conceptual shift.",
+              "keywords": [
+                "salesforce dx",
+                "scratch org",
+                "source-driven development",
+                "version control",
+                "change sets"
+              ],
+              "modelAnswer": "Before Salesforce DX, development was largely 'org-driven' \u2014 developers worked directly in a shared sandbox, and deployment relied on manually assembled Change Sets clicked together in the UI, with Git (if used at all) as an afterthought rather than the true source of truth, making conflict resolution and rollback painful. Salesforce DX flips this to source-driven development: metadata lives in a Git repository as the actual source of truth, and scratch orgs are disposable, quickly-provisioned orgs created fresh from that source for development and testing, letting each developer or feature branch work in full isolation. This finally enabled real CI/CD pipelines for Salesforce \u2014 automated validation, testing, and deployment triggered by Git commits \u2014 bringing standard software engineering practices to a platform that had previously relied heavily on manual, UI-driven processes.",
+              "tip": "Contrast 'org-driven' (old) vs 'source-driven' (SFDX) explicitly \u2014 that's the core conceptual shift.",
               "difficulty": "Hard"
             }
           ]
@@ -249,9 +417,64 @@
           "interviewQA": [
             {
               "question": "What's the difference between 'with sharing' and 'without sharing' on an Apex class, and why does this matter for security?",
-              "keywords": ["with sharing", "without sharing", "record-level security", "system context", "user context"],
-              "modelAnswer": "By default, Apex code runs in 'system context', meaning it bypasses the running user's record-level sharing rules entirely and can see/modify any record regardless of the user's actual access — unless the class is explicitly declared 'with sharing', which enforces the current user's sharing rules and record visibility for that class's operations. 'without sharing' explicitly opts out of sharing enforcement even if called from a 'with sharing' context, which should be used deliberately and sparingly (e.g., a controlled utility that legitimately needs elevated access), since forgetting to declare sharing behavior correctly is a common source of Salesforce security vulnerabilities where users can see or manipulate data they shouldn't have access to.",
-              "tip": "State clearly that the DEFAULT is system context (no sharing enforced) if unspecified — a common misconception is that Apex is secure by default.",
+              "keywords": [
+                "with sharing",
+                "without sharing",
+                "record-level security",
+                "system context",
+                "user context"
+              ],
+              "modelAnswer": "By default, Apex code runs in 'system context', meaning it bypasses the running user's record-level sharing rules entirely and can see/modify any record regardless of the user's actual access \u2014 unless the class is explicitly declared 'with sharing', which enforces the current user's sharing rules and record visibility for that class's operations. 'without sharing' explicitly opts out of sharing enforcement even if called from a 'with sharing' context, which should be used deliberately and sparingly (e.g., a controlled utility that legitimately needs elevated access), since forgetting to declare sharing behavior correctly is a common source of Salesforce security vulnerabilities where users can see or manipulate data they shouldn't have access to.",
+              "tip": "State clearly that the DEFAULT is system context (no sharing enforced) if unspecified \u2014 a common misconception is that Apex is secure by default.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sf-adv-events",
+          "title": "Event-Driven Architecture (Platform Events, CDC)",
+          "summary": "Decoupling systems and reacting to data changes in near-real-time, inside and outside Salesforce.",
+          "keyPoints": [
+            "Platform Events are custom, publish-subscribe messages for decoupled communication between processes",
+            "Change Data Capture (CDC) automatically publishes events whenever tracked records change",
+            "Subscribers (Apex triggers, external systems via CometD/API) react asynchronously to events",
+            "Event-driven design decouples producers and consumers \u2014 the publisher doesn't need to know who's listening"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the difference between Platform Events and Change Data Capture, and when would you use each?",
+              "keywords": [
+                "Platform Events",
+                "Change Data Capture",
+                "CDC",
+                "pub-sub"
+              ],
+              "modelAnswer": "Platform Events are custom-defined messages you explicitly publish for any business event (e.g. 'OrderShipped'), giving full control over the payload. CDC automatically publishes standardized change events (create/update/delete) for records on objects you enable it for, without custom publish code \u2014 use CDC for keeping external systems in sync with data changes, and Platform Events for custom business-process signaling.",
+              "tip": "Mention that both use the same underlying event bus, just different event types.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sf-adv-multiorg",
+          "title": "Multi-Org Strategy & Managed Packages",
+          "summary": "Scaling Salesforce development and deployment across multiple orgs and reusable products.",
+          "keyPoints": [
+            "A managed package bundles metadata for distribution/installation across multiple orgs with IP protection",
+            "Namespaces prevent naming collisions when a package is installed into a customer's org",
+            "Multi-org strategies (dev/staging/prod, or separate orgs per business unit) need a clear deployment pipeline",
+            "Second-generation packaging (2GP) with source-driven development is the modern recommended approach"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why does a managed package need a namespace, and what problem would occur without one?",
+              "keywords": [
+                "namespace",
+                "naming collision",
+                "managed package"
+              ],
+              "modelAnswer": "A namespace prefixes every custom field/object/class in the package (e.g. 'myapp__Field__c'), guaranteeing it can't collide with existing custom metadata already in a customer's org or another installed package. Without a namespace, two packages defining a field with the same API name in the same org would conflict.",
+              "tip": "Mention that unlisted/unmanaged packages don't need this because they're typically installed once into a single, controlled org.",
               "difficulty": "Hard"
             }
           ]

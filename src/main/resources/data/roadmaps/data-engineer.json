@@ -14,7 +14,7 @@
         {
           "id": "de-basic-sql",
           "title": "SQL Fundamentals",
-          "summary": "Querying and manipulating relational data — the single most-used skill in data engineering.",
+          "summary": "Querying and manipulating relational data \u2014 the single most-used skill in data engineering.",
           "keyPoints": [
             "SELECT/WHERE/GROUP BY/HAVING/ORDER BY, and the logical order of execution",
             "JOIN types: inner, left/right outer, full outer, self-join",
@@ -84,7 +84,7 @@
                 "csv"
               ],
               "modelAnswer": "Parquet is a columnar storage format, meaning it stores all values of a column together, which allows much better compression (similar values compress well together) and lets query engines read only the columns actually needed rather than scanning entire rows like CSV requires. Parquet also embeds schema and data types directly in the file, avoiding the type-inference and parsing overhead CSV requires, and supports predicate pushdown so filters can skip irrelevant row groups entirely. The trade-off is that Parquet files aren't human-readable and require specific libraries to inspect, unlike plain-text CSV.",
-              "tip": "Mention predicate pushdown and columnar compression — these are the concrete technical reasons, not just 'it's faster'.",
+              "tip": "Mention predicate pushdown and columnar compression \u2014 these are the concrete technical reasons, not just 'it's faster'.",
               "difficulty": "Medium"
             }
           ]
@@ -114,6 +114,55 @@
               "difficulty": "Medium"
             }
           ]
+        },
+        {
+          "id": "de-basic-formats",
+          "title": "Data Formats (Parquet, Avro, ORC, JSON, CSV)",
+          "summary": "Choosing the right file format has a huge impact on storage cost and query performance in a data pipeline.",
+          "keyPoints": [
+            "Parquet/ORC are columnar \u2014 great for analytical queries that scan few columns over many rows",
+            "Avro is row-based and schema-embedded \u2014 great for streaming/serialization with schema evolution",
+            "CSV/JSON are human-readable but slow and large for big analytical workloads",
+            "Columnar formats compress far better because similar values are stored together"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is Parquet generally preferred over CSV for large-scale analytical workloads?",
+              "keywords": [
+                "columnar",
+                "compression",
+                "predicate pushdown",
+                "scan"
+              ],
+              "modelAnswer": "Parquet stores data column-by-column, so a query that only needs 3 of 50 columns can skip reading the rest entirely (column pruning), and similar values compress much better together than row-by-row CSV. It also supports predicate pushdown, letting engines skip whole row-groups that can't match a filter.",
+              "tip": "Mention that CSV has no embedded schema or types, adding parsing overhead and ambiguity Parquet avoids.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "de-basic-structures",
+          "title": "Data Structures for Data Engineering",
+          "summary": "The core in-memory and on-disk structures that make pipelines fast or slow.",
+          "keyPoints": [
+            "Hash maps for fast joins/lookups; sorted structures for range queries and merges",
+            "Partitioning splits large datasets by a key (e.g. date) so queries scan less data",
+            "Indexes trade write speed and storage for faster reads on specific columns",
+            "Understanding Big-O helps you reason about whether a transform will scale to production data volumes"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why does partitioning a table by date dramatically speed up a query that filters on a date range?",
+              "keywords": [
+                "partition pruning",
+                "partitioning",
+                "query performance"
+              ],
+              "modelAnswer": "With date-based partitioning, each partition is stored as a separate physical unit (folder/file set). A query filtering WHERE date BETWEEN x AND y lets the engine skip reading partitions entirely outside that range (partition pruning), instead of scanning the whole table and filtering row by row afterward.",
+              "tip": "Give a concrete example: querying 3 days out of 3 years of daily-partitioned data only touches 3 partitions.",
+              "difficulty": "Easy"
+            }
+          ]
         }
       ]
     },
@@ -127,7 +176,7 @@
           "keyPoints": [
             "HDFS for distributed storage; Spark as the dominant distributed compute engine",
             "RDDs vs DataFrames vs Datasets, and Spark's lazy evaluation via DAGs",
-            "Partitioning and shuffling — the main cost driver in distributed jobs",
+            "Partitioning and shuffling \u2014 the main cost driver in distributed jobs",
             "Spark's in-memory computation vs Hadoop MapReduce's disk-based model"
           ],
           "interviewQA": [
@@ -141,8 +190,8 @@
                 "repartition",
                 "wide transformation"
               ],
-              "modelAnswer": "A shuffle occurs when data needs to be redistributed across partitions/nodes, such as during groupBy, join, or repartition operations — it requires writing intermediate data to disk and transferring it across the network between executors, which is far slower than in-partition ('narrow') transformations like map or filter. To minimize shuffles, you can pre-partition data by the join/group key so related data is already co-located, use broadcast joins for joining a large table with a small one (avoiding a shuffle of the large table entirely), and combine operations to reduce the number of shuffle stages in the DAG.",
-              "tip": "Mention broadcast joins explicitly — a concrete, high-value optimization technique.",
+              "modelAnswer": "A shuffle occurs when data needs to be redistributed across partitions/nodes, such as during groupBy, join, or repartition operations \u2014 it requires writing intermediate data to disk and transferring it across the network between executors, which is far slower than in-partition ('narrow') transformations like map or filter. To minimize shuffles, you can pre-partition data by the join/group key so related data is already co-located, use broadcast joins for joining a large table with a small one (avoiding a shuffle of the large table entirely), and combine operations to reduce the number of shuffle stages in the DAG.",
+              "tip": "Mention broadcast joins explicitly \u2014 a concrete, high-value optimization technique.",
               "difficulty": "Hard"
             }
           ]
@@ -167,8 +216,8 @@
                 "bytes scanned",
                 "date partition"
               ],
-              "modelAnswer": "Partitioning splits a large table into segments (often by date) so that a query with a filter on the partition column only needs to scan the relevant partitions instead of the entire table — this is called partition pruning. Since many cloud warehouses (like BigQuery) charge based on bytes scanned, pruning directly reduces both query cost and latency, sometimes turning a full-table scan of terabytes into a scan of just a few gigabytes for a single day's data. Combining partitioning with clustering on a frequently filtered column compounds these savings further.",
-              "tip": "Mention that BigQuery-style warehouses bill by bytes scanned — ties performance directly to cost.",
+              "modelAnswer": "Partitioning splits a large table into segments (often by date) so that a query with a filter on the partition column only needs to scan the relevant partitions instead of the entire table \u2014 this is called partition pruning. Since many cloud warehouses (like BigQuery) charge based on bytes scanned, pruning directly reduces both query cost and latency, sometimes turning a full-table scan of terabytes into a scan of just a few gigabytes for a single day's data. Combining partitioning with clustering on a frequently filtered column compounds these savings further.",
+              "tip": "Mention that BigQuery-style warehouses bill by bytes scanned \u2014 ties performance directly to cost.",
               "difficulty": "Medium"
             }
           ]
@@ -193,8 +242,8 @@
                 "exponential backoff",
                 "airflow"
               ],
-              "modelAnswer": "Airflow lets you configure a number of retries with a delay (often exponential backoff) per task, so a task that fails due to a transient issue (a brief network blip, a temporarily overloaded API) automatically retries before being marked as truly failed and triggering alerts or downstream blocking. For this to be safe, each task must be idempotent — rerunning it should produce the same end state rather than duplicating data — which usually means using upsert/merge logic instead of blind inserts, or writing to a staging location before an atomic final swap. Without idempotency, retries can silently create duplicate or corrupted data instead of fixing the problem.",
-              "tip": "Idempotency is the key word here — retries are only safe if the task is idempotent.",
+              "modelAnswer": "Airflow lets you configure a number of retries with a delay (often exponential backoff) per task, so a task that fails due to a transient issue (a brief network blip, a temporarily overloaded API) automatically retries before being marked as truly failed and triggering alerts or downstream blocking. For this to be safe, each task must be idempotent \u2014 rerunning it should produce the same end state rather than duplicating data \u2014 which usually means using upsert/merge logic instead of blind inserts, or writing to a staging location before an atomic final swap. Without idempotency, retries can silently create duplicate or corrupted data instead of fixing the problem.",
+              "tip": "Idempotency is the key word here \u2014 retries are only safe if the task is idempotent.",
               "difficulty": "Medium"
             }
           ]
@@ -219,8 +268,58 @@
                 "idle consumer",
                 "rebalance"
               ],
-              "modelAnswer": "Within a consumer group, each partition of a topic is assigned to exactly one consumer at a time, so adding more consumers (up to the number of partitions) increases parallel processing throughput, since each consumer independently processes its assigned partitions. If you have more consumers in a group than partitions, the extra consumers sit idle with no partitions assigned, since a partition can't be split across multiple consumers within the same group — the fix is to increase the topic's partition count if you need more parallelism than the current partition count allows.",
+              "modelAnswer": "Within a consumer group, each partition of a topic is assigned to exactly one consumer at a time, so adding more consumers (up to the number of partitions) increases parallel processing throughput, since each consumer independently processes its assigned partitions. If you have more consumers in a group than partitions, the extra consumers sit idle with no partitions assigned, since a partition can't be split across multiple consumers within the same group \u2014 the fix is to increase the topic's partition count if you need more parallelism than the current partition count allows.",
               "tip": "Be precise: partitions are the real unit of parallelism, not consumers themselves.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "de-inter-dbt",
+          "title": "dbt & Data Transformation",
+          "summary": "Managing SQL transformations as version-controlled, tested, documented code instead of ad-hoc scripts.",
+          "keyPoints": [
+            "dbt models are just SELECT statements; dbt handles dependency ordering and materialization (view/table/incremental)",
+            "ref() and source() build an explicit DAG of dependencies between models",
+            "Built-in tests (unique, not_null, relationships) catch data quality issues automatically",
+            "dbt docs auto-generates a lineage graph and documentation from the project"
+          ],
+          "interviewQA": [
+            {
+              "question": "What does the 'ref()' function do in dbt, and why is it better than hardcoding table names?",
+              "keywords": [
+                "ref",
+                "DAG",
+                "lineage",
+                "dependency"
+              ],
+              "modelAnswer": "ref('other_model') tells dbt this model depends on another model, letting dbt automatically build the correct execution order (a DAG) and swap in the right fully-qualified table name per environment (dev/staging/prod). Hardcoding a table name breaks across environments and loses that dependency tracking entirely.",
+              "tip": "Mention that ref() is also what powers dbt's auto-generated lineage graph in its docs.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "de-inter-nosql",
+          "title": "NoSQL Databases for Engineers",
+          "summary": "Choosing the right non-relational store for a workload, and understanding the tradeoffs vs SQL.",
+          "keyPoints": [
+            "Key-value (Redis, DynamoDB), document (MongoDB), wide-column (Cassandra), graph (Neo4j) \u2014 pick by access pattern",
+            "CAP theorem: under a network partition you trade off consistency vs availability",
+            "Denormalization is common in NoSQL \u2014 design the schema around your queries, not entities",
+            "Eventual consistency means a read right after a write may not reflect it yet, in some of these stores"
+          ],
+          "interviewQA": [
+            {
+              "question": "When would you choose Cassandra (wide-column) over a relational database for a workload?",
+              "keywords": [
+                "Cassandra",
+                "write-heavy",
+                "horizontal scaling",
+                "availability"
+              ],
+              "modelAnswer": "Cassandra is a strong fit for very write-heavy, high-volume workloads (e.g. IoT sensor data, event logs) that need to scale horizontally across many nodes with high availability and can tolerate eventual consistency, where a single relational database would become a write bottleneck.",
+              "tip": "Contrast with a use case needing strong transactional consistency (e.g. banking), where relational is still the better fit.",
               "difficulty": "Medium"
             }
           ]
@@ -250,7 +349,7 @@
                 "schema evolution",
                 "time travel"
               ],
-              "modelAnswer": "A plain data lake (raw files in S3) has no built-in concept of transactions, so concurrent writes can produce partial/corrupted reads, there's no easy way to enforce or evolve schema, and deleting or updating records means rewriting entire files. Table formats like Delta Lake and Apache Iceberg add a transaction log on top of the raw files that provides ACID guarantees, schema enforcement and safe evolution, efficient upserts/deletes (MERGE), and 'time travel' to query historical table versions — essentially bringing data-warehouse reliability to lake storage, which is the core idea behind the 'lakehouse' pattern.",
+              "modelAnswer": "A plain data lake (raw files in S3) has no built-in concept of transactions, so concurrent writes can produce partial/corrupted reads, there's no easy way to enforce or evolve schema, and deleting or updating records means rewriting entire files. Table formats like Delta Lake and Apache Iceberg add a transaction log on top of the raw files that provides ACID guarantees, schema enforcement and safe evolution, efficient upserts/deletes (MERGE), and 'time travel' to query historical table versions \u2014 essentially bringing data-warehouse reliability to lake storage, which is the core idea behind the 'lakehouse' pattern.",
               "tip": "Naming the transaction log mechanism (Delta log / Iceberg metadata) shows real depth beyond buzzwords.",
               "difficulty": "Hard"
             }
@@ -301,8 +400,8 @@
                 "deduplication",
                 "checkpointing"
               ],
-              "modelAnswer": "True exactly-once delivery across a network is famously difficult (impossible to fully guarantee end-to-end), so most systems instead achieve 'effectively exactly-once' processing by combining at-least-once delivery with idempotent writes on the consumer side — for example, using a unique message ID as a deduplication key so reprocessing the same message twice doesn't double-count it. This is often paired with checkpointing (tracking the last successfully processed offset) so that after a failure, processing resumes from a known-safe point and only reprocesses a small, bounded window of messages, which idempotent writes then handle safely.",
-              "tip": "Say explicitly that true exactly-once is theoretically hard — 'effectively exactly-once via idempotency' is the real-world answer.",
+              "modelAnswer": "True exactly-once delivery across a network is famously difficult (impossible to fully guarantee end-to-end), so most systems instead achieve 'effectively exactly-once' processing by combining at-least-once delivery with idempotent writes on the consumer side \u2014 for example, using a unique message ID as a deduplication key so reprocessing the same message twice doesn't double-count it. This is often paired with checkpointing (tracking the last successfully processed offset) so that after a failure, processing resumes from a known-safe point and only reprocesses a small, bounded window of messages, which idempotent writes then handle safely.",
+              "tip": "Say explicitly that true exactly-once is theoretically hard \u2014 'effectively exactly-once via idempotency' is the real-world answer.",
               "difficulty": "Hard"
             }
           ]
@@ -332,6 +431,56 @@
               "difficulty": "Hard"
             }
           ]
+        },
+        {
+          "id": "de-adv-olap",
+          "title": "Real-Time Analytics & OLAP",
+          "summary": "Serving sub-second analytical queries over huge, constantly-updating datasets.",
+          "keyPoints": [
+            "OLAP engines (ClickHouse, Druid, Pinot) are optimized for fast aggregations over large datasets",
+            "Pre-aggregation and materialized views trade storage/compute for query speed",
+            "Real-time ingestion pipelines (Kafka -> OLAP store) keep dashboards near-live",
+            "Star schema / denormalized wide tables reduce expensive joins at query time"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why can't you just point a real-time dashboard at your regular OLTP (transactional) database?",
+              "keywords": [
+                "OLTP",
+                "OLAP",
+                "aggregation",
+                "contention"
+              ],
+              "modelAnswer": "An OLTP database is optimized for many small, fast reads/writes of individual rows (e.g. one order), not large aggregation scans across millions of rows \u2014 running heavy analytical queries against it competes for resources with production transactions and is far slower than a purpose-built OLAP engine designed for that access pattern.",
+              "tip": "Mention CDC (change data capture) as the common bridge to stream OLTP changes into an OLAP store.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "de-adv-cost",
+          "title": "Cost Optimization & Data Platform Scaling",
+          "summary": "Keeping a growing data platform performant without an unbounded cloud bill.",
+          "keyPoints": [
+            "Right-size compute clusters (auto-scaling, spot instances for batch jobs) instead of over-provisioning",
+            "Lifecycle policies move cold data to cheaper storage tiers automatically",
+            "Query cost awareness \u2014 a poorly written query can scan terabytes unnecessarily",
+            "Monitor cost per pipeline/team so growth is visible before it becomes a crisis"
+          ],
+          "interviewQA": [
+            {
+              "question": "A monthly cloud data-warehouse bill has tripled with no proportional increase in data volume. How would you investigate?",
+              "keywords": [
+                "query cost",
+                "full table scan",
+                "cost monitoring",
+                "optimization"
+              ],
+              "modelAnswer": "Check for queries doing full table scans that could use partition pruning or clustering, look for jobs re-processing the same data repeatedly (missing incremental logic), review recently added dashboards/BI tools that might be firing expensive ad-hoc queries, and break down cost by team/pipeline to isolate the source before optimizing.",
+              "tip": "Mention query cost estimation tools (e.g. BigQuery's dry-run) as a proactive prevention measure.",
+              "difficulty": "Hard"
+            }
+          ]
         }
       ]
     }
@@ -356,7 +505,7 @@
     "focus": "System design scenarios centered on moving, storing, and governing data at scale.",
     "topics": [
       "Design a Data Warehouse / Lakehouse architecture (star schema vs data vault, partitioning strategy)",
-      "Design a Real-time Streaming Pipeline (Kafka → Spark/Flink → sink, exactly-once semantics)",
+      "Design a Real-time Streaming Pipeline (Kafka \u2192 Spark/Flink \u2192 sink, exactly-once semantics)",
       "Design a Batch ETL Orchestration system (Airflow DAG design, dependency management, backfills)",
       "Design a Data Lake with governance (schema registry, access control, data catalog)",
       "Design a Change Data Capture (CDC) pipeline (Debezium-style, handling schema drift)",

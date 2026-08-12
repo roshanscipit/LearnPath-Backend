@@ -108,9 +108,59 @@
                 "runtime exception",
                 "api contract"
               ],
-              "modelAnswer": "Use a checked exception when the caller can reasonably be expected to recover from the condition, such as a file not being found or a network timeout — forcing them to handle it is part of the API contract. Use an unchecked (runtime) exception for programming errors like invalid arguments or null references, where forcing every caller to catch it would add noise without real recovery options. Many modern APIs (like Spring) favor unchecked exceptions to avoid verbose try-catch chains.",
+              "modelAnswer": "Use a checked exception when the caller can reasonably be expected to recover from the condition, such as a file not being found or a network timeout \u2014 forcing them to handle it is part of the API contract. Use an unchecked (runtime) exception for programming errors like invalid arguments or null references, where forcing every caller to catch it would add noise without real recovery options. Many modern APIs (like Spring) favor unchecked exceptions to avoid verbose try-catch chains.",
               "tip": "Reference how modern frameworks like Spring lean toward unchecked exceptions.",
               "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "java-basic-strings",
+          "title": "Strings & String Manipulation",
+          "summary": "How Java stores and manipulates text, and why the difference between String, StringBuilder and StringBuffer matters for performance.",
+          "keyPoints": [
+            "String is immutable; every concatenation with + creates a new object",
+            "StringBuilder is mutable and preferred for loops/heavy concatenation (not thread-safe)",
+            "StringBuffer is the synchronized, thread-safe equivalent of StringBuilder",
+            "Common methods: substring, split, trim, replace, equals vs =="
+          ],
+          "interviewQA": [
+            {
+              "question": "Why should you avoid using + to concatenate strings inside a loop?",
+              "keywords": [
+                "immutable",
+                "StringBuilder",
+                "garbage collection",
+                "O(n^2)"
+              ],
+              "modelAnswer": "Since String is immutable, each + creates a brand-new String object and discards the old one, so concatenating n times in a loop is O(n^2) and generates garbage for the collector. Using StringBuilder.append() mutates one internal buffer, making it O(n).",
+              "tip": "Mention that the compiler already optimizes simple literal concatenation, but not loop-based concatenation.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "java-basic-memory",
+          "title": "Java Memory Model Basics (Stack vs Heap)",
+          "summary": "Where Java objects and variables actually live at runtime, and why that matters for bugs like memory leaks and NullPointerExceptions.",
+          "keyPoints": [
+            "Stack stores method call frames and local primitive/reference variables; heap stores actual objects",
+            "Each thread has its own stack, but the heap is shared across all threads",
+            "Objects with no remaining references become eligible for garbage collection",
+            "StackOverflowError vs OutOfMemoryError indicate very different problems"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the difference between a StackOverflowError and an OutOfMemoryError, and what usually causes each?",
+              "keywords": [
+                "stack",
+                "heap",
+                "recursion",
+                "garbage collector"
+              ],
+              "modelAnswer": "A StackOverflowError happens when the call stack exceeds its limit, almost always from unbounded or infinite recursion. An OutOfMemoryError happens when the heap can't allocate more objects, typically from a memory leak (objects that are still referenced but never needed again) or genuinely too much live data.",
+              "tip": "Give a concrete example: a recursive function missing a base case for StackOverflowError, and a growing static List for OutOfMemoryError.",
+              "difficulty": "Easy"
             }
           ]
         }
@@ -166,7 +216,7 @@
                 "atomicity",
                 "mutual exclusion"
               ],
-              "modelAnswer": "'volatile' guarantees visibility — a write by one thread is immediately visible to others — but does not provide atomicity or mutual exclusion, so it's suited for simple flags or single variables read/written independently. 'synchronized' provides both mutual exclusion (only one thread executes the block at a time) and visibility, making it appropriate for compound actions like check-then-act or updating multiple related fields together. Using volatile for a counter increment (i++) would still be unsafe because it's not atomic.",
+              "modelAnswer": "'volatile' guarantees visibility \u2014 a write by one thread is immediately visible to others \u2014 but does not provide atomicity or mutual exclusion, so it's suited for simple flags or single variables read/written independently. 'synchronized' provides both mutual exclusion (only one thread executes the block at a time) and visibility, making it appropriate for compound actions like check-then-act or updating multiple related fields together. Using volatile for a counter increment (i++) would still be unsafe because it's not atomic.",
               "tip": "Use the classic counter i++ example to show why volatile alone isn't enough.",
               "difficulty": "Medium"
             }
@@ -221,6 +271,58 @@
               ],
               "modelAnswer": "PreparedStatement takes parameterized input with placeholders (?), which are sent separately from the SQL text and never interpreted as executable SQL, closing off SQL injection attacks. It's also precompiled by the database, so repeated executions with different parameters are faster than a plain Statement that gets parsed and planned every time. Statement should really only be used for one-off DDL with no user input.",
               "tip": "Lead with the security angle (SQL injection) before performance.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "java-inter-generics",
+          "title": "Generics & Wildcards",
+          "summary": "Type-safe, reusable code without casting, and how bounded wildcards make APIs both flexible and safe.",
+          "keyPoints": [
+            "Generics catch type errors at compile time instead of ClassCastException at runtime",
+            "Bounded types: <T extends Number> restricts T to Number and its subclasses",
+            "Wildcards: ? extends T (read-only producer) vs ? super T (write-only consumer) \u2014 PECS rule",
+            "Type erasure means generic type info isn't available at runtime"
+          ],
+          "interviewQA": [
+            {
+              "question": "Explain the PECS rule (Producer Extends, Consumer Super) with an example.",
+              "keywords": [
+                "wildcard",
+                "extends",
+                "super",
+                "type erasure",
+                "PECS"
+              ],
+              "modelAnswer": "PECS means: if a generic structure only produces (you read from it), use ? extends T; if it only consumes (you write to it), use ? super T. E.g. a copy method 'copy(List<? extends T> src, List<? super T> dest)' can read any subtype of T from src and safely write T into dest.",
+              "tip": "Relate it back to Collections.copy()'s actual signature if you can recall it.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "java-inter-testing",
+          "title": "Unit Testing with JUnit & Mockito",
+          "summary": "Writing isolated, repeatable tests for Java code, and mocking dependencies so tests don't hit real databases or APIs.",
+          "keyPoints": [
+            "JUnit 5 annotations: @Test, @BeforeEach, @AfterEach, @ParameterizedTest",
+            "Assertions: assertEquals, assertThrows, assertTrue with descriptive messages",
+            "Mockito: @Mock creates a fake dependency, when()...thenReturn() stubs behavior, verify() checks interactions",
+            "Test pyramid: many fast unit tests, fewer integration tests, fewest end-to-end tests"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why would you mock a repository/DAO in a service-layer unit test instead of hitting a real database?",
+              "keywords": [
+                "mock",
+                "isolation",
+                "fast",
+                "flaky",
+                "unit test"
+              ],
+              "modelAnswer": "Mocking keeps the test focused on the service's own logic, makes it run in milliseconds instead of seconds, and removes flakiness caused by database state or network availability. Real database interaction belongs in a separate integration test layer.",
+              "tip": "Mention verify(repository).save(any()) to show you also test interactions, not just return values.",
               "difficulty": "Easy"
             }
           ]
@@ -304,7 +406,7 @@
                 "final fields"
               ],
               "modelAnswer": "Constructor injection lets dependencies be declared as final fields, making the object immutable and impossible to construct in an incomplete state, which also makes circular dependencies fail fast at startup instead of silently at runtime. It makes unit testing straightforward since you can pass mocks directly into the constructor without needing a Spring context or reflection. Field injection (@Autowired on a field) hides dependencies, requires a DI framework or reflection to test, and allows objects to exist in a partially-initialized state.",
-              "tip": "Mention that circular dependencies fail loudly at startup with constructor injection — a big plus.",
+              "tip": "Mention that circular dependencies fail loudly at startup with constructor injection \u2014 a big plus.",
               "difficulty": "Medium"
             }
           ]
@@ -330,7 +432,57 @@
                 "orchestration"
               ],
               "modelAnswer": "Instead of a two-phase commit, use the Saga pattern: break the transaction into a sequence of local transactions, each in its own service, with compensating actions defined to undo prior steps if a later step fails. Sagas can be coordinated via choreography (services react to each other's events) for simple flows, or orchestration (a central coordinator calls each step) for more complex flows needing clearer visibility. This trades strong consistency for eventual consistency, which is usually acceptable if the domain and UX account for it.",
-              "tip": "Contrast choreography vs orchestration sagas explicitly — interviewers like this distinction.",
+              "tip": "Contrast choreography vs orchestration sagas explicitly \u2014 interviewers like this distinction.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "java-adv-reactive",
+          "title": "Reactive Programming (Project Reactor)",
+          "summary": "Non-blocking, backpressure-aware programming for high-throughput services, as used in Spring WebFlux.",
+          "keyPoints": [
+            "Mono (0-1 result) and Flux (0-N results) are the two core reactive types",
+            "Operators like map, flatMap, filter build a pipeline that only executes on subscribe()",
+            "Backpressure lets a slow consumer signal a fast producer to slow down instead of overflowing",
+            "Reactive is best for I/O-bound, high-concurrency workloads, not CPU-bound work"
+          ],
+          "interviewQA": [
+            {
+              "question": "What problem does backpressure solve, and how does Reactor handle it by default?",
+              "keywords": [
+                "backpressure",
+                "Flux",
+                "subscriber",
+                "overflow"
+              ],
+              "modelAnswer": "Backpressure prevents a fast producer from overwhelming a slow consumer with more data than it can process, which would otherwise cause unbounded buffering and OutOfMemoryErrors. Reactor's default strategy lets the subscriber request(n) items at a time, so the producer only emits what's been requested.",
+              "tip": "Contrast reactive streams with traditional thread-per-request blocking I/O to show you understand the tradeoff.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "java-adv-perf",
+          "title": "Java Performance Tuning & Profiling",
+          "summary": "Systematically finding and fixing performance bottlenecks in a running JVM application instead of guessing.",
+          "keyPoints": [
+            "Use profilers (JFR, async-profiler, VisualVM) to find real hotspots before optimizing",
+            "JVM flags like -Xms/-Xmx set heap size; -XX:+UseG1GC selects the garbage collector",
+            "Common culprits: excessive object creation, N+1 queries, unindexed DB calls, synchronized contention",
+            "Measure before and after every change \u2014 intuition about 'slow code' is often wrong"
+          ],
+          "interviewQA": [
+            {
+              "question": "A production service's p99 latency suddenly spiked. Walk through how you'd diagnose it.",
+              "keywords": [
+                "profiler",
+                "p99 latency",
+                "thread dump",
+                "GC pauses"
+              ],
+              "modelAnswer": "Check recent deploys/config changes first, then pull a thread dump to see if threads are blocked or stuck in GC, check GC logs for long pauses, and use a profiler or APM tool (e.g. JFR, Datadog) to find which method or downstream call is consuming the extra time under load.",
+              "tip": "Mention correlating the spike with a specific traffic pattern or deploy timestamp.",
               "difficulty": "Hard"
             }
           ]

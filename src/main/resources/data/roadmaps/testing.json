@@ -30,8 +30,8 @@
                 "impact",
                 "urgency"
               ],
-              "modelAnswer": "Severity measures the technical impact of the bug on the system — how badly it breaks functionality, e.g., a crash is high severity. Priority measures how urgently it needs to be fixed relative to business needs and release timelines, which is a separate decision. A cosmetic typo on the homepage might be low severity but high priority right before a big product launch, while a crash in a rarely-used admin feature might be high severity but low priority if it's not blocking most users. The two don't always correlate, which is a common point of confusion.",
-              "tip": "Give the mismatched example (low severity/high priority typo) — it's the clearest way to show real understanding.",
+              "modelAnswer": "Severity measures the technical impact of the bug on the system \u2014 how badly it breaks functionality, e.g., a crash is high severity. Priority measures how urgently it needs to be fixed relative to business needs and release timelines, which is a separate decision. A cosmetic typo on the homepage might be low severity but high priority right before a big product launch, while a crash in a rarely-used admin feature might be high severity but low priority if it's not blocking most users. The two don't always correlate, which is a common point of confusion.",
+              "tip": "Give the mismatched example (low severity/high priority typo) \u2014 it's the clearest way to show real understanding.",
               "difficulty": "Easy"
             }
           ]
@@ -57,7 +57,7 @@
                 "off-by-one"
               ],
               "modelAnswer": "Boundary value analysis focuses testing effort at the edges of the valid range, since off-by-one errors are the most common bugs there. For an 18-65 range, I'd test: 17 (just below minimum, should be rejected), 18 (minimum, should be accepted), 19 (just above minimum, should be accepted), 64 (just below maximum, accepted), 65 (maximum, accepted), and 66 (just above maximum, should be rejected). This gives strong coverage with only six test cases instead of testing every possible value, based on the principle that bugs cluster at boundaries rather than in the middle of a valid range.",
-              "tip": "List the exact boundary values (17,18,19...64,65,66) — precision matters in this answer.",
+              "tip": "List the exact boundary values (17,18,19...64,65,66) \u2014 precision matters in this answer.",
               "difficulty": "Easy"
             }
           ]
@@ -81,7 +81,7 @@
                 "cost of defects",
                 "requirements review"
               ],
-              "modelAnswer": "Shift-left testing means involving QA activities earlier in the development lifecycle — reviewing requirements and designs, writing test cases before code is even complete, and testing continuously during development rather than only after the build is 'done'. It's valuable because the cost of fixing a defect grows dramatically the later it's found: a requirements ambiguity caught in a design review costs almost nothing to fix, while the same ambiguity discovered as a bug in production can require significant rework, hotfixes, and customer impact. It also gives QA more context and lead time to design better, more targeted tests.",
+              "modelAnswer": "Shift-left testing means involving QA activities earlier in the development lifecycle \u2014 reviewing requirements and designs, writing test cases before code is even complete, and testing continuously during development rather than only after the build is 'done'. It's valuable because the cost of fixing a defect grows dramatically the later it's found: a requirements ambiguity caught in a design review costs almost nothing to fix, while the same ambiguity discovered as a bug in production can require significant rework, hotfixes, and customer impact. It also gives QA more context and lead time to design better, more targeted tests.",
               "tip": "The 'cost of defects grows over time' framing is the classic justification interviewers expect.",
               "difficulty": "Easy"
             }
@@ -107,8 +107,58 @@
                 "environment details",
                 "evidence"
               ],
-              "modelAnswer": "An actionable bug report has a clear, specific title (not 'app broken'), precise numbered steps to reproduce the issue from a known starting state, the expected result versus the actual result observed, and environment details like browser/OS/app version/test data used, since many bugs are environment-specific. Including evidence — a screenshot, screen recording, or relevant log/error message — removes ambiguity and lets the developer see exactly what happened instead of relying on a possibly incomplete description. Reports missing these details usually bounce back with 'can't reproduce' or 'need more info', wasting a full round trip of communication.",
-              "tip": "Emphasize that vague reports cost a full communication round-trip — that's the real-world cost interviewers want you to understand.",
+              "modelAnswer": "An actionable bug report has a clear, specific title (not 'app broken'), precise numbered steps to reproduce the issue from a known starting state, the expected result versus the actual result observed, and environment details like browser/OS/app version/test data used, since many bugs are environment-specific. Including evidence \u2014 a screenshot, screen recording, or relevant log/error message \u2014 removes ambiguity and lets the developer see exactly what happened instead of relying on a possibly incomplete description. Reports missing these details usually bounce back with 'can't reproduce' or 'need more info', wasting a full round trip of communication.",
+              "tip": "Emphasize that vague reports cost a full communication round-trip \u2014 that's the real-world cost interviewers want you to understand.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "test-basic-bva",
+          "title": "Boundary Value & Equivalence Partitioning",
+          "summary": "Two of the most effective black-box techniques for choosing a small but high-coverage set of test cases.",
+          "keyPoints": [
+            "Equivalence partitioning groups inputs into classes expected to behave the same way",
+            "Boundary value analysis tests the edges of those classes, where bugs cluster (off-by-one errors)",
+            "For a range 1-100: test 0, 1, 100, 101 \u2014 just outside and just inside each boundary",
+            "These techniques drastically reduce test cases needed vs testing every possible input"
+          ],
+          "interviewQA": [
+            {
+              "question": "For an age field accepting 18-65, which boundary values would you test and why?",
+              "keywords": [
+                "boundary value",
+                "17",
+                "18",
+                "65",
+                "66"
+              ],
+              "modelAnswer": "Test 17 (just below, should be rejected), 18 (lower boundary, should be accepted), 65 (upper boundary, should be accepted), and 66 (just above, should be rejected). Off-by-one bugs almost always live exactly at these boundaries, so they give the highest bug-detection value per test case.",
+              "tip": "Mention you'd also test a mid-range value like 30 as a sanity check for the 'normal' case.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "test-basic-docs",
+          "title": "Test Documentation & Traceability Matrix",
+          "summary": "Making sure every requirement actually has test coverage, and that coverage is provable to stakeholders/auditors.",
+          "keyPoints": [
+            "A Requirements Traceability Matrix (RTM) maps each requirement to the test case(s) covering it",
+            "Test case documentation: preconditions, steps, expected result, actual result, status",
+            "Traceability makes gaps visible \u2014 a requirement with zero linked test cases is a red flag",
+            "Good documentation lets any tester rerun a case consistently, not just its original author"
+          ],
+          "interviewQA": [
+            {
+              "question": "What problem does a Requirements Traceability Matrix solve that a plain test case list doesn't?",
+              "keywords": [
+                "traceability matrix",
+                "coverage gap",
+                "requirement"
+              ],
+              "modelAnswer": "A plain test case list shows what's being tested but not what isn't. An RTM explicitly maps every requirement to its covering test case(s), so you can immediately spot a requirement with no linked tests \u2014 a coverage gap that's easy to miss otherwise, especially as a project grows.",
+              "tip": "Mention it's also valuable during impact analysis: when a requirement changes, the RTM shows exactly which tests to re-run.",
               "difficulty": "Easy"
             }
           ]
@@ -138,8 +188,8 @@
                 "flaky tests",
                 "expected conditions"
               ],
-              "modelAnswer": "Thread.sleep() pauses execution for a fixed duration regardless of whether the page is actually ready, which makes tests either unnecessarily slow (waiting longer than needed) or still flaky (not waiting long enough on a slow load). An explicit wait (WebDriverWait with ExpectedConditions) polls the DOM repeatedly up to a maximum timeout, proceeding as soon as the actual condition is met — like an element becoming clickable or visible — which makes tests both faster on average and more reliable, since they adapt to real page load timing instead of guessing a fixed delay.",
-              "tip": "Frame it as 'adapts to real timing' vs 'guesses a fixed delay' — that's the core distinction.",
+              "modelAnswer": "Thread.sleep() pauses execution for a fixed duration regardless of whether the page is actually ready, which makes tests either unnecessarily slow (waiting longer than needed) or still flaky (not waiting long enough on a slow load). An explicit wait (WebDriverWait with ExpectedConditions) polls the DOM repeatedly up to a maximum timeout, proceeding as soon as the actual condition is met \u2014 like an element becoming clickable or visible \u2014 which makes tests both faster on average and more reliable, since they adapt to real page load timing instead of guessing a fixed delay.",
+              "tip": "Frame it as 'adapts to real timing' vs 'guesses a fixed delay' \u2014 that's the core distinction.",
               "difficulty": "Medium"
             }
           ]
@@ -165,7 +215,7 @@
                 "execution speed"
               ],
               "modelAnswer": "API tests bypass the UI entirely, hitting the backend directly, so they run much faster (no browser rendering, no waiting for animations/page loads) and are far less flaky, since they aren't affected by UI changes, CSS timing issues, or unrelated front-end refactors. This aligns with the testing pyramid principle: you want a large base of fast, stable unit/API tests and only a thin layer of slower, more brittle UI tests covering critical end-to-end user flows, rather than relying heavily on UI automation for everything. API tests can also verify backend logic and edge cases that might never even surface distinctly in the UI.",
-              "tip": "Reference the testing pyramid by name — it's a well-known framework interviewers expect familiarity with.",
+              "tip": "Reference the testing pyramid by name \u2014 it's a well-known framework interviewers expect familiarity with.",
               "difficulty": "Medium"
             }
           ]
@@ -190,7 +240,7 @@
                 "test continuation",
                 "multiple checks"
               ],
-              "modelAnswer": "A hard assertion (the default Assert.assertEquals) immediately stops test execution the moment it fails, meaning any subsequent checks in that test never run. A soft assertion collects failures as they occur but lets the test keep executing, only reporting all accumulated failures together at the end when you explicitly call assertAll(). Soft assertions are useful when you're validating multiple independent fields on a single page or response and want visibility into all failures in one run, rather than fixing one, rerunning, discovering the next failure, and repeating — a slow feedback loop hard assertions force on multi-field validation.",
+              "modelAnswer": "A hard assertion (the default Assert.assertEquals) immediately stops test execution the moment it fails, meaning any subsequent checks in that test never run. A soft assertion collects failures as they occur but lets the test keep executing, only reporting all accumulated failures together at the end when you explicitly call assertAll(). Soft assertions are useful when you're validating multiple independent fields on a single page or response and want visibility into all failures in one run, rather than fixing one, rerunning, discovering the next failure, and repeating \u2014 a slow feedback loop hard assertions force on multi-field validation.",
               "tip": "Give the concrete use case: validating multiple fields on one page/response in a single run.",
               "difficulty": "Medium"
             }
@@ -216,8 +266,57 @@
                 "retry logic",
                 "test reliability"
               ],
-              "modelAnswer": "First, don't just add a blind retry to hide the symptom — investigate the root cause, since flakiness is usually caused by timing issues (missing explicit waits), test interdependency (tests sharing state or running order-dependent), or environment instability. If it can't be fixed immediately, quarantine it — remove it from the blocking pipeline into a separate, non-blocking suite that's still tracked and monitored — rather than letting it repeatedly block unrelated PRs and eroding the team's trust in the whole suite, which eventually leads to people ignoring all failures. Track quarantined tests with an owner and a deadline so they don't quietly rot forever.",
+              "modelAnswer": "First, don't just add a blind retry to hide the symptom \u2014 investigate the root cause, since flakiness is usually caused by timing issues (missing explicit waits), test interdependency (tests sharing state or running order-dependent), or environment instability. If it can't be fixed immediately, quarantine it \u2014 remove it from the blocking pipeline into a separate, non-blocking suite that's still tracked and monitored \u2014 rather than letting it repeatedly block unrelated PRs and eroding the team's trust in the whole suite, which eventually leads to people ignoring all failures. Track quarantined tests with an owner and a deadline so they don't quietly rot forever.",
               "tip": "The 'don't just retry-hide it, investigate root cause, and quarantine with ownership' answer shows maturity beyond a quick fix.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "test-inter-bdd",
+          "title": "Behavior-Driven Development (BDD) with Cucumber",
+          "summary": "Writing tests as executable, business-readable specifications shared between QA, devs, and product.",
+          "keyPoints": [
+            "Gherkin syntax: Given (setup), When (action), Then (expected outcome)",
+            "Feature files describe behavior in plain language; step definitions implement the automation behind them",
+            "BDD encourages collaboration between QA, devs and product on defining 'done' before coding starts",
+            "Overuse can create maintenance burden \u2014 reserve BDD for high-value, business-critical flows"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the actual benefit of writing Given/When/Then scenarios instead of a normal automated test script?",
+              "keywords": [
+                "Gherkin",
+                "living documentation",
+                "collaboration"
+              ],
+              "modelAnswer": "Given/When/Then scenarios are readable by non-technical stakeholders (product, business), so they can review and agree on expected behavior before it's built, turning the test suite into 'living documentation' that stays in sync with actual behavior \u2014 unlike a spec doc that drifts out of date.",
+              "tip": "Acknowledge the tradeoff: BDD adds an abstraction layer (step definitions) that itself needs maintenance.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "test-inter-dbtest",
+          "title": "Database Testing & Test Data Management",
+          "summary": "Verifying data integrity and having reliable, realistic test data without touching real production data.",
+          "keyPoints": [
+            "Verify data at rest: correct values, referential integrity, no orphaned rows after operations",
+            "Test data should be realistic in volume/shape but never real production PII",
+            "Data masking/anonymization or synthetic data generation for lower environments",
+            "Reset/seed scripts make tests repeatable instead of depending on leftover state"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is it risky to use a copy of production data directly in a test/staging environment?",
+              "keywords": [
+                "PII",
+                "data masking",
+                "compliance",
+                "test data"
+              ],
+              "modelAnswer": "Production data often contains real personal or sensitive information (PII); copying it into a less-secured lower environment can violate privacy regulations (GDPR, etc.) and expand your exposure if that environment is breached. Masking, anonymizing, or generating synthetic data with the same shape avoids this risk while still testing realistically.",
+              "tip": "Mention referential integrity \u2014 masked data still needs to satisfy foreign key relationships to be useful.",
               "difficulty": "Medium"
             }
           ]
@@ -247,8 +346,8 @@
                 "tail latency",
                 "outliers"
               ],
-              "modelAnswer": "Average response time can be misleading because it's easily skewed by a large number of fast requests masking a smaller but significant number of very slow ones — a system could have a great average while still frustrating 5% of users with terrible experiences. p95/p99 latency tells you the response time that 95%/99% of requests fall under, directly capturing that 'tail' of slow requests which are often the ones that matter most for user experience and SLAs, especially since a single user session typically makes many requests, so even a 1% slow-request rate compounds into a noticeably bad experience for many users over a session.",
-              "tip": "Mention that tail latency compounds across a multi-request user session — a subtle but important point.",
+              "modelAnswer": "Average response time can be misleading because it's easily skewed by a large number of fast requests masking a smaller but significant number of very slow ones \u2014 a system could have a great average while still frustrating 5% of users with terrible experiences. p95/p99 latency tells you the response time that 95%/99% of requests fall under, directly capturing that 'tail' of slow requests which are often the ones that matter most for user experience and SLAs, especially since a single user session typically makes many requests, so even a 1% slow-request rate compounds into a noticeably bad experience for many users over a session.",
+              "tip": "Mention that tail latency compounds across a multi-request user session \u2014 a subtle but important point.",
               "difficulty": "Hard"
             }
           ]
@@ -273,8 +372,8 @@
                 "critical path",
                 "prioritization"
               ],
-              "modelAnswer": "Risk-based testing prioritizes test effort based on the combination of business impact (how bad is it if this breaks — revenue, core user flow, compliance) and likelihood of failure (how complex or recently changed is this area of code). I'd focus first on critical paths with high impact and recent changes — e.g., checkout or authentication flows that were just modified — deprioritizing low-traffic, stable, low-impact areas that haven't changed. This maximizes defect-finding value per hour of testing when time is constrained, rather than trying to spread thin coverage evenly across everything and missing the areas that actually matter most.",
-              "tip": "Explicitly define both axes — impact AND likelihood — not just 'test the important stuff'.",
+              "modelAnswer": "Risk-based testing prioritizes test effort based on the combination of business impact (how bad is it if this breaks \u2014 revenue, core user flow, compliance) and likelihood of failure (how complex or recently changed is this area of code). I'd focus first on critical paths with high impact and recent changes \u2014 e.g., checkout or authentication flows that were just modified \u2014 deprioritizing low-traffic, stable, low-impact areas that haven't changed. This maximizes defect-finding value per hour of testing when time is constrained, rather than trying to spread thin coverage evenly across everything and missing the areas that actually matter most.",
+              "tip": "Explicitly define both axes \u2014 impact AND likelihood \u2014 not just 'test the important stuff'.",
               "difficulty": "Hard"
             }
           ]
@@ -300,7 +399,7 @@
                 "hardware behavior"
               ],
               "modelAnswer": "Emulators/simulators are fast, cheap, and easy to spin up in CI, making them good for quick smoke tests and early development feedback, but they can't fully replicate real hardware behavior like actual network conditions, battery/thermal throttling, camera/sensor hardware, or manufacturer-specific OS customizations (especially on Android). Real devices catch issues emulators miss but are expensive and harder to scale in CI, which is why teams often use a device farm (BrowserStack, Sauce Labs, AWS Device Farm) to get real-device coverage without owning a large physical device lab, reserving the most critical release-gating tests for real devices while using emulators for rapid day-to-day feedback.",
-              "tip": "Mention device farms by name — shows awareness of how real teams solve the cost/coverage trade-off.",
+              "tip": "Mention device farms by name \u2014 shows awareness of how real teams solve the cost/coverage trade-off.",
               "difficulty": "Medium"
             }
           ]
@@ -327,6 +426,56 @@
               ],
               "modelAnswer": "Even without deep security expertise, QA can meaningfully cover: input validation testing (trying script tags, SQL-like strings, oversized inputs in every text field to check for injection/XSS handling), authorization boundary testing (verifying User A truly cannot access User B's data by directly manipulating IDs/URLs, not just relying on the UI hiding the option), and checking that error messages don't leak sensitive internal details like stack traces or database structure. These map to common items in the OWASP Top 10 (injection, broken access control) and catch a meaningful share of real-world vulnerabilities without needing formal penetration testing skills.",
               "tip": "The authorization boundary check (User A accessing User B's data via direct ID manipulation) is a concrete example interviewers love to hear.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "test-adv-contract",
+          "title": "Contract Testing (Pact)",
+          "summary": "Verifying that a service and its consumers agree on an API contract without needing a full end-to-end environment.",
+          "keyPoints": [
+            "Consumer-driven contracts: the consumer defines what it expects, the provider verifies it can deliver that",
+            "Pact broker stores contracts and tracks which provider versions satisfy which consumer expectations",
+            "Runs fast and independently \u2014 no need to spin up every service together like true E2E tests",
+            "Catches breaking API changes before they reach a shared staging/integration environment"
+          ],
+          "interviewQA": [
+            {
+              "question": "How does contract testing catch breaking changes earlier than end-to-end tests would?",
+              "keywords": [
+                "contract testing",
+                "consumer-driven",
+                "CI",
+                "breaking change"
+              ],
+              "modelAnswer": "Contract tests run per-service in CI against a stored contract, not against real deployed dependencies, so a provider team gets immediate feedback the moment they make a breaking change \u2014 well before code reaches a shared integration environment where E2E tests (which require every service actually deployed together) would eventually catch it, often much later and more expensively.",
+              "tip": "Mention it scales much better than E2E in microservice architectures with many services.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "test-adv-architecture",
+          "title": "Test Automation Architecture & Framework Design",
+          "summary": "Designing a test automation framework that scales with a growing codebase and team instead of becoming unmaintainable.",
+          "keyPoints": [
+            "Layered architecture: test cases -> business/domain layer -> Page Objects/API clients -> driver/raw calls",
+            "Data-driven design separates test logic from test data for easy scaling of scenarios",
+            "Reusable utilities (waits, reporting, retries) prevent duplicated boilerplate across tests",
+            "Framework choices should match team skill and CI constraints, not just what's trendy"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the risk of NOT using a layered architecture (e.g. raw Selenium calls directly in test methods)?",
+              "keywords": [
+                "Page Object Model",
+                "maintainability",
+                "duplication",
+                "brittle tests"
+              ],
+              "modelAnswer": "Without a layer like Page Objects between test logic and raw driver calls, a single UI change (e.g. a renamed button ID) can require editing dozens of test files that each hardcode that locator, since there's no single place to fix it. This makes the suite brittle and expensive to maintain as it grows.",
+              "tip": "Mention this is essentially applying the DRY principle and separation of concerns to test code.",
               "difficulty": "Hard"
             }
           ]

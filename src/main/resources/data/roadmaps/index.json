@@ -10,7 +10,7 @@
         "AppSec"
       ],
       "file": "cybersecurity.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -27,7 +27,7 @@
         "ML Ops"
       ],
       "file": "data-engineer.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -44,7 +44,7 @@
         "Multi-Cloud"
       ],
       "file": "devops.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -60,7 +60,7 @@
         "Frontend"
       ],
       "file": "dotnet.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -76,7 +76,7 @@
         "Frontend"
       ],
       "file": "java.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -93,7 +93,7 @@
         "Flutter"
       ],
       "file": "mobile.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -110,7 +110,7 @@
         "Automation"
       ],
       "file": "python.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -126,7 +126,7 @@
         "Architect"
       ],
       "file": "salesforce.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -143,7 +143,7 @@
         "S/4HANA"
       ],
       "file": "sap.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -159,7 +159,7 @@
         "Performance"
       ],
       "file": "testing.json",
-      "topicCount": 12,
+      "topicCount": 18,
       "levels": [
         "Basic",
         "Intermediate",
@@ -168,5 +168,5 @@
     }
   ],
   "totalModules": 10,
-  "totalTopics": 120
+  "totalTopics": 180
 }

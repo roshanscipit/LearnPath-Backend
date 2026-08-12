@@ -1,7 +1,12 @@
 {
   "moduleId": "sap",
   "moduleName": "SAP Consultant",
-  "variants": ["SAP MM", "SAP SD", "SAP ABAP", "S/4HANA"],
+  "variants": [
+    "SAP MM",
+    "SAP SD",
+    "SAP ABAP",
+    "S/4HANA"
+  ],
   "levels": [
     {
       "level": "Basic",
@@ -19,9 +24,15 @@
           "interviewQA": [
             {
               "question": "What is the fundamental difference between SAP ECC and SAP S/4HANA?",
-              "keywords": ["s/4hana", "ecc", "in-memory database", "simplified data model", "hana"],
-              "modelAnswer": "SAP ECC runs on traditional relational databases (Oracle, SQL Server, etc.) with aggregate tables and indexes to speed up reporting, while S/4HANA runs exclusively on SAP's own in-memory HANA database, which processes data directly in RAM and eliminates the need for many of those redundant aggregate/index tables entirely, since HANA can aggregate on the fly at high speed. This also enabled a simplified data model in S/4HANA — for example, the Universal Journal (table ACDOCA) merges what used to be separate FI and CO tables into one unified structure — plus a modern Fiori-based UI replacing the older SAP GUI transaction-code-driven interface as the primary way users interact with the system.",
-              "tip": "Mention the Universal Journal (ACDOCA) by name — it's the single most cited concrete example of S/4HANA's simplification.",
+              "keywords": [
+                "s/4hana",
+                "ecc",
+                "in-memory database",
+                "simplified data model",
+                "hana"
+              ],
+              "modelAnswer": "SAP ECC runs on traditional relational databases (Oracle, SQL Server, etc.) with aggregate tables and indexes to speed up reporting, while S/4HANA runs exclusively on SAP's own in-memory HANA database, which processes data directly in RAM and eliminates the need for many of those redundant aggregate/index tables entirely, since HANA can aggregate on the fly at high speed. This also enabled a simplified data model in S/4HANA \u2014 for example, the Universal Journal (table ACDOCA) merges what used to be separate FI and CO tables into one unified structure \u2014 plus a modern Fiori-based UI replacing the older SAP GUI transaction-code-driven interface as the primary way users interact with the system.",
+              "tip": "Mention the Universal Journal (ACDOCA) by name \u2014 it's the single most cited concrete example of S/4HANA's simplification.",
               "difficulty": "Easy"
             }
           ]
@@ -39,9 +50,15 @@
           "interviewQA": [
             {
               "question": "What is a 'Company Code' in SAP, and why is it a foundational organizational element?",
-              "keywords": ["company code", "legal entity", "financial statements", "organizational structure", "client"],
-              "modelAnswer": "A Company Code represents an independent legal entity for which a complete, self-contained set of financial statements (balance sheet, P&L) can be produced — it's the smallest organizational unit in SAP at which external financial reporting is legally required. Nearly every other organizational element (Plant, Sales Organization, Purchasing Organization) is ultimately assigned to one or more Company Codes, and financial postings (like a vendor invoice or asset depreciation) always belong to exactly one Company Code, making it the central anchor point around which the whole organizational structure and financial reporting hierarchy is built.",
-              "tip": "Emphasize that Company Code = the unit for legal financial reporting — that's the defining characteristic.",
+              "keywords": [
+                "company code",
+                "legal entity",
+                "financial statements",
+                "organizational structure",
+                "client"
+              ],
+              "modelAnswer": "A Company Code represents an independent legal entity for which a complete, self-contained set of financial statements (balance sheet, P&L) can be produced \u2014 it's the smallest organizational unit in SAP at which external financial reporting is legally required. Nearly every other organizational element (Plant, Sales Organization, Purchasing Organization) is ultimately assigned to one or more Company Codes, and financial postings (like a vendor invoice or asset depreciation) always belong to exactly one Company Code, making it the central anchor point around which the whole organizational structure and financial reporting hierarchy is built.",
+              "tip": "Emphasize that Company Code = the unit for legal financial reporting \u2014 that's the defining characteristic.",
               "difficulty": "Easy"
             }
           ]
@@ -59,9 +76,15 @@
           "interviewQA": [
             {
               "question": "Why does the Material Master record have multiple 'views' (like Basic Data, Purchasing, Sales, Accounting)?",
-              "keywords": ["material master", "views", "cross-module data", "modular master data", "organizational level"],
-              "modelAnswer": "A single material (like a raw component or finished product) is relevant to many different business processes — purchasing needs procurement-related data, sales needs pricing and delivery data, accounting needs valuation data — and each department only needs to see and maintain the fields relevant to their function rather than one overwhelming combined screen. The Material Master is therefore split into views (Basic Data, Purchasing, Sales, MRP, Accounting, etc.), many of which are also maintained at different organizational levels (e.g., Purchasing view per Plant, Sales view per Sales Organization/Distribution Channel), so the same material can have different attributes depending on which part of the organization is looking at it.",
-              "tip": "Mention that views are also maintained at different organizational levels (per Plant, per Sales Org) — that's the deeper technical nuance.",
+              "keywords": [
+                "material master",
+                "views",
+                "cross-module data",
+                "modular master data",
+                "organizational level"
+              ],
+              "modelAnswer": "A single material (like a raw component or finished product) is relevant to many different business processes \u2014 purchasing needs procurement-related data, sales needs pricing and delivery data, accounting needs valuation data \u2014 and each department only needs to see and maintain the fields relevant to their function rather than one overwhelming combined screen. The Material Master is therefore split into views (Basic Data, Purchasing, Sales, MRP, Accounting, etc.), many of which are also maintained at different organizational levels (e.g., Purchasing view per Plant, Sales view per Sales Organization/Distribution Channel), so the same material can have different attributes depending on which part of the organization is looking at it.",
+              "tip": "Mention that views are also maintained at different organizational levels (per Plant, per Sales Org) \u2014 that's the deeper technical nuance.",
               "difficulty": "Medium"
             }
           ]
@@ -79,10 +102,64 @@
           "interviewQA": [
             {
               "question": "What are the four basic steps of the Procure-to-Pay process in SAP MM?",
-              "keywords": ["purchase requisition", "purchase order", "goods receipt", "invoice verification", "procure-to-pay"],
+              "keywords": [
+                "purchase requisition",
+                "purchase order",
+                "goods receipt",
+                "invoice verification",
+                "procure-to-pay"
+              ],
               "modelAnswer": "It starts with a Purchase Requisition (PR), an internal request to procure a material or service, which is then converted into a Purchase Order (PO) sent to a chosen vendor. When the goods physically arrive, a Goods Receipt (GR) is posted, which increases inventory stock and automatically triggers an accounting entry (debiting inventory, crediting a GR/IR clearing account). Finally, Invoice Verification (MIRO) matches the vendor's invoice against the PO and GR (a three-way match) before the vendor is paid, closing out the GR/IR clearing account and creating the vendor payable.",
-              "tip": "Mention the GR/IR clearing account and three-way match — these are the concrete accounting mechanics interviewers listen for.",
+              "tip": "Mention the GR/IR clearing account and three-way match \u2014 these are the concrete accounting mechanics interviewers listen for.",
               "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sap-basic-fi",
+          "title": "SAP FI (Financial Accounting) Basics",
+          "summary": "The core financial accounting module that records and reports on an organization's financial transactions.",
+          "keyPoints": [
+            "General Ledger (G/L) records all financial transactions at the company code level",
+            "Accounts Payable (A/P) and Accounts Receivable (A/R) track vendor and customer transactions",
+            "Chart of accounts defines the structure of G/L accounts used across the organization",
+            "FI integrates tightly with MM (purchasing) and SD (sales) \u2014 a goods receipt or invoice posts automatically to FI"
+          ],
+          "interviewQA": [
+            {
+              "question": "How does a purchase order in SAP MM eventually create a posting in FI?",
+              "keywords": [
+                "MM-FI integration",
+                "goods receipt",
+                "invoice verification"
+              ],
+              "modelAnswer": "When goods are received against a purchase order (MIGO), SAP posts an automatic FI entry debiting inventory/expense; when the vendor invoice is verified (MIRO) and matched against the PO and goods receipt, another FI entry posts to Accounts Payable \u2014 this MM-FI integration means most postings happen automatically as a byproduct of the logistics process, not manual journal entries.",
+              "tip": "Mention the three-way match (PO, goods receipt, invoice) as the control mechanism preventing incorrect payments.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sap-basic-tcodes",
+          "title": "Transaction Codes & Reporting Basics",
+          "summary": "The shortcuts and reporting tools SAP consultants use daily to navigate and extract business insight.",
+          "keyPoints": [
+            "Transaction codes (T-codes) like ME21N (create PO), VA01 (create sales order) launch specific screens directly",
+            "SE16N/SE11 let you inspect underlying table data and structure (useful for troubleshooting)",
+            "Standard reports vs custom ABAP reports (via SE38/SQVI) for ad-hoc analysis",
+            "Favorites and custom menus help consultants navigate their frequently-used T-codes efficiently"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why would a functional consultant use SE16N to look at a table directly instead of just trusting the UI screen?",
+              "keywords": [
+                "SE16N",
+                "table data",
+                "troubleshooting"
+              ],
+              "modelAnswer": "SE16N lets you inspect the raw underlying data exactly as stored, which is invaluable when troubleshooting a discrepancy \u2014 e.g. confirming whether a field genuinely has no value versus a UI display/authorization issue hiding it, or verifying data before/after a transport or data load without relying on a transaction screen that might apply its own logic or filtering.",
+              "tip": "Mention this is also commonly used to validate data migration results during a cutover.",
+              "difficulty": "Easy"
             }
           ]
         }
@@ -104,7 +181,13 @@
           "interviewQA": [
             {
               "question": "What happens when there's a price variance between the Purchase Order and the vendor's invoice during Invoice Verification (MIRO)?",
-              "keywords": ["price variance", "invoice verification", "tolerance limits", "block invoice", "miro"],
+              "keywords": [
+                "price variance",
+                "invoice verification",
+                "tolerance limits",
+                "block invoice",
+                "miro"
+              ],
               "modelAnswer": "SAP compares the invoice amount against the PO price and Goods Receipt quantity, and if the variance falls within configured tolerance limits (a percentage or absolute amount threshold), it can post automatically; if it exceeds tolerance, the invoice is blocked for payment pending manual review, rather than being rejected outright. Depending on configuration, this can trigger a workflow for approval, or require Accounts Payable to investigate the discrepancy with procurement/the vendor before releasing the block, which prevents overpayment while still allowing minor, expected variances (like small freight adjustments) to flow through without manual intervention every time.",
               "tip": "Mentioning configurable tolerance limits (not a hard block on any variance) shows practical process knowledge.",
               "difficulty": "Medium"
@@ -124,9 +207,15 @@
           "interviewQA": [
             {
               "question": "What is an Availability Check (ATP) in SAP SD, and why does it matter when creating a sales order?",
-              "keywords": ["atp", "available to promise", "stock check", "confirmed quantity", "delivery date"],
-              "modelAnswer": "An Availability Check (ATP - Available to Promise) runs automatically when a sales order line item is entered, checking current stock, planned receipts (incoming POs/production orders), and existing reservations against other open orders to determine whether — and when — the requested quantity can actually be delivered. This matters because promising a delivery date the business can't actually meet damages customer trust and creates downstream fulfillment problems; ATP gives sales reps a realistic confirmed quantity and date at the moment of order entry, potentially proposing a partial delivery or a later date if full stock isn't available, rather than discovering the shortfall only when the warehouse tries to fulfill it.",
-              "tip": "Emphasize that ATP prevents overpromising delivery dates — that's the real business value, not just a technical check.",
+              "keywords": [
+                "atp",
+                "available to promise",
+                "stock check",
+                "confirmed quantity",
+                "delivery date"
+              ],
+              "modelAnswer": "An Availability Check (ATP - Available to Promise) runs automatically when a sales order line item is entered, checking current stock, planned receipts (incoming POs/production orders), and existing reservations against other open orders to determine whether \u2014 and when \u2014 the requested quantity can actually be delivered. This matters because promising a delivery date the business can't actually meet damages customer trust and creates downstream fulfillment problems; ATP gives sales reps a realistic confirmed quantity and date at the moment of order entry, potentially proposing a partial delivery or a later date if full stock isn't available, rather than discovering the shortfall only when the warehouse tries to fulfill it.",
+              "tip": "Emphasize that ATP prevents overpromising delivery dates \u2014 that's the real business value, not just a technical check.",
               "difficulty": "Medium"
             }
           ]
@@ -144,9 +233,15 @@
           "interviewQA": [
             {
               "question": "Why does SAP recommend using BAdIs (Business Add-Ins) rather than directly modifying standard SAP code?",
-              "keywords": ["badi", "user exit", "standard code modification", "upgrade safety", "clean core"],
-              "modelAnswer": "Directly modifying SAP's standard delivered code creates a 'modification' that SAP's upgrade process has to specifically handle and potentially re-apply after every system upgrade or support pack, which is risky, time-consuming, and can silently break during upgrades if not carefully managed. BAdIs (and older user exits) are predefined extension points that SAP explicitly built into standard programs specifically for customization, letting you plug in custom logic without touching the original SAP object at all — this keeps custom code cleanly separated from standard code, making upgrades far safer and aligning with the modern 'Clean Core' principle S/4HANA and cloud strategies emphasize.",
-              "tip": "Mention 'Clean Core' by name — it's the current SAP terminology for this exact principle, especially relevant for S/4HANA Cloud.",
+              "keywords": [
+                "badi",
+                "user exit",
+                "standard code modification",
+                "upgrade safety",
+                "clean core"
+              ],
+              "modelAnswer": "Directly modifying SAP's standard delivered code creates a 'modification' that SAP's upgrade process has to specifically handle and potentially re-apply after every system upgrade or support pack, which is risky, time-consuming, and can silently break during upgrades if not carefully managed. BAdIs (and older user exits) are predefined extension points that SAP explicitly built into standard programs specifically for customization, letting you plug in custom logic without touching the original SAP object at all \u2014 this keeps custom code cleanly separated from standard code, making upgrades far safer and aligning with the modern 'Clean Core' principle S/4HANA and cloud strategies emphasize.",
+              "tip": "Mention 'Clean Core' by name \u2014 it's the current SAP terminology for this exact principle, especially relevant for S/4HANA Cloud.",
               "difficulty": "Hard"
             }
           ]
@@ -164,10 +259,65 @@
           "interviewQA": [
             {
               "question": "When a Goods Receipt is posted in MM, how does the system know which G/L accounts to update in FI?",
-              "keywords": ["account determination", "valuation class", "automatic posting", "obyc", "material valuation"],
-              "modelAnswer": "SAP uses account determination configuration (transaction OBYC) that maps combinations of valuation class (assigned to the material), movement type, and transaction event key (like BSX for inventory postings or WRX for GR/IR clearing) to specific General Ledger accounts, so the system doesn't need a human to manually decide which accounts to debit and credit for every single goods movement. This is what makes real-time cross-module integration possible — the Goods Receipt in MM automatically generates a fully balanced FI accounting document behind the scenes without any manual intervention or duplicate data entry, based entirely on this pre-configured mapping.",
+              "keywords": [
+                "account determination",
+                "valuation class",
+                "automatic posting",
+                "obyc",
+                "material valuation"
+              ],
+              "modelAnswer": "SAP uses account determination configuration (transaction OBYC) that maps combinations of valuation class (assigned to the material), movement type, and transaction event key (like BSX for inventory postings or WRX for GR/IR clearing) to specific General Ledger accounts, so the system doesn't need a human to manually decide which accounts to debit and credit for every single goods movement. This is what makes real-time cross-module integration possible \u2014 the Goods Receipt in MM automatically generates a fully balanced FI accounting document behind the scenes without any manual intervention or duplicate data entry, based entirely on this pre-configured mapping.",
               "tip": "Naming OBYC and valuation class specifically shows real configuration-level knowledge, not just conceptual understanding.",
               "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sap-inter-workflow",
+          "title": "SAP Workflow & Approval Processes",
+          "summary": "Automating multi-step business approval processes (e.g. purchase requisition approval) within SAP.",
+          "keyPoints": [
+            "Workflow templates define a sequence of steps triggered by a business event",
+            "Approval workflows route documents to the right approver based on rules (amount thresholds, hierarchy)",
+            "Business Workplace (SBWP) is where users see and act on their pending workflow tasks",
+            "Escalation rules reassign or notify when a task sits unactioned too long"
+          ],
+          "interviewQA": [
+            {
+              "question": "How does an SAP approval workflow typically decide which manager needs to approve a given purchase requisition?",
+              "keywords": [
+                "approval hierarchy",
+                "release strategy",
+                "workflow rules"
+              ],
+              "modelAnswer": "It's usually driven by a release strategy configured with rules based on document value thresholds and organizational hierarchy \u2014 e.g. requisitions under a certain amount auto-approve or go to a direct manager, while larger amounts route through additional approval levels, all configured declaratively rather than hardcoded per document.",
+              "tip": "Mention release strategies specifically as the standard MM configuration mechanism for this in SAP.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "sap-inter-idocs",
+          "title": "IDocs & Interfaces (ALE/EDI)",
+          "summary": "How SAP exchanges structured business documents with other systems, inside and outside the organization.",
+          "keyPoints": [
+            "IDocs are SAP's standard structured format for exchanging business documents (orders, invoices, master data)",
+            "ALE (Application Link Enabling) handles distributing data between SAP systems",
+            "EDI (Electronic Data Interchange) uses IDocs to exchange documents with external trading partners",
+            "WE02/WE05 let you monitor and troubleshoot IDoc processing status and errors"
+          ],
+          "interviewQA": [
+            {
+              "question": "An IDoc has a status showing an error. What's your general troubleshooting approach?",
+              "keywords": [
+                "IDoc status",
+                "WE02",
+                "error segment",
+                "reprocessing"
+              ],
+              "modelAnswer": "Check the IDoc's status record and error segment in WE02/WE05 to see the specific error message and which segment/field triggered it, verify the partner profile and message type configuration are correct, fix the root cause (often a mapping or master data issue), and reprocess the IDoc rather than resending a fresh duplicate.",
+              "tip": "Mention that repeated failures on the same field often point to a partner profile or mapping configuration issue, not a one-off data problem.",
+              "difficulty": "Medium"
             }
           ]
         }
@@ -189,8 +339,14 @@
           "interviewQA": [
             {
               "question": "What is the 'Clean Core' strategy, and why does SAP BTP play a central role in it?",
-              "keywords": ["clean core", "side-by-side extension", "upgrade friction", "sap btp", "in-app extensibility"],
-              "modelAnswer": "Clean Core means keeping the S/4HANA core system as close to SAP's standard, unmodified delivery as possible — avoiding custom code and modifications embedded directly in the core — so that upgrades, especially frequent cloud release cycles, can be applied smoothly without breaking custom functionality or requiring lengthy regression testing of core modifications. SAP BTP enables this by providing a separate platform for 'side-by-side' extensions — custom applications, integrations, and automations that consume S/4HANA's APIs and events but run entirely outside the core system — so custom business logic lives in a decoupled, independently upgradable layer instead of tangled into the ERP core itself.",
+              "keywords": [
+                "clean core",
+                "side-by-side extension",
+                "upgrade friction",
+                "sap btp",
+                "in-app extensibility"
+              ],
+              "modelAnswer": "Clean Core means keeping the S/4HANA core system as close to SAP's standard, unmodified delivery as possible \u2014 avoiding custom code and modifications embedded directly in the core \u2014 so that upgrades, especially frequent cloud release cycles, can be applied smoothly without breaking custom functionality or requiring lengthy regression testing of core modifications. SAP BTP enables this by providing a separate platform for 'side-by-side' extensions \u2014 custom applications, integrations, and automations that consume S/4HANA's APIs and events but run entirely outside the core system \u2014 so custom business logic lives in a decoupled, independently upgradable layer instead of tangled into the ERP core itself.",
               "tip": "The key phrase interviewers listen for is 'side-by-side extension' as the alternative to in-core modification.",
               "difficulty": "Hard"
             }
@@ -209,9 +365,15 @@
           "interviewQA": [
             {
               "question": "What's the difference between a Greenfield and a Brownfield S/4HANA migration approach, and what would push an organization toward one versus the other?",
-              "keywords": ["greenfield", "brownfield", "new implementation", "technical conversion", "reimplementation"],
-              "modelAnswer": "Greenfield means implementing S/4HANA as a fresh, new system — reconfiguring business processes from scratch (often to adopt SAP's standard best-practice processes) and migrating only the necessary master and historical data, which is a good fit for organizations wanting to fundamentally redesign or standardize messy legacy processes, or moving off a very old/heavily customized ECC system. Brownfield is a technical conversion of an existing ECC system directly into S/4HANA, preserving existing configuration, customizations, and historical data largely as-is, which is faster and lower-risk for organizations whose existing processes work well and just need the underlying platform/database upgraded. The choice hinges on how much process redesign is actually desired versus how much stability and speed matters — Bluefield is a middle-ground hybrid approach combining elements of both.",
-              "tip": "Frame the decision around 'how much process redesign is wanted' — that's the real business driver, not just technical preference.",
+              "keywords": [
+                "greenfield",
+                "brownfield",
+                "new implementation",
+                "technical conversion",
+                "reimplementation"
+              ],
+              "modelAnswer": "Greenfield means implementing S/4HANA as a fresh, new system \u2014 reconfiguring business processes from scratch (often to adopt SAP's standard best-practice processes) and migrating only the necessary master and historical data, which is a good fit for organizations wanting to fundamentally redesign or standardize messy legacy processes, or moving off a very old/heavily customized ECC system. Brownfield is a technical conversion of an existing ECC system directly into S/4HANA, preserving existing configuration, customizations, and historical data largely as-is, which is faster and lower-risk for organizations whose existing processes work well and just need the underlying platform/database upgraded. The choice hinges on how much process redesign is actually desired versus how much stability and speed matters \u2014 Bluefield is a middle-ground hybrid approach combining elements of both.",
+              "tip": "Frame the decision around 'how much process redesign is wanted' \u2014 that's the real business driver, not just technical preference.",
               "difficulty": "Hard"
             }
           ]
@@ -229,9 +391,15 @@
           "interviewQA": [
             {
               "question": "Why does SAP separate 'Customizing' (configuration) from 'Development' (custom code), and how does this affect how changes move through landscapes?",
-              "keywords": ["customizing", "development", "transport request", "landscape", "client-independent"],
-              "modelAnswer": "Customizing changes (like defining a new document type or posting period variant) are configuration settings within SAP's standard framework, generally requiring no coding, while Development involves writing actual custom ABAP code or objects that extend the system beyond standard configuration options — SAP separates these conceptually because they carry different risk profiles, require different skill sets (functional consultants vs developers), and are often governed by different approval processes. Both, however, are captured in Transport Requests and moved through the same landscape (Development -> Quality Assurance -> Production) to ensure changes are tested before reaching the live system, though some Customizing (client-independent settings) can affect the entire system across all clients, requiring extra care since it isn't isolated per client the way most Customizing is.",
-              "tip": "Mention client-independent Customizing as a nuance — it affects the whole system, not just one client, which surprises many.",
+              "keywords": [
+                "customizing",
+                "development",
+                "transport request",
+                "landscape",
+                "client-independent"
+              ],
+              "modelAnswer": "Customizing changes (like defining a new document type or posting period variant) are configuration settings within SAP's standard framework, generally requiring no coding, while Development involves writing actual custom ABAP code or objects that extend the system beyond standard configuration options \u2014 SAP separates these conceptually because they carry different risk profiles, require different skill sets (functional consultants vs developers), and are often governed by different approval processes. Both, however, are captured in Transport Requests and moved through the same landscape (Development -> Quality Assurance -> Production) to ensure changes are tested before reaching the live system, though some Customizing (client-independent settings) can affect the entire system across all clients, requiring extra care since it isn't isolated per client the way most Customizing is.",
+              "tip": "Mention client-independent Customizing as a nuance \u2014 it affects the whole system, not just one client, which surprises many.",
               "difficulty": "Hard"
             }
           ]
@@ -249,10 +417,64 @@
           "interviewQA": [
             {
               "question": "What role do CDS Views play in modern SAP reporting, and how do they differ from traditional ABAP reports built on transparent tables?",
-              "keywords": ["cds views", "core data services", "semantic layer", "code pushdown", "virtual data model"],
-              "modelAnswer": "CDS Views (Core Data Services) are a modern, semantically rich way to define views directly on top of the HANA database, embedding business logic (associations between entities, calculated fields, annotations for UI rendering) at the database layer rather than pulling raw data into ABAP and processing it there. This enables 'code pushdown' — complex aggregations and joins execute inside HANA's fast in-memory engine rather than looping through data in ABAP application-server memory — which is dramatically faster for large datasets, and the same CDS View can simultaneously power a Fiori app's OData service, an ABAP report, and analytical tools like SAP Analytics Cloud, avoiding duplicated data-access logic. This 'virtual data model' approach is central to how S/4HANA delivers real-time embedded analytics without needing separate BW extraction for many standard reporting needs.",
-              "tip": "The 'code pushdown' concept — moving computation into HANA instead of ABAP — is the key technical differentiator to name.",
+              "keywords": [
+                "cds views",
+                "core data services",
+                "semantic layer",
+                "code pushdown",
+                "virtual data model"
+              ],
+              "modelAnswer": "CDS Views (Core Data Services) are a modern, semantically rich way to define views directly on top of the HANA database, embedding business logic (associations between entities, calculated fields, annotations for UI rendering) at the database layer rather than pulling raw data into ABAP and processing it there. This enables 'code pushdown' \u2014 complex aggregations and joins execute inside HANA's fast in-memory engine rather than looping through data in ABAP application-server memory \u2014 which is dramatically faster for large datasets, and the same CDS View can simultaneously power a Fiori app's OData service, an ABAP report, and analytical tools like SAP Analytics Cloud, avoiding duplicated data-access logic. This 'virtual data model' approach is central to how S/4HANA delivers real-time embedded analytics without needing separate BW extraction for many standard reporting needs.",
+              "tip": "The 'code pushdown' concept \u2014 moving computation into HANA instead of ABAP \u2014 is the key technical differentiator to name.",
               "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sap-adv-fiori",
+          "title": "Fiori & UI5 Development",
+          "summary": "SAP's modern, responsive UI framework replacing the classic SAP GUI experience for end users.",
+          "keyPoints": [
+            "Fiori apps are built on SAPUI5/OpenUI5 following the MVC pattern (View, Controller, Model)",
+            "OData services expose backend SAP data to Fiori apps in a standardized REST-like format",
+            "Fiori Launchpad is the unified entry point aggregating tiles for all a user's assigned apps",
+            "Fiori Elements lets you generate standard list/detail apps from an OData metadata annotation, with minimal custom code"
+          ],
+          "interviewQA": [
+            {
+              "question": "What role does an OData service play in a Fiori app's architecture?",
+              "keywords": [
+                "OData",
+                "backend integration",
+                "REST"
+              ],
+              "modelAnswer": "OData is the standardized protocol/service layer that exposes SAP backend data (from ECC/S4HANA) to the Fiori frontend in a consistent, queryable, REST-like way. The Fiori/UI5 app's model binds to this OData service to read and write data, decoupling the frontend UI technology entirely from the backend's underlying data structures.",
+              "tip": "Mention Fiori Elements as a way to build a full CRUD app from OData metadata with very little hand-written UI code.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "sap-adv-security",
+          "title": "SAP Security & Authorizations",
+          "summary": "Controlling exactly what each user can see and do in SAP, following least-privilege principles.",
+          "keyPoints": [
+            "Authorization objects define what can be checked (e.g. company code + activity for a transaction)",
+            "Roles bundle authorization objects and are assigned to users, often via composite roles for job functions",
+            "SU53 shows the last failed authorization check, a key first troubleshooting step",
+            "Segregation of Duties (SoD) prevents one user from having conflicting powerful combinations of access (e.g. create AND approve a vendor payment)"
+          ],
+          "interviewQA": [
+            {
+              "question": "A user reports they can't perform an action they should be able to. What's your first troubleshooting step?",
+              "keywords": [
+                "SU53",
+                "authorization check",
+                "missing authorization"
+              ],
+              "modelAnswer": "Have the user immediately run SU53 (or check the trace via ST01/STAUTHTRACE) right after the failed action \u2014 it shows the last failed authorization check, including exactly which authorization object and field values were missing, which tells you precisely what to add to their role instead of guessing.",
+              "tip": "Mention Segregation of Duties as the reason you shouldn't just blindly grant broad access to fix it.",
+              "difficulty": "Medium"
             }
           ]
         }

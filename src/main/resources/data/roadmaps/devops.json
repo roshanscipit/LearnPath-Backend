@@ -32,7 +32,7 @@
                 "process id"
               ],
               "modelAnswer": "Use 'top' or 'htop' for a live view sorted by memory usage (Shift+M in top), or 'ps aux --sort=-%mem | head' to list the top memory consumers with their PIDs. Once you identify the offending PID, send it a graceful termination signal first with 'kill -15 <pid>' (SIGTERM), giving the process a chance to clean up, and only escalate to 'kill -9 <pid>' (SIGKILL) if it doesn't respond, since SIGKILL can leave resources like file locks in a bad state.",
-              "tip": "Mention SIGTERM before SIGKILL — shows operational maturity, not just command memorization.",
+              "tip": "Mention SIGTERM before SIGKILL \u2014 shows operational maturity, not just command memorization.",
               "difficulty": "Easy"
             }
           ]
@@ -57,7 +57,7 @@
                 "linear history",
                 "conflict"
               ],
-              "modelAnswer": "git merge combines two branches by creating a new merge commit that ties both histories together, preserving the exact history of how development happened, including parallel work. git rebase replays your branch's commits on top of another branch's latest state, producing a linear history without a merge commit, which is cleaner to read but rewrites commit hashes — meaning you should never rebase commits that have already been pushed and shared with others. A common pattern is rebasing local feature branches before merging into main to keep history clean, and merging (not rebasing) when integrating into shared/protected branches.",
+              "modelAnswer": "git merge combines two branches by creating a new merge commit that ties both histories together, preserving the exact history of how development happened, including parallel work. git rebase replays your branch's commits on top of another branch's latest state, producing a linear history without a merge commit, which is cleaner to read but rewrites commit hashes \u2014 meaning you should never rebase commits that have already been pushed and shared with others. A common pattern is rebasing local feature branches before merging into main to keep history clean, and merging (not rebasing) when integrating into shared/protected branches.",
               "tip": "The 'never rebase shared history' rule is the key safety point interviewers listen for.",
               "difficulty": "Medium"
             }
@@ -82,7 +82,7 @@
                 "manual approval",
                 "automated release"
               ],
-              "modelAnswer": "Continuous Delivery means every change that passes the automated pipeline is proven to be deployable and packaged as a release-ready artifact, but a human still triggers the actual production release, often via a manual approval gate. Continuous Deployment goes one step further and removes that manual gate entirely — every change that passes all automated tests is automatically deployed to production with no human intervention. The choice depends on risk tolerance and how much confidence the team has in its automated test coverage.",
+              "modelAnswer": "Continuous Delivery means every change that passes the automated pipeline is proven to be deployable and packaged as a release-ready artifact, but a human still triggers the actual production release, often via a manual approval gate. Continuous Deployment goes one step further and removes that manual gate entirely \u2014 every change that passes all automated tests is automatically deployed to production with no human intervention. The choice depends on risk tolerance and how much confidence the team has in its automated test coverage.",
               "tip": "Give the one-line distinction clearly: delivery = ready to deploy, deployment = automatically deployed.",
               "difficulty": "Easy"
             }
@@ -112,6 +112,56 @@
               "modelAnswer": "First confirm DNS resolves correctly (nslookup/dig) to the expected IP, then check basic reachability with ping, though ICMP is often blocked so that's not conclusive on its own. Next test the actual service port directly with curl or telnet/nc to the app's port (e.g., 443), which tells you whether it's a network/firewall issue versus an application issue. If the port is unreachable, check security groups/firewall rules and the load balancer's health check status; if the port is reachable but the app errors out, the problem has shifted from networking to the application layer.",
               "tip": "Structure the answer as a funnel: DNS -> reachability -> port -> app layer.",
               "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "devops-basic-shell",
+          "title": "Shell Scripting & Automation",
+          "summary": "Writing reliable Bash scripts to automate the repetitive operational tasks DevOps work is full of.",
+          "keyPoints": [
+            "set -euo pipefail at the top of scripts to fail fast instead of silently continuing on errors",
+            "Variables, loops, conditionals, and functions in Bash for reusable automation",
+            "Piping and redirection (|, >, >>, 2>&1) to chain commands and capture output/errors",
+            "cron for scheduling recurring scripts; logging output so failures are diagnosable later"
+          ],
+          "interviewQA": [
+            {
+              "question": "What does 'set -euo pipefail' do at the top of a Bash script, and why is it a best practice?",
+              "keywords": [
+                "set -e",
+                "pipefail",
+                "error handling",
+                "exit code"
+              ],
+              "modelAnswer": "'-e' exits immediately if any command fails, '-u' treats unset variables as an error, and '-o pipefail' makes a pipeline fail if any command in it fails (not just the last one). Together they turn silent partial-failures into loud, immediate script failures, which is much safer for automation.",
+              "tip": "Give an example of a bug this catches: a typo'd variable name that would otherwise silently expand to empty.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "devops-basic-cloud",
+          "title": "Cloud Fundamentals (AWS/Azure/GCP)",
+          "summary": "The core building blocks every cloud provider offers, which map roughly 1:1 across AWS/Azure/GCP.",
+          "keyPoints": [
+            "Compute (EC2/VM/Compute Engine), Storage (S3/Blob/Cloud Storage), Networking (VPC/VNet)",
+            "IAM: users, roles, and least-privilege policies control who can do what",
+            "Managed services (RDS, managed Kubernetes) trade control for less operational burden",
+            "Pay-as-you-go pricing means cost visibility and tagging matter from day one"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the principle of least privilege in IAM, and why does it matter operationally?",
+              "keywords": [
+                "IAM",
+                "least privilege",
+                "blast radius",
+                "policy"
+              ],
+              "modelAnswer": "Least privilege means granting only the exact permissions a user or service needs to do its job, nothing more. It matters because it shrinks the 'blast radius' if credentials are compromised or a script has a bug \u2014 an attacker or mistake can only do what that narrow permission set allows.",
+              "tip": "Give an example: a CI deploy role that can only push to one specific S3 bucket, not all buckets in the account.",
+              "difficulty": "Easy"
             }
           ]
         }
@@ -167,7 +217,7 @@
                 "kubelet"
               ],
               "modelAnswer": "A liveness probe tells Kubernetes whether a container is still functioning; if it fails repeatedly, the kubelet kills and restarts the container, which is meant to recover from deadlocks or stuck states. A readiness probe tells Kubernetes whether the container is ready to receive traffic; if it fails, the pod is removed from the Service's load-balancing endpoints without restarting the container, which is meant for temporary states like still loading a large cache at startup. Misconfiguring liveness probes too aggressively is a common cause of crash-loop issues in production.",
-              "tip": "Mention the crash-loop risk of a too-strict liveness probe — a real-world gotcha.",
+              "tip": "Mention the crash-loop risk of a too-strict liveness probe \u2014 a real-world gotcha.",
               "difficulty": "Medium"
             }
           ]
@@ -218,8 +268,57 @@
                 "safe reruns",
                 "convergence"
               ],
-              "modelAnswer": "Idempotency means running the same Ansible playbook multiple times against the same system produces the same end result without unintended side effects — if a package is already installed or a file already has the right content, Ansible detects that and skips making a redundant change, reporting it as 'ok' rather than 'changed'. This matters because it makes automation safe to rerun after partial failures or on a schedule for drift correction, without worrying about duplicating actions or breaking things through repeated execution. Most built-in Ansible modules are idempotent by design; the risk is mainly in raw 'shell'/'command' tasks that execute arbitrary commands without that guarantee.",
-              "tip": "Note that shell/command modules are the main idempotency risk — a good nuance to add.",
+              "modelAnswer": "Idempotency means running the same Ansible playbook multiple times against the same system produces the same end result without unintended side effects \u2014 if a package is already installed or a file already has the right content, Ansible detects that and skips making a redundant change, reporting it as 'ok' rather than 'changed'. This matters because it makes automation safe to rerun after partial failures or on a schedule for drift correction, without worrying about duplicating actions or breaking things through repeated execution. Most built-in Ansible modules are idempotent by design; the risk is mainly in raw 'shell'/'command' tasks that execute arbitrary commands without that guarantee.",
+              "tip": "Note that shell/command modules are the main idempotency risk \u2014 a good nuance to add.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "devops-inter-helm",
+          "title": "Helm & Kubernetes Package Management",
+          "summary": "Templating and versioning Kubernetes manifests so deployments are repeatable across environments.",
+          "keyPoints": [
+            "A Helm chart packages templated YAML manifests plus a values.yaml for environment-specific config",
+            "helm install/upgrade/rollback manage releases as versioned, revertible units",
+            "Templating avoids copy-pasting near-identical YAML for dev/staging/prod",
+            "Chart dependencies let you compose complex apps (e.g. app + Redis + Postgres) from sub-charts"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is helm rollback valuable compared to manually reverting kubectl apply changes?",
+              "keywords": [
+                "helm rollback",
+                "revision history",
+                "rollback"
+              ],
+              "modelAnswer": "Helm tracks every release as a numbered revision with its full rendered manifest, so 'helm rollback <release> <revision>' deterministically restores that exact prior state in one command \u2014 far safer and faster than trying to manually reconstruct what a previous kubectl apply looked like.",
+              "tip": "Mention that this also gives you an audit trail of what changed between revisions.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "devops-inter-secrets",
+          "title": "Secrets Management & Vaults",
+          "summary": "Keeping credentials, API keys, and certificates out of source code and config files.",
+          "keyPoints": [
+            "Never commit secrets to git \u2014 use a secrets manager (Vault, AWS Secrets Manager, Azure Key Vault)",
+            "Kubernetes Secrets are base64-encoded, not encrypted by default \u2014 enable encryption at rest",
+            "Dynamic secrets (short-lived, auto-rotated) reduce the blast radius of a leaked credential",
+            "Inject secrets at runtime (env vars, mounted volumes) rather than baking them into images"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why are Kubernetes Secrets alone often not considered sufficient for storing sensitive credentials?",
+              "keywords": [
+                "base64",
+                "encryption at rest",
+                "etcd",
+                "Vault"
+              ],
+              "modelAnswer": "Kubernetes Secrets are base64-encoded, not encrypted \u2014 that's just an encoding, not protection \u2014 and by default they're stored in etcd in plaintext-equivalent form unless encryption at rest is explicitly enabled. Anyone with etcd or API access (or the right RBAC permissions) can read them, so many teams pair Secrets with a dedicated vault and encryption at rest.",
+              "tip": "Mention RBAC scoping on who can 'kubectl get secret' as another necessary layer.",
               "difficulty": "Medium"
             }
           ]
@@ -250,7 +349,7 @@
                 "multi-cloud"
               ],
               "modelAnswer": "Multi-cloud reduces vendor lock-in risk, can improve resilience against a provider-wide outage, and sometimes helps meet regulatory or data-residency requirements or negotiate better pricing. But it comes at a real cost: teams need expertise across multiple providers' services and IAM models, tooling and monitoring become more complex since each cloud has different APIs and quirks, and you often end up using only the lowest-common-denominator features to stay portable, missing out on provider-specific managed services. For most companies, a single primary cloud with a documented disaster-recovery plan is simpler and cheaper than true multi-cloud, which is best reserved for specific compliance or resilience requirements.",
-              "tip": "A balanced, cost-aware answer beats blanket enthusiasm for multi-cloud — interviewers value pragmatism.",
+              "tip": "A balanced, cost-aware answer beats blanket enthusiasm for multi-cloud \u2014 interviewers value pragmatism.",
               "difficulty": "Hard"
             }
           ]
@@ -275,7 +374,7 @@
                 "unknown unknowns",
                 "distributed tracing"
               ],
-              "modelAnswer": "Monitoring typically means watching predefined metrics and dashboards for known failure modes you anticipated in advance — it answers questions you already knew to ask. Observability is about instrumenting a system (rich structured logs, metrics, and distributed traces) so you can investigate and answer novel questions about problems you didn't anticipate, especially important in complex microservice architectures where failures emerge from unexpected interactions between services. In practice, observability is what lets an engineer trace a single slow request across a dozen microservices to find exactly which downstream call caused the latency, rather than just knowing 'overall latency is high'.",
+              "modelAnswer": "Monitoring typically means watching predefined metrics and dashboards for known failure modes you anticipated in advance \u2014 it answers questions you already knew to ask. Observability is about instrumenting a system (rich structured logs, metrics, and distributed traces) so you can investigate and answer novel questions about problems you didn't anticipate, especially important in complex microservice architectures where failures emerge from unexpected interactions between services. In practice, observability is what lets an engineer trace a single slow request across a dozen microservices to find exactly which downstream call caused the latency, rather than just knowing 'overall latency is high'.",
               "tip": "Frame it as 'known unknowns' (monitoring) vs 'unknown unknowns' (observability).",
               "difficulty": "Hard"
             }
@@ -301,8 +400,8 @@
                 "risk tolerance",
                 "reliability"
               ],
-              "modelAnswer": "An error budget quantifies acceptable unreliability (e.g., 99.9% uptime allows about 43 minutes of downtime per month) and turns reliability from a vague debate into a shared, numeric resource both teams can reason about. If the error budget is being spent responsibly and there's budget remaining, the product team can ship features and take reasonable risks; if the budget is exhausted, the SRE team has a data-backed mandate to pause risky releases and prioritize stability work instead, rather than relying on gut feeling or authority. This aligns incentives — reliability work isn't just 'ops slowing us down', it's a jointly agreed budget both sides manage together.",
-              "tip": "Use the concrete 99.9% = ~43 min/month downtime math — precision impresses interviewers.",
+              "modelAnswer": "An error budget quantifies acceptable unreliability (e.g., 99.9% uptime allows about 43 minutes of downtime per month) and turns reliability from a vague debate into a shared, numeric resource both teams can reason about. If the error budget is being spent responsibly and there's budget remaining, the product team can ship features and take reasonable risks; if the budget is exhausted, the SRE team has a data-backed mandate to pause risky releases and prioritize stability work instead, rather than relying on gut feeling or authority. This aligns incentives \u2014 reliability work isn't just 'ops slowing us down', it's a jointly agreed budget both sides manage together.",
+              "tip": "Use the concrete 99.9% = ~43 min/month downtime math \u2014 precision impresses interviewers.",
               "difficulty": "Hard"
             }
           ]
@@ -327,9 +426,59 @@
                 "secret scanning",
                 "ci pipeline"
               ],
-              "modelAnswer": "Shift-left security means finding and fixing security issues as early as possible in the development lifecycle — ideally before code is even merged — rather than only scanning for vulnerabilities right before or after production deployment. In practice, this means adding automated static application security testing (SAST) and dependency vulnerability scanning as required steps in the CI pipeline that run on every pull request, plus secret-scanning to catch accidentally committed credentials before they ever reach a shared branch. The goal is to make the pipeline itself fail fast on security issues, the same way it fails on broken tests, so security becomes a routine part of every commit rather than a separate late-stage gate.",
-              "tip": "Emphasize 'fails fast like a broken test' — ties security into normal engineering workflow.",
+              "modelAnswer": "Shift-left security means finding and fixing security issues as early as possible in the development lifecycle \u2014 ideally before code is even merged \u2014 rather than only scanning for vulnerabilities right before or after production deployment. In practice, this means adding automated static application security testing (SAST) and dependency vulnerability scanning as required steps in the CI pipeline that run on every pull request, plus secret-scanning to catch accidentally committed credentials before they ever reach a shared branch. The goal is to make the pipeline itself fail fast on security issues, the same way it fails on broken tests, so security becomes a routine part of every commit rather than a separate late-stage gate.",
+              "tip": "Emphasize 'fails fast like a broken test' \u2014 ties security into normal engineering workflow.",
               "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "devops-adv-gitops",
+          "title": "GitOps (ArgoCD/FluxCD)",
+          "summary": "Using git as the single source of truth for infrastructure and app state, with automated reconciliation.",
+          "keyPoints": [
+            "A GitOps controller (ArgoCD/Flux) continuously reconciles the cluster to match what's in a git repo",
+            "Deployments happen via a merged pull request, not a manual kubectl apply from a laptop",
+            "Drift detection flags when the live cluster diverges from git, and can auto-heal it",
+            "Rollback is just a git revert \u2014 the audit trail is the commit history"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the key difference between a push-based CI/CD pipeline and a pull-based GitOps model?",
+              "keywords": [
+                "push-based",
+                "pull-based",
+                "reconciliation",
+                "drift"
+              ],
+              "modelAnswer": "In push-based CI/CD, the pipeline has credentials to reach into the cluster and apply changes. In pull-based GitOps, an in-cluster controller has no external push access \u2014 it continuously pulls the desired state from git and reconciles the cluster to match, which is more secure (no external write credentials to the cluster) and self-healing against manual drift.",
+              "tip": "Mention that this also means the cluster's actual state is always auditable against git history.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "devops-adv-chaos",
+          "title": "Chaos Engineering & Disaster Recovery",
+          "summary": "Deliberately injecting failure to validate that your systems are actually as resilient as you assume.",
+          "keyPoints": [
+            "Chaos experiments (kill a pod, add network latency, fail a dependency) test real failure handling",
+            "Start small and in staging before running chaos experiments in production",
+            "RTO (Recovery Time Objective) and RPO (Recovery Point Objective) define your DR targets",
+            "Regular DR drills validate that backups/failover actually work, not just that they exist"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why would a mature team deliberately break their own production system on purpose?",
+              "keywords": [
+                "chaos engineering",
+                "resilience",
+                "assumptions",
+                "blast radius"
+              ],
+              "modelAnswer": "Because untested resilience is just an assumption \u2014 a system that's 'supposed to' survive a node failure or dependency outage may not, in practice, due to missed edge cases. Controlled chaos experiments with a defined blast radius surface these gaps before a real, uncontrolled outage does, in a way monitoring dashboards alone can't.",
+              "tip": "Mention starting with a hypothesis ('the service should stay up if this pod dies') to make it a real experiment, not just random breakage.",
+              "difficulty": "Hard"
             }
           ]
         }
@@ -339,7 +488,7 @@
   "codingModule": {
     "duration": "6 weeks",
     "questionsCount": 200,
-    "focus": "Automation and scripting exercises — DevOps 'coding rounds' test infrastructure fluency, not classic DSA.",
+    "focus": "Automation and scripting exercises \u2014 DevOps 'coding rounds' test infrastructure fluency, not classic DSA.",
     "topics": [
       "Bash scripting challenges (log parsing, cron automation, file/log rotation)",
       "Python automation scripts (boto3 AWS automation, API polling, config templating)",
@@ -347,13 +496,13 @@
       "Writing and debugging Dockerfiles (multi-stage builds, layer caching)",
       "Kubernetes manifest authoring (Deployments, Services, ConfigMaps, Secrets)",
       "CI/CD pipeline-as-code (Jenkinsfile / GitHub Actions YAML debugging)",
-      "Infrastructure as Code snippets (Terraform HCL — fixing broken plans)"
+      "Infrastructure as Code snippets (Terraform HCL \u2014 fixing broken plans)"
     ]
   },
   "systemDesignModule": {
     "duration": "4 weeks",
     "questionsCount": 40,
-    "focus": "Infrastructure and platform design — not feature/app design, but the systems that run and ship other systems.",
+    "focus": "Infrastructure and platform design \u2014 not feature/app design, but the systems that run and ship other systems.",
     "topics": [
       "Design a CI/CD Pipeline for a Microservices Platform (stages, rollback strategy, artifact promotion)",
       "Design a Multi-Region, Highly Available Kubernetes Architecture",

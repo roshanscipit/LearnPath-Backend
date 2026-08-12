@@ -1,7 +1,12 @@
 {
   "moduleId": "mobile",
   "moduleName": "Mobile Developer",
-  "variants": ["Android (Kotlin)", "iOS (Swift)", "React Native", "Flutter"],
+  "variants": [
+    "Android (Kotlin)",
+    "iOS (Swift)",
+    "React Native",
+    "Flutter"
+  ],
   "levels": [
     {
       "level": "Basic",
@@ -19,9 +24,15 @@
           "interviewQA": [
             {
               "question": "How does Kotlin's null safety system help prevent NullPointerExceptions compared to Java?",
-              "keywords": ["null safety", "nullable type", "safe call operator", "compile-time check", "kotlin"],
+              "keywords": [
+                "null safety",
+                "nullable type",
+                "safe call operator",
+                "compile-time check",
+                "kotlin"
+              ],
               "modelAnswer": "Kotlin distinguishes nullable types (String?) from non-nullable types (String) at the compiler level, so a non-nullable variable is guaranteed by the compiler to never hold null, eliminating an entire category of NullPointerExceptions before the code even runs. For nullable types, Kotlin forces you to explicitly handle the null case using the safe call operator (?.), the Elvis operator (?: for a default value), or the non-null assertion (!!) if you're certain it isn't null (which can still throw if wrong). This shifts null-handling from a runtime crash risk in Java to a compile-time requirement in Kotlin.",
-              "tip": "Mention that !! is an 'escape hatch' that can still crash — shows nuanced understanding, not just 'Kotlin is null-safe'.",
+              "tip": "Mention that !! is an 'escape hatch' that can still crash \u2014 shows nuanced understanding, not just 'Kotlin is null-safe'.",
               "difficulty": "Easy"
             }
           ]
@@ -33,15 +44,21 @@
           "keyPoints": [
             "Optionals (?, !, if let, guard let) for safe handling of absent values",
             "UIKit's UIViewController lifecycle vs SwiftUI's declarative View structs",
-            "Value types (struct) vs reference types (class) — Swift favors structs for most models",
+            "Value types (struct) vs reference types (class) \u2014 Swift favors structs for most models",
             "ARC (Automatic Reference Counting) for memory management"
           ],
           "interviewQA": [
             {
               "question": "What is the difference between 'if let' and 'guard let' when unwrapping an optional in Swift?",
-              "keywords": ["if let", "guard let", "optional unwrapping", "early return", "scope"],
-              "modelAnswer": "'if let' unwraps an optional and makes it available only inside the if block's scope, which is useful when you want to conditionally do something with the value but continue either way. 'guard let' unwraps an optional and makes it available in the rest of the enclosing scope after the guard statement, but requires an else block that must exit the current scope (return, break, continue, or throw) if the unwrap fails — this is commonly used at the top of a function for early-return validation, avoiding deeply nested if-let pyramids and keeping the 'happy path' code unindented.",
-              "tip": "Emphasize that guard let avoids nested 'pyramid of doom' code — that's the practical reason it's preferred for validation.",
+              "keywords": [
+                "if let",
+                "guard let",
+                "optional unwrapping",
+                "early return",
+                "scope"
+              ],
+              "modelAnswer": "'if let' unwraps an optional and makes it available only inside the if block's scope, which is useful when you want to conditionally do something with the value but continue either way. 'guard let' unwraps an optional and makes it available in the rest of the enclosing scope after the guard statement, but requires an else block that must exit the current scope (return, break, continue, or throw) if the unwrap fails \u2014 this is commonly used at the top of a function for early-return validation, avoiding deeply nested if-let pyramids and keeping the 'happy path' code unindented.",
+              "tip": "Emphasize that guard let avoids nested 'pyramid of doom' code \u2014 that's the practical reason it's preferred for validation.",
               "difficulty": "Easy"
             }
           ]
@@ -59,8 +76,14 @@
           "interviewQA": [
             {
               "question": "Why is it important to follow platform-specific design guidelines (Material Design vs Human Interface Guidelines) rather than using one identical design across both platforms?",
-              "keywords": ["material design", "human interface guidelines", "platform conventions", "user familiarity", "native feel"],
-              "modelAnswer": "Users build muscle memory and expectations from every other app they use on their platform — Android users expect a back button/gesture and a certain navigation drawer behavior, iOS users expect swipe-back gestures and specific tab bar conventions — and violating those expectations makes an app feel foreign and harder to use even if the design is objectively 'nice'. Following each platform's native guidelines also means better out-of-the-box accessibility support, consistent behavior with system-level gestures, and often less custom code since you're working with the platform's native components rather than fighting them.",
+              "keywords": [
+                "material design",
+                "human interface guidelines",
+                "platform conventions",
+                "user familiarity",
+                "native feel"
+              ],
+              "modelAnswer": "Users build muscle memory and expectations from every other app they use on their platform \u2014 Android users expect a back button/gesture and a certain navigation drawer behavior, iOS users expect swipe-back gestures and specific tab bar conventions \u2014 and violating those expectations makes an app feel foreign and harder to use even if the design is objectively 'nice'. Following each platform's native guidelines also means better out-of-the-box accessibility support, consistent behavior with system-level gestures, and often less custom code since you're working with the platform's native components rather than fighting them.",
               "tip": "Give a concrete example (back gesture behavior) rather than speaking only in the abstract.",
               "difficulty": "Easy"
             }
@@ -79,10 +102,65 @@
           "interviewQA": [
             {
               "question": "Why might an Android app lose its state even though the user never explicitly closed it, and how do you handle that?",
-              "keywords": ["process death", "onsaveinstancestate", "configuration change", "background", "low memory"],
-              "modelAnswer": "Android can kill a backgrounded app's process at any time to reclaim memory for the foreground app, even without the user closing it — this is called 'process death', and it's distinct from a normal configuration change (like screen rotation) which also destroys and recreates the Activity but is more predictable. To handle both cases, apps should save essential UI state in onSaveInstanceState() (for lightweight transient state) and persist anything important to disk (database, SharedPreferences) rather than relying purely on in-memory state, so that if the system recreates the Activity, it can restore a consistent experience rather than losing the user's progress.",
-              "tip": "Distinguish process death from a configuration change explicitly — a common point of confusion.",
+              "keywords": [
+                "process death",
+                "onsaveinstancestate",
+                "configuration change",
+                "background",
+                "low memory"
+              ],
+              "modelAnswer": "Android can kill a backgrounded app's process at any time to reclaim memory for the foreground app, even without the user closing it \u2014 this is called 'process death', and it's distinct from a normal configuration change (like screen rotation) which also destroys and recreates the Activity but is more predictable. To handle both cases, apps should save essential UI state in onSaveInstanceState() (for lightweight transient state) and persist anything important to disk (database, SharedPreferences) rather than relying purely on in-memory state, so that if the system recreates the Activity, it can restore a consistent experience rather than losing the user's progress.",
+              "tip": "Distinguish process death from a configuration change explicitly \u2014 a common point of confusion.",
               "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "mobile-basic-layouts",
+          "title": "Layouts & Responsive UI (Jetpack Compose/SwiftUI)",
+          "summary": "Building UIs that adapt cleanly across different screen sizes using modern declarative UI toolkits.",
+          "keyPoints": [
+            "Declarative UI: describe what the UI should look like for a given state, the framework handles diffing/rendering",
+            "Jetpack Compose: Column/Row/Box for layout; SwiftUI: VStack/HStack/ZStack \u2014 conceptually similar",
+            "Constraint-based and adaptive layouts handle different screen sizes/orientations without hardcoded pixels",
+            "State drives recomposition/re-render \u2014 UI updates automatically when the underlying state changes"
+          ],
+          "interviewQA": [
+            {
+              "question": "What's the core difference between declarative UI (Compose/SwiftUI) and the older imperative UI model (XML layouts + manual view updates)?",
+              "keywords": [
+                "declarative",
+                "imperative",
+                "state",
+                "recomposition"
+              ],
+              "modelAnswer": "In the imperative model, you manually find a view by ID and mutate its properties every time state changes (e.g. textView.setText(...)). In the declarative model, you describe the UI as a function of state, and the framework automatically re-renders (recomposes) only the parts that changed when that state updates \u2014 you never manually touch a view reference.",
+              "tip": "Mention this reduces a whole class of bugs where UI gets out of sync with underlying state.",
+              "difficulty": "Easy"
+            }
+          ]
+        },
+        {
+          "id": "mobile-basic-navigation",
+          "title": "Navigation & Routing",
+          "summary": "Moving between screens while managing back-stack behavior and passing data safely.",
+          "keyPoints": [
+            "Navigation components (Android Navigation, SwiftUI NavigationStack) manage the back stack for you",
+            "Deep linking lets external links/notifications open a specific screen directly",
+            "Passing data between screens: route arguments/params rather than global mutable state",
+            "Tab-based vs stack-based navigation patterns suit different app structures"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is using a navigation library's back-stack management preferable to manually tracking which screen to show?",
+              "keywords": [
+                "back stack",
+                "navigation library",
+                "state management"
+              ],
+              "modelAnswer": "Manually tracking navigation state (e.g. a variable for 'current screen') gets error-prone fast \u2014 back-button behavior, deep links, and process-death restoration all need to correctly reconstruct where the user was. A navigation library handles the back stack, argument passing, and restoration consistently, so you don't reinvent this fragile logic yourself.",
+              "tip": "Mention deep linking as a case that's very hard to handle correctly without a navigation framework.",
+              "difficulty": "Easy"
             }
           ]
         }
@@ -104,9 +182,15 @@
           "interviewQA": [
             {
               "question": "Why does Android's ViewModel survive configuration changes like screen rotation, while a regular object held in an Activity does not?",
-              "keywords": ["viewmodel", "configuration change", "activity recreation", "viewmodelstore", "lifecycle-aware"],
+              "keywords": [
+                "viewmodel",
+                "configuration change",
+                "activity recreation",
+                "viewmodelstore",
+                "lifecycle-aware"
+              ],
               "modelAnswer": "When a configuration change happens, the Activity itself is destroyed and recreated, but the ViewModel is retained by the framework in a separate ViewModelStore tied to the Activity's lifecycle owner, which persists across that specific recreation event (it's only cleared when the Activity finishes for good, not on a config-change recreation). A regular object held as an Activity field is destroyed along with the old Activity instance and has to be recreated from scratch, losing its state unless manually saved and restored. This is why ViewModel is the recommended place to hold UI-related state that shouldn't be lost on rotation.",
-              "tip": "Mention ViewModelStore by name — it's the actual mechanism, not just 'the framework handles it'.",
+              "tip": "Mention ViewModelStore by name \u2014 it's the actual mechanism, not just 'the framework handles it'.",
               "difficulty": "Medium"
             }
           ]
@@ -124,9 +208,15 @@
           "interviewQA": [
             {
               "question": "How would you design a mobile app to handle intermittent or lost network connectivity gracefully?",
-              "keywords": ["offline-first", "local cache", "retry queue", "connectivity", "sync"],
+              "keywords": [
+                "offline-first",
+                "local cache",
+                "retry queue",
+                "connectivity",
+                "sync"
+              ],
               "modelAnswer": "Design for offline-first: read from a local cache/database first so the UI shows data immediately even without connectivity, and sync with the server in the background when a connection is available rather than blocking the UI on every network call. For writes made while offline, queue them locally (e.g., a pending-actions table) and replay them when connectivity returns, handling conflicts if the server state changed in the meantime. Combine this with clear UI signals (a subtle 'offline' banner, not a blocking error) so users understand the app is still usable, just not fully synced, rather than being met with a hard failure every time a request fails.",
-              "tip": "Mention a pending-actions queue for offline writes — a concrete implementation detail that shows real experience.",
+              "tip": "Mention a pending-actions queue for offline writes \u2014 a concrete implementation detail that shows real experience.",
               "difficulty": "Medium"
             }
           ]
@@ -144,8 +234,15 @@
           "interviewQA": [
             {
               "question": "When would you use SharedPreferences/UserDefaults versus a full local database like Room or Core Data?",
-              "keywords": ["shared preferences", "userdefaults", "room", "core data", "key-value store", "relational data"],
-              "modelAnswer": "SharedPreferences/UserDefaults are simple key-value stores best suited for small amounts of unstructured data like user settings, feature flags, or a single auth token — they're not designed for querying, relationships, or large datasets and can become a performance problem if misused for that. A local database like Room (Android) or Core Data (iOS) is appropriate when you need structured, queryable, relational data — like caching a list of API results, supporting offline search/filtering, or managing complex relationships between entities — since it gives you proper indexing, querying, and transactional guarantees that a flat key-value store can't.",
+              "keywords": [
+                "shared preferences",
+                "userdefaults",
+                "room",
+                "core data",
+                "key-value store",
+                "relational data"
+              ],
+              "modelAnswer": "SharedPreferences/UserDefaults are simple key-value stores best suited for small amounts of unstructured data like user settings, feature flags, or a single auth token \u2014 they're not designed for querying, relationships, or large datasets and can become a performance problem if misused for that. A local database like Room (Android) or Core Data (iOS) is appropriate when you need structured, queryable, relational data \u2014 like caching a list of API results, supporting offline search/filtering, or managing complex relationships between entities \u2014 since it gives you proper indexing, querying, and transactional guarantees that a flat key-value store can't.",
               "tip": "The rule of thumb: simple settings -> key-value store; structured/queryable data -> real database.",
               "difficulty": "Easy"
             }
@@ -164,10 +261,65 @@
           "interviewQA": [
             {
               "question": "What are the key architectural differences between how React Native and Flutter render UI, and what does that mean for performance?",
-              "keywords": ["react native bridge", "flutter skia", "native widgets", "rendering engine", "performance"],
+              "keywords": [
+                "react native bridge",
+                "flutter skia",
+                "native widgets",
+                "rendering engine",
+                "performance"
+              ],
               "modelAnswer": "React Native (in its classic architecture) renders using actual native platform widgets, communicating between JavaScript and native code via a bridge/serialization layer, which historically could introduce performance overhead for high-frequency updates (React Native's newer architecture with JSI reduces this). Flutter instead renders everything itself using its own Skia-based graphics engine, drawing every pixel rather than using native OS widgets at all, which gives it very consistent, predictable performance and pixel-perfect control across platforms, at the cost of not automatically picking up native OS look-and-feel updates and needing its own accessibility bridge work.",
               "tip": "Mentioning React Native's newer JSI-based architecture shows current knowledge, not outdated 'bridge is always slow' talking points.",
               "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "mobile-inter-testing",
+          "title": "Testing Mobile Apps (Unit & UI Testing)",
+          "summary": "Catching bugs before they reach users across the very fragmented device landscape mobile apps run on.",
+          "keyPoints": [
+            "Unit tests for business logic/viewmodels; UI tests (Espresso/XCUITest) for user flows",
+            "Mock network/dependency layers so unit tests don't depend on real APIs or devices",
+            "Test on a range of screen sizes/OS versions, not just the simulator's default device",
+            "Snapshot testing catches unintended visual regressions in UI components"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why is testing on real devices (or a device farm) still important even with a full simulator/emulator test suite?",
+              "keywords": [
+                "device farm",
+                "fragmentation",
+                "real device",
+                "emulator"
+              ],
+              "modelAnswer": "Simulators/emulators can't perfectly replicate every real device's hardware quirks, OS version behavior, screen density, or performance characteristics. Given how fragmented the Android ecosystem especially is, issues like memory pressure, camera/sensor bugs, or OEM-specific UI rendering differences often only surface on real hardware.",
+              "tip": "Mention services like Firebase Test Lab or AWS Device Farm as practical solutions to real-device coverage.",
+              "difficulty": "Medium"
+            }
+          ]
+        },
+        {
+          "id": "mobile-inter-offline",
+          "title": "Offline-First & Sync Strategies",
+          "summary": "Building apps that work reliably with flaky or no connectivity, syncing when a connection returns.",
+          "keyPoints": [
+            "Local database (Room/CoreData/SQLite) as the source of truth; UI reads from local data, not the network directly",
+            "A sync engine pushes local changes and pulls remote changes, resolving conflicts when both changed",
+            "Conflict resolution strategies: last-write-wins, merge, or user-prompted resolution",
+            "Queue failed network operations and retry automatically when connectivity returns"
+          ],
+          "interviewQA": [
+            {
+              "question": "In an offline-first architecture, why should the UI read from the local database instead of directly from network responses?",
+              "keywords": [
+                "offline-first",
+                "local database",
+                "source of truth"
+              ],
+              "modelAnswer": "Reading from local data means the UI always has something to show \u2014 instantly, and even with no connectivity \u2014 while a background sync process independently keeps that local data updated from the network. If the UI read directly from network calls, any connectivity gap would leave it with nothing to render or stale in-flight state.",
+              "tip": "Mention this pattern also makes the app feel instantly responsive since there's no network round-trip on every read.",
+              "difficulty": "Medium"
             }
           ]
         }
@@ -189,9 +341,15 @@
           "interviewQA": [
             {
               "question": "A screen in your app is janky (dropping frames) when scrolling a list. How would you diagnose and fix it?",
-              "keywords": ["main thread", "jank", "recyclerview", "view holder", "profiling"],
-              "modelAnswer": "First, profile with the platform's tools (Android Studio Profiler / Instruments Time Profiler) to see what's actually consuming time per frame rather than guessing — common culprits are expensive work happening on the main/UI thread during scroll (like image decoding, complex layout calculations, or database queries), or inefficient list rendering (not reusing view holders properly, or measuring/laying out more than necessary). Fixes typically involve moving expensive work off the main thread with async loading, using an efficient list widget (RecyclerView with proper ViewHolder recycling, or LazyColumn in Compose), and using an image loading library with built-in caching and downsampling so images aren't decoded at full resolution unnecessarily.",
-              "tip": "Lead with 'profile first, don't guess' — a consistent theme across performance interview questions.",
+              "keywords": [
+                "main thread",
+                "jank",
+                "recyclerview",
+                "view holder",
+                "profiling"
+              ],
+              "modelAnswer": "First, profile with the platform's tools (Android Studio Profiler / Instruments Time Profiler) to see what's actually consuming time per frame rather than guessing \u2014 common culprits are expensive work happening on the main/UI thread during scroll (like image decoding, complex layout calculations, or database queries), or inefficient list rendering (not reusing view holders properly, or measuring/laying out more than necessary). Fixes typically involve moving expensive work off the main thread with async loading, using an efficient list widget (RecyclerView with proper ViewHolder recycling, or LazyColumn in Compose), and using an image loading library with built-in caching and downsampling so images aren't decoded at full resolution unnecessarily.",
+              "tip": "Lead with 'profile first, don't guess' \u2014 a consistent theme across performance interview questions.",
               "difficulty": "Hard"
             }
           ]
@@ -204,13 +362,19 @@
             "Secure storage of tokens/credentials (Keychain on iOS, EncryptedSharedPreferences/Keystore on Android)",
             "Certificate pinning to prevent man-in-the-middle attacks",
             "Obfuscation (ProGuard/R8) to make reverse engineering harder",
-            "Never trusting client-side validation alone — server must re-validate everything"
+            "Never trusting client-side validation alone \u2014 server must re-validate everything"
           ],
           "interviewQA": [
             {
               "question": "Why is certificate pinning used in mobile apps, and what's the risk of implementing it poorly?",
-              "keywords": ["certificate pinning", "man-in-the-middle", "ssl", "certificate rotation", "app breakage"],
-              "modelAnswer": "Certificate pinning hardcodes the app's trust to a specific server certificate (or public key) rather than trusting any certificate signed by a trusted CA, which prevents man-in-the-middle attacks even if an attacker manages to get a fraudulently-issued certificate trusted by the device (e.g., via a compromised or malicious CA). The major risk of implementing it poorly is that when the server's certificate legitimately rotates or expires, pinned apps that haven't been updated with the new pin will suddenly fail all network requests — a real production incident risk — so teams typically pin to a backup/intermediate certificate and have a plan to push app updates before certificate rotation deadlines.",
+              "keywords": [
+                "certificate pinning",
+                "man-in-the-middle",
+                "ssl",
+                "certificate rotation",
+                "app breakage"
+              ],
+              "modelAnswer": "Certificate pinning hardcodes the app's trust to a specific server certificate (or public key) rather than trusting any certificate signed by a trusted CA, which prevents man-in-the-middle attacks even if an attacker manages to get a fraudulently-issued certificate trusted by the device (e.g., via a compromised or malicious CA). The major risk of implementing it poorly is that when the server's certificate legitimately rotates or expires, pinned apps that haven't been updated with the new pin will suddenly fail all network requests \u2014 a real production incident risk \u2014 so teams typically pin to a backup/intermediate certificate and have a plan to push app updates before certificate rotation deadlines.",
               "tip": "Mentioning the 'legitimate rotation breaks old app versions' risk shows you understand the real operational trade-off, not just the security benefit.",
               "difficulty": "Hard"
             }
@@ -229,7 +393,13 @@
           "interviewQA": [
             {
               "question": "What's different about CI/CD for mobile apps compared to a typical web service's CI/CD pipeline?",
-              "keywords": ["app store review", "code signing", "staged rollout", "no instant rollback", "build artifact"],
+              "keywords": [
+                "app store review",
+                "code signing",
+                "staged rollout",
+                "no instant rollback",
+                "build artifact"
+              ],
               "modelAnswer": "Unlike a web service where you can deploy and roll back a fix within minutes, mobile releases go through app store review (which can take hours to days) and even after approval, adoption is gradual since users must manually update or auto-update at their own pace, meaning you can't instantly 'roll back' a bad release the way you can revert a web deployment. This is why mobile CI/CD leans heavily on beta distribution (TestFlight/Firebase App Distribution) to catch issues before public release, staged/phased rollouts (releasing to a small percentage of users first) to limit blast radius, and remote feature flags/kill switches to disable problematic features without needing a full new app store release.",
               "tip": "The 'no instant rollback, use staged rollouts and feature flags instead' point is the key differentiator to name.",
               "difficulty": "Hard"
@@ -249,10 +419,65 @@
           "interviewQA": [
             {
               "question": "Why do modern mobile OSes aggressively restrict what apps can do in the background, and how does that affect how you design background sync?",
-              "keywords": ["battery optimization", "doze mode", "background app refresh", "background execution limits", "jobscheduler"],
-              "modelAnswer": "Both Android and iOS aggressively limit background execution primarily to preserve battery life and system resources, since unrestricted background apps historically drained batteries quickly and degraded overall device performance — Android's Doze mode and App Standby, and iOS's Background App Refresh budget, both throttle or defer background work based on usage patterns and system state. This means you can't rely on a long-running background service to keep data perpetually fresh; instead, you design around the platform's scheduling APIs (WorkManager on Android, BackgroundTasks framework on iOS) which batch and defer work efficiently, and use push notifications (including silent data pushes) to wake the app and sync only when something actually changed, rather than continuously polling.",
+              "keywords": [
+                "battery optimization",
+                "doze mode",
+                "background app refresh",
+                "background execution limits",
+                "jobscheduler"
+              ],
+              "modelAnswer": "Both Android and iOS aggressively limit background execution primarily to preserve battery life and system resources, since unrestricted background apps historically drained batteries quickly and degraded overall device performance \u2014 Android's Doze mode and App Standby, and iOS's Background App Refresh budget, both throttle or defer background work based on usage patterns and system state. This means you can't rely on a long-running background service to keep data perpetually fresh; instead, you design around the platform's scheduling APIs (WorkManager on Android, BackgroundTasks framework on iOS) which batch and defer work efficiently, and use push notifications (including silent data pushes) to wake the app and sync only when something actually changed, rather than continuously polling.",
               "tip": "Naming the actual APIs (WorkManager, BackgroundTasks) shows hands-on platform knowledge, not just theory.",
               "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "mobile-adv-architecture",
+          "title": "App Architecture Patterns (MVVM/MVI/Clean Architecture)",
+          "summary": "Structuring a mobile codebase so it stays testable and maintainable as it grows.",
+          "keyPoints": [
+            "MVVM: View observes ViewModel state; ViewModel holds UI logic, unaware of the View directly",
+            "MVI: unidirectional data flow \u2014 Intent -> Model (state) -> View, with a single immutable state object",
+            "Clean Architecture layers: presentation -> domain (use cases) -> data, with dependencies pointing inward",
+            "Good architecture isolates business logic from framework code, making it testable without a device/emulator"
+          ],
+          "interviewQA": [
+            {
+              "question": "What problem does MVI's single immutable state object solve that plain MVVM (with multiple observable properties) can sometimes have?",
+              "keywords": [
+                "MVI",
+                "unidirectional data flow",
+                "state consistency"
+              ],
+              "modelAnswer": "With multiple independently-updated observable properties in MVVM, the UI can briefly render an inconsistent combination of states if they update at slightly different times (e.g. loading=false but data=null momentarily). MVI's single state object updates atomically as one unit, guaranteeing the UI always reflects one fully consistent state at any point in time.",
+              "tip": "Acknowledge this is a real tradeoff \u2014 MVI adds more ceremony/boilerplate than simple MVVM for small features.",
+              "difficulty": "Hard"
+            }
+          ]
+        },
+        {
+          "id": "mobile-adv-release",
+          "title": "App Store / Play Store Release & Distribution",
+          "summary": "Getting an app safely and reliably in front of users, and rolling out updates without breaking them.",
+          "keyPoints": [
+            "Staged/phased rollouts release to a small % of users first, catching issues before a full rollout",
+            "App signing keys must be carefully managed and backed up \u2014 losing them can block future updates",
+            "Store review guidelines (especially Apple's) require careful compliance to avoid rejection delays",
+            "Feature flags let you ship code dark and enable it remotely without a new store release"
+          ],
+          "interviewQA": [
+            {
+              "question": "Why would a team use a phased/staged rollout instead of releasing a new version to 100% of users immediately?",
+              "keywords": [
+                "phased rollout",
+                "staged rollout",
+                "crash rate",
+                "rollback"
+              ],
+              "modelAnswer": "A phased rollout exposes a small percentage of users to the new version first, so if it introduces a crash or critical bug, only a small fraction of the user base is affected and you can halt the rollout \u2014 versus finding out about a critical issue only after it's already reached every user with no way to instantly 'undo' a released app version.",
+              "tip": "Mention that store review times also mean you can't roll back a native app release as instantly as a web app \u2014 that's the underlying reason this caution matters.",
+              "difficulty": "Medium"
             }
           ]
         }
