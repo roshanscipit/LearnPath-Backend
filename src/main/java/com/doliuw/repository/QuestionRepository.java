@@ -23,6 +23,16 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query(value = "SELECT * FROM questions WHERE question_type = :type AND active = true ORDER BY RAND() LIMIT :n", nativeQuery = true)
     List<Question> findRandomByType(@Param("type") String type, @Param("n") int n);
 
+    /** Returns N random questions of a given type AND role (role-specific content, e.g. Java coding questions) */
+    @Query(value = "SELECT * FROM questions WHERE question_type = :type AND role_tag = :role AND active = true ORDER BY RAND() LIMIT :n", nativeQuery = true)
+    List<Question> findRandomByTypeAndRole(@Param("type") String type, @Param("role") String role, @Param("n") int n);
+
+    /** Returns N random questions of a given type that have NO role tag (shared/common questions, e.g. Aptitude) */
+    @Query(value = "SELECT * FROM questions WHERE question_type = :type AND role_tag IS NULL AND active = true ORDER BY RAND() LIMIT :n", nativeQuery = true)
+    List<Question> findRandomByTypeCommon(@Param("type") String type, @Param("n") int n);
+
+    long countByQuestionTypeAndRoleTagAndActiveTrue(String questionType, String roleTag);
+
     /** Returns N random questions of a given type and difficulty */
     @Query(value = "SELECT * FROM questions WHERE question_type = :type AND difficulty = :diff AND active = true ORDER BY RAND() LIMIT :n", nativeQuery = true)
     List<Question> findRandomByTypeAndDifficulty(@Param("type") String type, @Param("diff") String difficulty, @Param("n") int n);
