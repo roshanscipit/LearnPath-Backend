@@ -376,15 +376,40 @@ public class CompanyService {
         );
     }
 
+    /**
+     * Mock tests are organized by ROLE, not by company — each role gets a full
+     * interview-style mock (aptitude + role-specific coding + technical) and a
+     * focused coding-only mock. A couple of role-agnostic tests (pure Aptitude,
+     * pure System Design, pure Behavioral) round out the free tier.
+     */
     private List<Map<String, Object>> buildMockTests() {
-        return List.of(
-            mockTest("mock-1","Complete Interview Mock Test",120,50,"Medium","free",List.of("Aptitude","Coding","Technical")),
-            mockTest("mock-2","Coding Assessment",90,4,"Hard","free",List.of("Coding")),
-            mockTest("mock-3","Aptitude Test",60,30,"Easy","free",List.of("Aptitude")),
-            mockTest("mock-4","System Design Mock",60,3,"Hard","paid",List.of("System Design")),
-            mockTest("mock-5","TCS NQT Simulator",90,40,"Easy","free",List.of("Aptitude","Verbal","Coding")),
-            mockTest("mock-6","Amazon Leadership Principles",45,20,"Medium","free",List.of("Behavioral"))
-        );
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        // One full role-based mock test per role: Aptitude + role-tagged Coding + Technical
+        list.add(roleMockTest("mock-java-full","Java Developer Mock Test","java",90,30,"Medium"));
+        list.add(roleMockTest("mock-python-full","Python Developer Mock Test","python",90,30,"Medium"));
+        list.add(roleMockTest("mock-devops-full","DevOps Engineer Mock Test","devops",90,30,"Medium"));
+        list.add(roleMockTest("mock-dataengineer-full","Data Engineer Mock Test","data-engineer",90,30,"Medium"));
+        list.add(roleMockTest("mock-testing-full","QA/Testing Mock Test","testing",90,30,"Medium"));
+        list.add(roleMockTest("mock-dotnet-full",".NET Developer Mock Test","dotnet",90,30,"Medium"));
+        list.add(roleMockTest("mock-mobile-full","Mobile Developer Mock Test","mobile",90,30,"Medium"));
+        list.add(roleMockTest("mock-salesforce-full","Salesforce Developer Mock Test","salesforce",90,30,"Medium"));
+        list.add(roleMockTest("mock-sap-full","SAP Consultant Mock Test","sap",90,30,"Medium"));
+        list.add(roleMockTest("mock-cybersecurity-full","Cybersecurity Analyst Mock Test","cybersecurity",90,30,"Medium"));
+
+        // Focused role-based coding-only mocks (paid tier) for deeper practice
+        list.add(roleCodingMockTest("mock-java-coding","Java Coding Round",90,6,"Hard","java"));
+        list.add(roleCodingMockTest("mock-python-coding","Python Coding Round",90,6,"Hard","python"));
+        list.add(roleCodingMockTest("mock-devops-coding","DevOps Coding & Scripting Round",90,6,"Hard","devops"));
+        list.add(roleCodingMockTest("mock-dataengineer-coding","Data Engineering Coding Round",90,6,"Hard","data-engineer"));
+        list.add(roleCodingMockTest("mock-dotnet-coding",".NET Coding Round",90,6,"Hard","dotnet"));
+
+        // Role-agnostic supporting rounds (shared question bank)
+        list.add(mockTest("mock-aptitude","Aptitude & Reasoning Test",60,30,"Easy","free",List.of("Aptitude")));
+        list.add(mockTest("mock-systemdesign","System Design Round",60,3,"Hard","paid",List.of("System Design")));
+        list.add(mockTest("mock-behavioral","Behavioral / HR Round",45,20,"Medium","free",List.of("Behavioral")));
+
+        return list;
     }
 
     // ─── Builder helpers ──────────────────────────────────────────
@@ -427,7 +452,32 @@ public class CompanyService {
 
     private Map<String, Object> mockTest(String id, String title, int duration, int questions,
                                          String difficulty, String type, List<String> sections) {
-        return Map.of("id",id,"title",title,"duration",duration,"questions",questions,
-                      "difficulty",difficulty,"type",type,"sections",sections);
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("id", id); m.put("title", title); m.put("duration", duration);
+        m.put("questions", questions); m.put("difficulty", difficulty);
+        m.put("type", type); m.put("sections", sections); m.put("role", null);
+        return m;
+    }
+
+    /** A full role-based mock test: Aptitude (shared bank) + role-tagged Coding + Technical. */
+    private Map<String, Object> roleMockTest(String id, String title, String role,
+                                             int duration, int questions, String difficulty) {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("id", id); m.put("title", title); m.put("duration", duration);
+        m.put("questions", questions); m.put("difficulty", difficulty);
+        m.put("type", "free"); m.put("sections", List.of("Aptitude", "Coding", "Technical"));
+        m.put("role", role);
+        return m;
+    }
+
+    /** A focused, harder coding-only mock test for one role (premium/paid tier). */
+    private Map<String, Object> roleCodingMockTest(String id, String title, int duration,
+                                                    int questions, String difficulty, String role) {
+        Map<String, Object> m = new LinkedHashMap<>();
+        m.put("id", id); m.put("title", title); m.put("duration", duration);
+        m.put("questions", questions); m.put("difficulty", difficulty);
+        m.put("type", "paid"); m.put("sections", List.of("Coding"));
+        m.put("role", role);
+        return m;
     }
 }
