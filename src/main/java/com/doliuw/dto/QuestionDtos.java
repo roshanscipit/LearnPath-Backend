@@ -19,6 +19,7 @@ public class QuestionDtos {
         private String difficulty;
         private String topic;
         private String companyTag;
+        private String roleTag;    // java, python, devops, etc. null = common
         private String language;
     }
 
@@ -35,9 +36,10 @@ public class QuestionDtos {
     @Data
     public static class QuizSessionRequest {
         @NotBlank
-        private String questionType;   // CODING | APTITUDE | SYSTEM_DESIGN | MIXED
+        private String questionType;   // CODING | APTITUDE | SYSTEM_DESIGN | BEHAVIORAL | MIXED
         private String difficulty;     // optional filter
         private String companyTag;     // optional
+        private String roleTag;        // optional: java, python, devops, etc. falls back to common questions if none tagged
         private int count = 10;        // 5–10, clamped server-side
     }
 
@@ -62,6 +64,7 @@ public class QuestionDtos {
         @NotBlank private String difficulty;
         private String topic;
         private String companyTag;
+        private String roleTag;
         private String language;
         private boolean active = true;
     }
