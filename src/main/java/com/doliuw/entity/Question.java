@@ -57,6 +57,10 @@ public class Question {
     @Column
     private String companyTag;
 
+    /** Optional role tag: java, python, devops, etc. Null = common/shared across all roles (e.g. Aptitude). */
+    @Column(name = "role_tag")
+    private String roleTag;
+
     /** For CODING: language hint e.g. Java, Python, Any */
     @Column
     private String language;
